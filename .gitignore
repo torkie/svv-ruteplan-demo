@@ -9,3 +9,5 @@
 /Ruteplanwebb/Ruteplanwebb/js/app.js
 /Ruteplanwebb/Ruteplanwebb/js/Controllers.js.map
 /Ruteplanwebb/Ruteplanwebb/js/Controllers.js
+*.user
+*.suo
