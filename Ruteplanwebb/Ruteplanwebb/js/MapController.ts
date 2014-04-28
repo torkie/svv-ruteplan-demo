@@ -16,9 +16,9 @@ class RouteResponseHolder {
 }
 
 class RouteResponse {
-    TotalDistance: number;
-    TotalTravelTime: number;
-    RouteEnvelope: number[];
+    totalDistance: number;
+    totalTravelTime: number;
+    routeEnvelope: number[];
 }
 
 /* $scope for MapController with extra methods and properties*/
