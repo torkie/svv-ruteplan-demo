@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2005 U (http://www.xmlspy.com) by Lars Bergström (Triona AB) -->
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xls="http://www.opengis.net/xls" targetNamespace="http://www.opengis.net/xls" elementFormDefault="qualified">
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/ols/1.2.0/gml4xls.xsd"/>
+	<element name="DetermineRouteResponseType" type="xls:DetermineRouteResponseType"/>
+	<element name="DetermineRouteRequestType" type="xls:DetermineRouteRequestType"/>
+  <complexType name="DetermineRouteResponseTypeList">
+    <sequence>
+      <element name="RouteResponse" type="xls:DetermineRouteResponseType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+	<complexType name="DetermineRouteResponseType">
+		<sequence>
+			<element name="RouteSummary" type="xls:RouteSummaryType" minOccurs="0"/>
+			<element name="RouteGeometry" type="xls:RouteGeometryType" minOccurs="0"/>
+      <element name="RouteGeometrySimple" type="xls:RouteGeometryType" minOccurs="0"/>
+			<element name="RouteInstructionsList" type="xls:RouteInstructionsListType" minOccurs="0"/>
+      <element name="RouteAlternatives" type="xls:DetermineRouteResponseTypeList"/>
+		</sequence>
+    <attribute name="RouteName" type="string"/>
+	</complexType>
+	<complexType name="ISO_LineString">
+		<sequence>
+			<element name="Geometry" type="string"/>
+		</sequence>
+		<attribute name="SRS" type="string" use="required"/>
+	</complexType>
+	<complexType name="RouteSummaryType">
+		<sequence>
+			<element name="TotalDistance" type="xls:DistanceType"/>
+			<element name="TotalTime" type="xls:TimeType"/>
+			<element name="RouteEnvelope" type="xls:BoundingBox"/>
+			<element name="AccumulatedProperties" minOccurs="0">
+				<annotation>
+					<documentation>EXTENSION: Used to describe accumulated properties along the total route. For example total fee for different type of vehicles etc.</documentation>
+				</annotation>
+				<complexType>
+					<sequence>
+						<element name="AccumulatedProperty" maxOccurs="unbounded">
+							<complexType>
+								<attribute name="PropertyName" type="string" use="required">
+									<annotation>
+										<documentation>Name of accumulated property</documentation>
+									</annotation>
+								</attribute>
+								<attribute name="Value" type="double" use="required"/>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="BoundingBox">
+		<attribute name="minx" type="double" use="required"/>
+		<attribute name="miny" type="double" use="required"/>
+		<attribute name="maxx" type="double" use="required"/>
+		<attribute name="maxy" type="double" use="required"/>
+		<attribute name="srs" type="string"/>
+	</complexType>
+	<complexType name="DirectPositionType">
+		<annotation>
+			<documentation>DirectPosition instances hold the coordinates for a position within some coordinate reference system (CRS). Since DirectPositions, as data types, will often be included in larger objects (such as geometry elements) that have references to CRS, the "srsName" attribute will in general be missing, if this particular DirectPosition is included in a larger element with such a reference to a CRS. In this case, the CRS is implicitly assumed to take on the value of the containing object's CRS.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="string">
+				<attribute name="srsName" type="anyURI" use="optional">
+					<annotation>
+						<documentation>In general this reference points to a CRS instance of gml:CoordinateReferenceSystemType (see coordinateReferenceSystems.xsd). For well known references it is not required that the CRS description exists at the location the URI points to (Note: These "WKCRS"-ids still have to be specified).  If no srsName attribute is given, the CRS must be specified as part of the larger context this geometry element is part of, e.g. a geometric element like point, curve, etc. It is expected that the attribute will be specified at the direct position level only in rare cases.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="dimension" type="positiveInteger" use="optional">
+					<annotation>
+						<documentation>The attribute "dimension" is the length of coordinate sequence (the number of entries in the list). This is determined by the coordinate reference system.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<complexType name="LineStringType">
+		<annotation>
+			<documentation>A LineString is a special curve that consists of a single segment with linear interpolation. It is defined by two or more coordinate tuples, with linear interpolation between them. It is backwards compatible with the LineString of GML 2, GM_LineString of ISO 19107 is implemented by LineStringSegment. 			</documentation>
+		</annotation>
+		<sequence>
+			<annotation>
+				<documentation>GML supports two different ways to specify the control points of a line string. 1. A sequence of "pos" (DirectPositionType) or "pointRep" (PointPropertyType) elements. "pos" elements are control points that are only part of this curve, "pointRep" elements contain a point that may be referenced from other geometry elements or reference another point defined outside of this curve (reuse of existing points). 2. The "coordinates" element allows for a compact way to specifiy the coordinates of the control points, if all control points are in the same coordinate reference systems and belong to this curve only. The number of direct positions in the coordinates list must be at least two.</documentation>
+			</annotation>
+			<element name="pos" type="xls:DirectPositionType" minOccurs="2" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="srsName" type="string"/>
+		<attribute name="id" type="string"/>
+	</complexType>
+	<complexType name="RouteGeometryType">
+		<sequence>
+			<element name="LineString" type="xls:LineStringType" minOccurs="0"/>
+			<element name="ISO_LineString" type="xls:ISO_LineString" minOccurs="0">
+				<annotation>
+					<documentation>EXTENSION: Geometry can be returned in form of ISO 19125 LineString geometry which is more compact then GML-geometry</documentation>
+				</annotation>
+			</element>
+			<element name="CompressedGeometry" type="string" minOccurs="0">
+				<annotation>
+					<documentation>EXTENSION: Compressed geometry of the route. Algoritm for compression is specified in the documentation of the service</documentation>
+				</annotation>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="RouteInstructionsListType">
+		<sequence>
+			<element name="RouteInstruction" type="xls:RouteInstructionType" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="lang" type="string"/>
+	</complexType>
+	<complexType name="RouteInstructionType">
+		<sequence>
+			<element name="Instruction" type="string"/>
+			<element name="CompressedGeometry" type="string" minOccurs="0">
+				<annotation>
+					<documentation>EXTENSION: Compressed geometry of this segment. Algoritm for compression is specified in the documentation of the service</documentation>
+				</annotation>
+			</element>
+      <element name="ManeuverType" type="xls:maneuverType" minOccurs="0">
+        <annotation>
+          <documentation>EXTENSION: ManeuverType for this segment</documentation>
+        </annotation>
+      </element>
+			<element name="distance" type="xls:DistanceType"/>
+			<element name="Attributes" minOccurs="0">
+				<annotation>
+					<documentation>EXTENSION: Attributes gives additional information about this route-instruction. For example one could tell if there exists restingplaces on this particular segment</documentation>
+				</annotation>
+				<complexType>
+					<sequence>
+						<element name="Attribute" maxOccurs="unbounded">
+							<complexType>
+								<complexContent>
+									<extension base="xls:RouteInstructionAttribute"/>
+								</complexContent>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="duration" type="duration"/>
+	</complexType>
+  <simpleType name="maneuverType">
+    <restriction base="string">
+      <enumeration value="Unknown"/>
+      <enumeration  value="Stop"/>
+      <enumeration  value="Straight"/>
+      <enumeration  value="BearLeft"/>
+      <enumeration  value="BearRight"/>
+      <enumeration value="TurnLeft"/>
+      <enumeration value="TurnRight"/>
+      <enumeration  value="SharpLeft"/>
+      <enumeration  value="SharpRight"/>
+      <enumeration  value="UTurn"/>
+      <enumeration  value="Ferry"/>
+      <enumeration  value="Roundabout"/>
+      <enumeration value="HighwayMerge"/>
+      <enumeration value="HighwayExit"/>
+      <enumeration value="HighwayChange"/>
+      <enumeration value="ForkCenter"/>
+      <enumeration value="ForkLeft"/>
+      <enumeration value="ForkRight"/>
+      <enumeration value="Depart"/>
+      <enumeration value="TripItem"/>
+      <enumeration value="EndOfFerry"/>
+    </restriction>
+  </simpleType>
+	<complexType name="DistanceType">
+		<attribute name="value" type="double" use="required"/>
+		<attribute name="uom" type="xls:DistanceUnitType" use="optional" default="M"/>
+	</complexType>
+	<complexType name="TimeType">
+		<attribute name="value" type="double" use="required"/>
+		<attribute name="uom" type="xls:TimeUnitType" use="optional" default="M"/>
+	</complexType>
+	<complexType name="DetermineRouteRequestType">
+		<annotation>
+			<documentation>Defines the Determine Route request parameters.</documentation>
+		</annotation>
+		<sequence>
+			<choice>
+				<element name="RouteInstructionsRequest" type="xls:RouteInstructionsRequestType" minOccurs="0">
+					<annotation>
+						<documentation>Request parameters for turn-by-turn route directions and advisories formatted for presentation.</documentation>
+					</annotation>
+				</element>
+			</choice>
+		</sequence>
+		<attribute name="provideRouteHandle" type="boolean" use="optional" default="false">
+			<annotation>
+				<documentation>Requests the return of a route handle.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="distanceUnit" type="xls:DistanceUnitType" use="optional" default="M">
+			<annotation>
+				<documentation>Specifies the unit for measuring distance.</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<complexType name="RouteInstructionsRequestType">
+		<annotation>
+			<documentation>Defines the request parameters for turn-by-turn route instructions and travel advisories formatted for presentation.</documentation>
+		</annotation>
+		<sequence>
+			<element name="RoutePlan" type="xls:RoutePlanType"/>
+		</sequence>
+		<attribute name="format" type="string" use="optional" default="text/plain">
+			<annotation>
+				<documentation>The preferred format of the route instructions, specified as a mime type.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="provideGeometry" type="boolean" use="optional" default="false"/>
+		<attribute name="provideBoundingBox" type="boolean" use="optional" default="false"/>
+	</complexType>
+	<simpleType name="DistanceUnitType">
+		<restriction base="string">
+			<enumeration value="KM"/>
+			<enumeration value="M"/>
+			<enumeration value="DM"/>
+			<enumeration value="MI"/>
+			<enumeration value="YD"/>
+			<enumeration value="FT"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="TimeUnitType">
+		<restriction base="string">
+			<enumeration value="H"/>
+			<enumeration value="M"/>
+			<enumeration value="S"/>
+		</restriction>
+	</simpleType>
+	<complexType name="RoutePlanType">
+		<annotation>
+			<documentation>Defines the criteria upon which a route is determined.</documentation>
+		</annotation>
+		<sequence>
+			<element name="RoutePreference" type="xls:RoutePreferenceType"/>
+			<element name="WayPointList" type="xls:WayPointListType"/>
+		</sequence>
+		<attribute name="useRealTimeTraffic" type="boolean" use="optional" default="false">
+			<annotation>
+				<documentation>Specifies whether to use real time traffic information when determining the best route.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="expectedStartTime" type="dateTime" use="optional">
+			<annotation>
+				<documentation>Specifies the date and time at which travel is expected to begin.  Specified in the format YYYY-MM-DD HH:MM.  Defaults to current date and time.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="expectedEndTime" type="dateTime" use="optional">
+			<annotation>
+				<documentation>Specifies the date and time at which travel is expected to end.  The format for the end time is specified as Duration</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<simpleType name="RoutePreferenceType">
+		<annotation>
+			<documentation>Enumeration of preferences to be taken into consideration when determining the route.</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Fastest">
+				<annotation>
+					<documentation>Minimize the travel time by vehicle.</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Shortest">
+				<annotation>
+					<documentation>Minimize the travel distance by vehicle.</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Pedestrian">
+				<annotation>
+					<documentation>Best route by foot.</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+	<complexType name="WayPointListType">
+		<annotation>
+			<documentation>Defines a list of waypoints along a route.</documentation>
+		</annotation>
+		<sequence>
+			<element name="StartPoint" type="xls:WayPointType"/>
+			<element name="ViaPoint" type="xls:WayPointType" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="EndPoint" type="xls:WayPointType"/>
+		</sequence>
+	</complexType>
+	<complexType name="WayPointType">
+		<annotation>
+			<documentation>Defines a location to be visited along a route.</documentation>
+		</annotation>
+		<sequence>
+			<element name="_Location" type="gml:PointType"/>
+		</sequence>
+		<attribute name="stop" type="boolean" use="optional" default="true">
+			<annotation>
+				<documentation>Specifies whether the traveler plans to stop at the waypoint, or simply pass through it.								</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<complexType name="RouteInstructionAttribute">
+		<annotation>
+			<documentation> Defines an attribute of a RouteSegement</documentation>
+		</annotation>
+		<sequence>
+			<element name="AttributeType" type="string">
+				<annotation>
+					<documentation>Used to identify the attribute. List of possible identifiers are kept outside the schema definition</documentation>
+				</annotation>
+			</element>
+			<element name="Values" minOccurs="0">
+				<annotation>
+					<documentation>Can be used to transmit a value for this type if such exists. For example it could be the speedlimit yeilding at a location where speed is measured. The use of this field is specified in the service implementation</documentation>
+				</annotation>
+				<complexType>
+					<sequence>
+						<element name="Value" type="xls:KeyValuePair" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="Locations" minOccurs="0">
+				<complexType>
+					<sequence>
+						<element name="Location" type="xls:Location" minOccurs="0" maxOccurs="unbounded"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="id" use="required">
+			<annotation>
+				<documentation>ID is a unique identifier of the attribute that can be referenced in consecutive calls to the routing-service to avoid events along the route</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<complexType name="Location">
+		<annotation>
+			<documentation> Simple location specification</documentation>
+		</annotation>
+		<attribute name="northing" type="double" use="required"/>
+		<attribute name="easting" type="double" use="required"/>
+		<attribute name="SRS" type="string" use="required"/>
+	</complexType>
+	<complexType name="KeyValuePair">
+		<attribute name="key" use="required"/>
+		<attribute name="value" use="required"/>
+	</complexType>
+</schema>

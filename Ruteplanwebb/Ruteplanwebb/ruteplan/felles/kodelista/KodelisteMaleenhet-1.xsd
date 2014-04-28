@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Harald Stensholt (CIBER Norge) -->
+<!-- ====================================================================== -->
+<!-- =====  Måleenheter Schema Module  ===== -->
+<!-- ====================================================================== -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:no:vegvesen:felles:kodeliste:maleenhet:1" targetNamespace="urn:no:vegvesen:felles:kodeliste:maleenhet:1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:annotation>
+		<xsd:documentation>Hvis kodelisten endres, må versjonsnummer endres. En utvidelse av lovlige verdier gir kun en minor endring i version feltet og ingen endring i namespace. En innskrenkning, dvs. fjerning av støttede elementer kan gjøre skjemamodulen inkompatibel med eksisterende tjenester. Da må major- versjon inkrementeres sammen med versjonstall på namespace. Eksempel: urn:no:vegvesen:felles:kodeliste:maleenhet:1 til urn:no:vegvesen:felles:kodeliste:maleenhet:2</xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="MaleenhetType">
+		<xsd:annotation>
+			<xsd:documentation>Måleenheter benyttet av Statens Vegvesen</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:enumeration value="m">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>meter</tns:CodeName>
+						<tns:Type>lengde</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="kg">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>kilogram</tns:CodeName>
+						<tns:Type>masse</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="s">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>sekund</tns:CodeName>
+						<tns:Type>tid</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="A">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>ampere</tns:CodeName>
+						<tns:Type>elektrisk strøm</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="K">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>kelvin</tns:CodeName>
+						<tns:Type>temperatur</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="mol">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>mol</tns:CodeName>
+						<tns:Type>stoffmengde</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="cd">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>candela</tns:CodeName>
+						<tns:Type>lysstyrke</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="L">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>liter</tns:CodeName>
+						<tns:Type>volum</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="mm">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>millimeter</tns:CodeName>
+						<tns:Type>lengde</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="cm">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>centimeter</tns:CodeName>
+						<tns:Type>lengde</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="km">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>kilometer</tns:CodeName>
+						<tns:Type>lengde</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="km/h">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>kilometer per time</tns:CodeName>
+						<tns:Type>hastighet</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="m/s">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>meter per sekund</tns:CodeName>
+						<tns:Type>hastighet</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="C">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>grader celsius</tns:CodeName>
+						<tns:Type>temperatur</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="F">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>grader fahrenheit</tns:CodeName>
+						<tns:Type>temperatur</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="t">
+				<xsd:annotation>
+					<xsd:documentation>
+						<tns:CodeName>metrisk tonn</tns:CodeName>
+						<tns:Type>masse</tns:Type>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

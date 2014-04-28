@@ -1,0 +1,75 @@
+﻿body
+{
+    font-family: 'Segoe UI', sans-serif;
+    padding: 0;
+       
+}
+
+span {
+    font-style: italic
+}
+
+#map {
+    position: absolute;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000;
+    z-index: 0;
+}
+
+#searchbar DIV {
+    padding: 10px;
+
+}
+#searchbar {
+    position: absolute;
+    color: #fff;
+    z-index: 200;
+    background: #444f55;
+    right: 0;
+    left: 0;
+    top: 0;
+    height: 100px;
+    width: 100%;
+    border-bottom: 3px solid #ff9600;
+}
+
+.coordinatedisplayer {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 300;
+}
+
+#searchbar input {
+     background-color: #f5f5f5;
+     cursor: text;
+     min-height: 35px;
+     overflow: auto;
+     padding: 2px 26px 2px 2px;
+     border: 0;
+     margin: 10px;
+     width: 300px;
+     font-size: 14px;
+     font-weight: bold;
+     color: #444f55;
+     border-radius: 4px;
+     -moz-border-radius: 4px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    background: #f5f5f5;
+    border-bottom: 3px solid #ff9600;
+    color: #444f55;
+    cursor: pointer;
+}
+
+#searchbutton {
+    width: 75px !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    padding: 2px !important;
+}

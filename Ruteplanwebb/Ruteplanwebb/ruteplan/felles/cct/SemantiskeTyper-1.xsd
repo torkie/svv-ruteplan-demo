@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Harald Stensholt (CIBER Norge) -->
+<xsd:schema xmlns="urn:no:vegvesen:felles:cct:1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:valuta="urn:no:vegvesen:felles:kodeliste:valuta:1" xmlns:mime="urn:no:vegvesen:felles:kodeliste:mimetype:1" xmlns:maleenhet="urn:no:vegvesen:felles:kodeliste:maleenhet:1" xmlns:filtype="urn:no:vegvesen:felles:kodeliste:filtype:1" targetNamespace="urn:no:vegvesen:felles:cct:1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>Hvis kodelisten endres, må versjonsnummer endres. En utvidelse av lovlige verdier gir kun en minor endring i version feltet og ingen endring i namespace. En innskrenkning, dvs. fjerning av støttede elementer kan gjøre skjemamodulen inkompatibel med eksisterende tjenester. Da må major- versjon inkrementeres sammen med versjonstall på namespace. Eksempel: urn:no:vegvesen:felles:cct:1 til urn:no:vegvesen:felles:cct:2</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>Semantiske grunntyper modellering i Statens Vegvesen</xsd:documentation>
+	</xsd:annotation>
+	<!-- ===== Imports of Code Lists ===== -->
+	<xsd:import namespace="urn:no:vegvesen:felles:kodeliste:valuta:1" schemaLocation="..\kodeliste/KodelisteValuta_ISO-1.xsd"/>
+	<xsd:import namespace="urn:no:vegvesen:felles:kodeliste:mimetype:1" schemaLocation="..\kodeliste/KodelisteMimetype_ISO-1.xsd"/>
+	<xsd:import namespace="urn:no:vegvesen:felles:kodeliste:filtype:1" schemaLocation="..\kodeliste/KodelisteFiltype-1.xsd"/>
+		<xsd:import namespace="urn:no:vegvesen:felles:kodeliste:maleenhet:1" schemaLocation="..\kodeliste/KodelisteMaleenhet-1.xsd"/>
+	<!-- =================================================================== -->
+	<!-- ===== Type Definitions ===== -->
+	<xsd:simpleType name="tekst">
+		<xsd:annotation>
+			<xsd:documentation>Tekstlig, ikke-unik betegnelse eller beskrivelse.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="navn">
+		<xsd:annotation>
+			<xsd:documentation>Offisielt navn på personer, foretak etc.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="identifikator">
+		<xsd:annotation>
+			<xsd:documentation>Tegnsekvens som unikt identifiserer et objekt i en forvaltet mengde av objekter.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="kode">
+		<xsd:annotation>
+			<xsd:documentation>Tegnsekvens som unikt representerer et element av type begrep, navn, verdi etc. i en liste av beslektete elementer.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:normalizedString"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="tall">
+		<xsd:annotation>
+			<xsd:documentation>Dimensjonsløs, beregnet størrelse.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:float"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="prosentverdi">
+		<xsd:annotation>
+			<xsd:documentation>Tall som fremkommer som forholdet mellom to tall multiplisert med 100.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:float"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="heltall">
+		<xsd:annotation>
+			<xsd:documentation>Tellbar størrelse uten enhetsangivelse. Eksempler: 'Antall barn', 'Antall arbeidsgivere'. Det tillates negative antall som uttrykk for 'manglende antall'.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="antall">
+		<xsd:annotation>
+			<xsd:documentation>Ikke-negative heltall.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:nonNegativeInteger"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="alternativ">
+		<xsd:annotation>
+			<xsd:documentation>Informasjonselement med to mulige verdier. Eksempler: 'Ja' eller 'Nei', 'Sant' eller Usant', 'Har' eller 'Har ikke', 'Er' eller 'Er ikke', 'På' eller 'Av'.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:boolean"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="dato">
+		<xsd:annotation>
+			<xsd:documentation>Tidspunkt med døgnoppløsning, dvs tidsrommet innenfor et gitt historisk døgn.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:date"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="tidspunkt">
+		<xsd:annotation>
+			<xsd:documentation>Punkt i historisk tid, dvs. en gitt dato og et gitt klokkeslett i et bestemt år og tidssone, eller periodisk tidspunkt i forhold til standard nullpunkt for standard tidsperiode (år, måned, dag).</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:dateTime"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="dag">
+		<xsd:annotation>
+			<xsd:documentation>Periodisk datoangivelse, dvs. tidsrommet som utgjøres av et helt døgn i en gitt måned uansett år (f.eks. 05-17)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:gMonthDay"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="klokkeslett">
+		<xsd:annotation>
+			<xsd:documentation>Tidspunkt innenfor et gitt døgn.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:time"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="arstall">
+		<xsd:annotation>
+			<xsd:documentation>Tidspunkt med årsoppløsning, dvs. et helt historisk år (f.eks. '2006').</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:gYear"/>
+	</xsd:simpleType>
+	<xsd:simpleType name="varighet">
+		<xsd:annotation>
+			<xsd:documentation>Mål av type tid, dvs. målt eller planlagt forløpt tid uavhengig av når det skjer.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:duration"/>
+	</xsd:simpleType>
+	<xsd:complexType name="maleverdi">
+		<xsd:annotation>
+			<xsd:documentation>Fysisk størrelse som kan måles med et verktøy eller instrument, eller planlagt størrelse for mulig senere realisering og måling. Størrelsen består av en numerisk måleverdi og en måleenhet.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:float">
+				<xsd:attribute name="maleenhet" type="maleenhet:MaleenhetType"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="pengeverdi">
+		<xsd:annotation>
+			<xsd:documentation>Pengeverdi med angitt valuta.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:float">
+				<xsd:attribute name="valuta" type="valuta:ValutakodeType"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="binarobjekt">
+		<xsd:annotation>
+			<xsd:documentation>En begrenset sekvens av bytes, typisk en datafil.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="innhold" type="xsd:base64Binary">
+				<xsd:annotation>
+					<xsd:documentation>Base64-encoded innhold av filen</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="filtype" type="filtype:Filtype" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Filtype for binærobjektet</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="mimetype" type="mime:MimeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Mimetype for binærobjektet. Skal ikke sendes inn av fagsystemet. Settes av Documtum og returneres ut ved uthenting av dokumenter.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tegnsettkode" type="xsd:normalizedString" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Tegnsett for binærobjektet dersom mimetype er tekst.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="uri" type="xsd:anyURI" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>En Uniform Resource Identifier som angir hvor binærobjektet finnes.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="filnavn" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>Filnavn for binærobjektet</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
