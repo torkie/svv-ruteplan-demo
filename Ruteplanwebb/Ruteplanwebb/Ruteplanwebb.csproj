@@ -26,13 +26,10 @@
     <Content Include="images\marker-icon-2x.png" />
     <Content Include="images\marker-icon.png" />
     <Content Include="images\marker-shadow.png" />
-    <Content Include="js\app.js" />
     <Content Include="css\leaflet.css" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\MapController.ts" />
     <TypeScriptCompile Include="js\Controllers.ts" />
-    <Content Include="js\Controllers.js" />
-    <Content Include="js\MapController.js" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-cookies.js" />
@@ -340,10 +337,6 @@
     <Content Include="Scripts\angular-animate.min.js.map" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="packages.config" />
-    <Content Include="js\app.js.map" />
-    <Content Include="js\MapController.js.map" />
-    <Content Include="js\Controllers.js.map" />
-    <Content Include="adress.ashx" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -381,9 +374,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="adress.ashx.cs">
-      <DependentUpon>adress.ashx</DependentUpon>
-    </Compile>
     <Compile Include="route.ashx.cs">
       <DependentUpon>route.ashx</DependentUpon>
     </Compile>

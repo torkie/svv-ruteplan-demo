@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using no.vegvesen.routeplanning;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
-using no.vegvesen.routeplanning;
 
 namespace Ruteplanwebb
 {
@@ -18,7 +13,7 @@ namespace Ruteplanwebb
     public class Route : IHttpHandler
     {
 
-        private static XmlSerializer m_serializer = new XmlSerializer(typeof (no.vegvesen.routeplanning.DetermineRouteResponseType));
+        private static readonly XmlSerializer m_serializer = new XmlSerializer(typeof (DetermineRouteResponseType));
 
         public void ProcessRequest(HttpContext context)
         {
@@ -39,17 +34,20 @@ namespace Ruteplanwebb
             {
                 using (var respstream = resp.GetResponseStream())
                 {
-                    var rret = m_serializer.Deserialize(respstream) as DetermineRouteResponseType;
-                    if (rret != null)
+                    if (respstream != null)
                     {
-                        ret = new RouteResponse();
-                        ret.TotalTravelTime = rret.RouteSummary.TotalTime.value;
-                        ret.TotalDistance = rret.RouteSummary.TotalDistance.value;
-                        ret.RouteEnvelope = new[]
+                        var rret = m_serializer.Deserialize(respstream) as DetermineRouteResponseType;
+                        if (rret != null)
                         {
-                            rret.RouteSummary.RouteEnvelope.minx, rret.RouteSummary.RouteEnvelope.miny, rret.RouteSummary.RouteEnvelope.maxx,
-                            rret.RouteSummary.RouteEnvelope.maxy
-                        };
+                            ret = new RouteResponse();
+                            ret.TotalTravelTime = rret.RouteSummary.TotalTime.value;
+                            ret.TotalDistance = rret.RouteSummary.TotalDistance.value;
+                            ret.RouteEnvelope = new[]
+                            {
+                                rret.RouteSummary.RouteEnvelope.minx, rret.RouteSummary.RouteEnvelope.miny, rret.RouteSummary.RouteEnvelope.maxx,
+                                rret.RouteSummary.RouteEnvelope.maxy
+                            };
+                        }
                     }
                 }
 
@@ -58,7 +56,7 @@ namespace Ruteplanwebb
 
             context.Response.ContentType = "application/json";
 
-            JavaScriptSerializer ser = new JavaScriptSerializer();
+            var ser = new JavaScriptSerializer();
             context.Response.Write(ser.Serialize(ret));
         }
 
