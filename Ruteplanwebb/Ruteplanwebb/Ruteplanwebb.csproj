@@ -308,6 +308,8 @@
     <Content Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <Content Include="Scripts\typings\angularjs\angular.d.ts" />
     <Content Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="js\MapDirective.ts" />
+    <TypeScriptCompile Include="js\SearchBarDirective.ts" />
     <TypeScriptCompile Include="Scripts\typings\leaflet\leaflet.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\leaflet\esri-leaflet.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\leaflet\leaflet-mouseposition.d.ts" />

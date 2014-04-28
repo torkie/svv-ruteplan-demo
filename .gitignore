@@ -11,3 +11,7 @@
 /Ruteplanwebb/Ruteplanwebb/js/Controllers.js
 *.user
 *.suo
+/Ruteplanwebb/Ruteplanwebb/js/MapDirective.js
+/Ruteplanwebb/Ruteplanwebb/js/MapDirective.js.map
+/Ruteplanwebb/Ruteplanwebb/js/SearchBarDirective.js
+/Ruteplanwebb/Ruteplanwebb/js/SearchBarDirective.js.map
