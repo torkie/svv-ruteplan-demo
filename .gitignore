@@ -1,17 +1,20 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/Ruteplanwebb/Ruteplanwebb/bin
-/Ruteplanwebb/Ruteplanwebb/obj/Debug
-/Ruteplanwebb/packages
-/Ruteplanwebb/Ruteplanwebb/js/app.js.map
-/Ruteplanwebb/Ruteplanwebb/js/app.js
-/Ruteplanwebb/Ruteplanwebb/js/Controllers.js.map
-/Ruteplanwebb/Ruteplanwebb/js/Controllers.js
+﻿# general .NET
+bin
+obj
+packages
 *.user
 *.suo
-/Ruteplanwebb/Ruteplanwebb/js/MapDirective.js
-/Ruteplanwebb/Ruteplanwebb/js/MapDirective.js.map
-/Ruteplanwebb/Ruteplanwebb/js/SearchBarDirective.js
-/Ruteplanwebb/Ruteplanwebb/js/SearchBarDirective.js.map
+
+# monodevelop
+*.userprefs
+
+# intellij
+.idea
+*.ipr
+*.iml
+*.iws
+
+# ignore js files in these folders, we're using typescript (*.ts)
+/Ruteplanwebb/Ruteplanwebb/js/*.js
+/Ruteplanwebb/Ruteplanwebb/js/*.js.map
+
