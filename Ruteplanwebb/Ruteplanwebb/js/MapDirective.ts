@@ -1,8 +1,8 @@
-﻿///<reference path="../Scripts/typings/angularjs/angular.d.ts"/>
-///<reference path="../Scripts/typings/leaflet/leaflet.d.ts"/>
-///<reference path="../Scripts/typings/leaflet/esri-leaflet.d.ts"/>
-///<reference path="../Scripts/typings/leaflet/leaflet-mouseposition.d.ts"/>
-///<reference path="../Scripts/typings/leaflet/proj4leaflet.d.ts"/>
+﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
+///<reference path="../ts/typings/leaflet/leaflet.d.ts"/>
+///<reference path="../ts/typings/leaflet/esri-leaflet.d.ts"/>
+///<reference path="../ts/typings/leaflet/leaflet-mouseposition.d.ts"/>
+///<reference path="../ts/typings/leaflet/proj4leaflet.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
 
