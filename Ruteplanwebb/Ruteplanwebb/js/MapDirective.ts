@@ -16,7 +16,7 @@ class MapDirective {
     markers: L.Marker[];
 
     constructor() {
-        L.Icon.Default.imagePath = 'images/';
+        L.Icon.Default.imagePath = 'lib/leaflet/images/';
         this.restrict = 'E';
         this.replace = true;
         this.template = '<div pointsource="markerPoints"></div>';
