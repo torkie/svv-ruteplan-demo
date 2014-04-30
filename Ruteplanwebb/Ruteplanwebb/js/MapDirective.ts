@@ -4,7 +4,7 @@
 ///<reference path="../Scripts/typings/leaflet/leaflet-mouseposition.d.ts"/>
 ///<reference path="../Scripts/typings/leaflet/proj4leaflet.d.ts"/>
 ///<reference path="app.ts"/>
-///<reference path="MapController.ts"/>
+///<reference path="domain.ts"/>
 
 /* AngularDirective for &lt;map&gt; that displays an leaflet map*/
 class MapDirective {

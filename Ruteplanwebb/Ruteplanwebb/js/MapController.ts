@@ -3,23 +3,8 @@
 ///<reference path="../Scripts/typings/leaflet/esri-leaflet.d.ts"/>
 ///<reference path="../Scripts/typings/leaflet/leaflet-mouseposition.d.ts"/>
 ///<reference path="../Scripts/typings/leaflet/proj4leaflet.d.ts"/>
+///<reference path="domain.ts"/>
 ///<reference path="app.ts"/>
-
-/* Holder for addresses returned from autocomplete*/
-class AddressItem {
-    name: string;
-    location : L.LatLng;
-}
-
-class RouteResponseHolder {
-    data : RouteResponse;
-}
-
-class RouteResponse {
-    totalDistance: number;
-    totalTravelTime: number;
-    routeEnvelope: number[];
-}
 
 /* $scope for MapController with extra methods and properties*/
 interface IMapControllerScope extends ng.IScope {
