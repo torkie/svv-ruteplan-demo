@@ -1,4 +1,5 @@
 ﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
+///<reference path="../ts/typings/leaflet/leaflet.d.ts"/>
 ///<reference path="app.ts"/>
 
 class SeachBarDirective {
