@@ -1,5 +1,5 @@
 // todo: decouple from leaflet
-///<reference path="../Scripts/typings/leaflet/leaflet.d.ts"/>
+///<reference path="../ts/typings/leaflet/leaflet.d.ts"/>
 
 /* Holder for addresses returned from autocomplete*/
 class AddressItem {
