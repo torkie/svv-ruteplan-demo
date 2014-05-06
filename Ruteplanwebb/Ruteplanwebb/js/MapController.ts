@@ -5,6 +5,7 @@
 ///<reference path="../ts/typings/leaflet/proj4leaflet.d.ts"/>
 ///<reference path="domain.ts"/>
 ///<reference path="app.ts"/>
+///<reference path="../ts/typings/xml2json/xml2json.d.ts"/>
 
 /* $scope for MapController with extra methods and properties*/
 interface IMapControllerScope extends ng.IScope {
@@ -18,34 +19,18 @@ interface IMapControllerScope extends ng.IScope {
     fromPoint: AddressItem;
     toPoint: AddressItem;
     map: L.Map;
+    
 }
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
-   
     constructor(
         private $scope: IMapControllerScope, private $http: ng.IHttpService) {
 
-        /* Does return locations to the autocomplete boxes for from and to place*/
-        $scope.getLocations = function(val) {
-            return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-                params: {
-                    address: val,
-                    sensor: false,
-                    language: "no",
-                    region: "NO",
-                    components: "country:NO"
-                }
-            }).then(function(res) {
-                var addresses = [];
-                angular.forEach(res.data.results, function(item) {
-                    if (item.geometry != null && item.geometry.location != null) {
-                        addresses.push({ name: item.formatted_address, location: item.geometry.location });
-                    }
-                });
-                return addresses;
-            });
-        };
+
+        $scope.getLocations = (val) => { return this.getLocationsSK(val,$http); };
+
+        
 
         /* Update markers in the map (from and to marker)*/
         $scope.updateMarkers = function() {
@@ -102,6 +87,56 @@ class MapController {
             $scope.updateMarkers();
         };
     }
+
+    /* Does return locations to the autocomplete boxes for from and to place*/
+    getLocationsSK = function (val, $http: ng.IHttpService) {
+        return $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
+            params: {
+                navn: val + "*",
+                maxAnt: 20,
+                eksakteForst: true,
+            }
+        }).then(function (xmlRes) {
+
+            var x2js = new X2JS();
+            var res = x2js.xml_str2json(xmlRes.data);
+
+                var addresses = [];
+                angular.forEach(res.sokRes.stedsnavn, function (item) {
+
+                    var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
+                    var retPt = pt;
+                    if (this.map.options.crs != null) {
+                        retPt = this.map.options.crs.projection.unproject(pt);
+                    }
+                    addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
+                });
+                return addresses;
+            });
+    };
+
+    /* Does return locations to the autocomplete boxes for from and to place*/
+    getLocationsGoogle = function (val, $http : ng.IHttpService) {
+        return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+            params: {
+                address: val,
+                sensor: false,
+                language: "no",
+                region: "NO",
+                components: "country:NO"
+            }
+        }).then(function (res) {
+                var addresses = [];
+                angular.forEach(res.data.results, function (item) {
+                    if (item.geometry != null && item.geometry.location != null) {
+                        addresses.push({ name: item.formatted_address, location: item.geometry.location });
+                    }
+                });
+                return addresses;
+            });
+    };
+
+
 }
 
 
