@@ -398,8 +398,6 @@
     <TypeScriptCompile Include="js\app.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\version.json" />
-    <Content Include="Scripts\errors.json" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
