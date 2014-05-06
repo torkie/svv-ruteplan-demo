@@ -96,13 +96,14 @@ class MapController {
                 maxAnt: 20,
                 eksakteForst: true,
             }
-        }).then(function (xmlRes) {
+        }).then(function(xmlRes) {
 
             var x2js = new X2JS();
             var res = x2js.xml_str2json(xmlRes.data);
-                var addresses = [];
-                angular.forEach(res.sokRes.stedsnavn, function (item) {
+            var addresses = [];
 
+            if (angular.isArray(res.sokRes.stedsnavn)) {
+                angular.forEach(res.sokRes.stedsnavn, function(item) {
                     var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
                     var retPt = pt;
                     if (this.map.options.crs != null) {
@@ -110,8 +111,17 @@ class MapController {
                     }
                     addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
                 });
-                return addresses;
-            });
+            } else if (res.sokRes.stedsnavn != null) {
+                var item = res.sokRes.stedsnavn;
+                var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
+                var retPt = pt;
+                if (this.map.options.crs != null) {
+                    retPt = this.map.options.crs.projection.unproject(pt);
+                }
+                addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
+            }
+            return addresses;
+        });
     };
 
     /* Does return locations to the autocomplete boxes for from and to place*/

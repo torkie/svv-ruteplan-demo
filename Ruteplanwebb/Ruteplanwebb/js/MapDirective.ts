@@ -3,6 +3,7 @@
 ///<reference path="../ts/typings/leaflet/esri-leaflet.d.ts"/>
 ///<reference path="../ts/typings/leaflet/leaflet-mouseposition.d.ts"/>
 ///<reference path="../ts/typings/leaflet/proj4leaflet.d.ts"/>
+///<reference path="../ts/typings/leaflet/leaflet.awesome-markers.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
 
@@ -74,8 +75,24 @@ class MapDirective {
                     });
                 }
                 this.markers = new Array<L.Marker>();
-                angular.forEach(value, function (item) {
-                    var m = L.marker(item.location);
+                angular.forEach(value, function(item) {
+
+                    var icon = null;
+                    if (this.markers.length == 0) {
+                        icon = L.AwesomeMarkers.icon({
+                        icon: 'play',
+                        markerColor: 'green',
+                        prefix: 'fa'
+                    });
+                    }
+                    else if (this.markers.length == value.length - 1 && value.length > 1) {
+                        icon = L.AwesomeMarkers.icon({
+                        icon: 'stop',
+                        markerColor: 'red',
+                        prefix: 'fa'
+                    });
+                    }
+                    var m = L.marker(item.location, { icon: icon });
                     this.markers.push(m);
                     m.addTo(this.map);
                 });
