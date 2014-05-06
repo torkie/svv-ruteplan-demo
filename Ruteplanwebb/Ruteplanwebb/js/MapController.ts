@@ -10,8 +10,8 @@
 /* $scope for MapController with extra methods and properties*/
 interface IMapControllerScope extends ng.IScope {
     getLocations(adress: string);
-    onSelectFrom(adressItem: AddressItem, model: string, label: string);
-    onSelectTo(adressItem: AddressItem, model: string, label: string);
+    onSelectFrom(adressItem: AddressItem);
+    onSelectTo(adressItem: AddressItem);
     doRouteCalculation();
     getRoute(fromX: number, fromY: number, toX: number, toY: number);
     updateMarkers();
@@ -28,7 +28,7 @@ class MapController {
         private $scope: IMapControllerScope, private $http: ng.IHttpService) {
 
 
-        $scope.getLocations = (val) => { return this.getLocationsSK(val,$http); };
+        $scope.getLocations = (val) => { return this.getLocationsSk(val,$http); };
 
         
 
@@ -43,7 +43,7 @@ class MapController {
             this.markerPoints = markers;
         };
 
-        $scope.doRouteCalculation = function () {
+        $scope.doRouteCalculation = () => {
 
             var fromX = $scope.fromPoint.location.lng;
             var fromY = $scope.fromPoint.location.lat;
@@ -71,81 +71,75 @@ class MapController {
                     toX: toX,
                     toY: toY
                 }
-            }).then(function (res : RouteResponseHolder) {
+            }).then(() => {
             });
         };
 
         /*Called when an autocomplete result is selected*/
-        $scope.onSelectFrom = function(adressItem: AddressItem, model: string, label: string) {
+        $scope.onSelectFrom = (adressItem: AddressItem) => {
             $scope.fromPoint = adressItem;
             $scope.updateMarkers();
         };
 
         /*Called when an autocomplete result is selected*/
-        $scope.onSelectTo = function(adressItem: AddressItem, model: string, label: string) {
+        $scope.onSelectTo = (adressItem: AddressItem) => {
             $scope.toPoint = adressItem;
             $scope.updateMarkers();
         };
     }
 
     /* Does return locations to the autocomplete boxes for from and to place*/
-    getLocationsSK = function (val, $http: ng.IHttpService) {
-        return $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
-            params: {
-                navn: val + "*",
-                maxAnt: 20,
-                eksakteForst: true,
-            }
-        }).then(function(xmlRes) {
+    getLocationsSk = (val, $http: ng.IHttpService) => $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
+        params: {
+            navn: val + "*",
+            maxAnt: 20,
+            eksakteForst: true,
+        }
+    }).then(function(xmlRes) {
 
-            var x2js = new X2JS();
-            var res = x2js.xml_str2json(xmlRes.data);
-            var addresses = [];
+        var x2Js = new X2JS();
+        var res = x2Js.xml_str2json(xmlRes.data);
+        var addresses = [];
 
-            if (angular.isArray(res.sokRes.stedsnavn)) {
-                angular.forEach(res.sokRes.stedsnavn, function(item) {
-                    var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
-                    var retPt = pt;
-                    if (this.map.options.crs != null) {
-                        retPt = this.map.options.crs.projection.unproject(pt);
-                    }
-                    addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
-                });
-            } else if (res.sokRes.stedsnavn != null) {
-                var item = res.sokRes.stedsnavn;
+        if (angular.isArray(res.sokRes.stedsnavn)) {
+            angular.forEach(res.sokRes.stedsnavn, function(item) {
                 var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
                 var retPt = pt;
                 if (this.map.options.crs != null) {
                     retPt = this.map.options.crs.projection.unproject(pt);
                 }
                 addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
+            });
+        } else if (res.sokRes.stedsnavn != null) {
+            var stedsnavn = res.sokRes.stedsnavn;
+            var sPoint = new L.Point(parseFloat(stedsnavn.aust), parseFloat(stedsnavn.nord));
+            var sRetPt = sPoint;
+            if (this.map.options.crs != null) {
+                sRetPt = this.map.options.crs.projection.unproject(sPoint);
             }
-            return addresses;
-        });
-    };
+            addresses.push({ name: stedsnavn.stedsnavn + ", " + stedsnavn.fylkesnavn + " (" + stedsnavn.navnetype + ")", location: sRetPt });
+        }
+        return addresses;
+    });
 
     /* Does return locations to the autocomplete boxes for from and to place*/
-    getLocationsGoogle = function (val, $http : ng.IHttpService) {
-        return $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
-            params: {
-                address: val,
-                sensor: false,
-                language: "no",
-                region: "NO",
-                components: "country:NO"
+    getLocationsGoogle = (val, $http : ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+            address: val,
+            sensor: false,
+            language: "no",
+            region: "NO",
+            components: "country:NO"
+        }
+    }).then(res => {
+        var addresses = [];
+        angular.forEach(res.data.results, item => {
+            if (item.geometry != null && item.geometry.location != null) {
+                addresses.push({ name: item.formatted_address, location: item.geometry.location });
             }
-        }).then(function (res) {
-                var addresses = [];
-                angular.forEach(res.data.results, function (item) {
-                    if (item.geometry != null && item.geometry.location != null) {
-                        addresses.push({ name: item.formatted_address, location: item.geometry.location });
-                    }
-                });
-                return addresses;
-            });
-    };
-
-
+        });
+        return addresses;
+    });
 }
 
 
