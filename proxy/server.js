@@ -6,7 +6,6 @@ var url = require("url");
 
 var app = express();
 
-//app.use(express.static(__dirname + "/public"));
 app.use(morgan({ format: 'dev', immediate: true }));
 
 app.get("/routingService", function (req, res) {
@@ -40,4 +39,4 @@ app.get("/routingService", function (req, res) {
 });
 
 app.listen(8080);
-console.log("App listening on port 8080");
+console.log("Server listening on port 8080");
