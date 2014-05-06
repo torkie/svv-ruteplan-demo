@@ -375,6 +375,7 @@
     <Content Include="lib\openlayers\theme\default\img\zoom-panel.png" />
     <Content Include="lib\openlayers\theme\default\style.css" />
     <Content Include="lib\proj4js\proj4.js" />
+    <Content Include="lib\xml2json\xml2json.min.js" />
     <Content Include="template\typeahead\typeahead-match.html" />
     <Content Include="template\typeahead\typeahead-popup.html" />
     <Content Include="Views\MapView.html" />
@@ -393,6 +394,7 @@
     <TypeScriptCompile Include="ts\typings\leaflet\leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\proj4leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\openlayers\openlayers.d.ts" />
+    <TypeScriptCompile Include="ts\typings\xml2json\xml2json.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="js\app.ts" />
