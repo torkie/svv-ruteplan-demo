@@ -67,34 +67,36 @@ class MapDirective {
 
             var mousePos = new L.Control.MousePosition({ numDigits: 1 });
             mousePos.addTo(this.map);
+            var localMap = this.map;
 
             function updatePoints(value: AddressItem[]): void {
                 if (this.markers != null) {
-                    angular.forEach(this.markers, function (item) {
-                        this.map.removeLayer(item);
+                    angular.forEach(this.markers, item => {
+                        localMap.removeLayer(item);
                     });
                 }
                 this.markers = new Array<L.Marker>();
-                angular.forEach(value, function(item) {
+                var localMarkers = this.markers;
+                angular.forEach(value, item => {
 
                     var icon = null;
-                    if (this.markers.length == 0) {
+                    if (localMarkers.length == 0) {
                         icon = L.AwesomeMarkers.icon({
-                        icon: 'play',
-                        markerColor: 'green',
-                        prefix: 'fa'
-                    });
+                            icon: 'play',
+                            markerColor: 'green',
+                            prefix: 'fa'
+                        });
                     }
-                    else if (this.markers.length == value.length - 1 && value.length > 1) {
+                    else if (localMarkers.length == value.length - 1 && value.length > 1) {
                         icon = L.AwesomeMarkers.icon({
-                        icon: 'stop',
-                        markerColor: 'red',
-                        prefix: 'fa'
-                    });
+                            icon: 'stop',
+                            markerColor: 'red',
+                            prefix: 'fa'
+                        });
                     }
                     var m = L.marker(item.location, { icon: icon });
-                    this.markers.push(m);
-                    m.addTo(this.map);
+                    localMarkers.push(m);
+                    m.addTo(localMap);
                 });
             };
 
