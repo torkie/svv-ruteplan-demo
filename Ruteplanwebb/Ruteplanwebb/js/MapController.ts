@@ -100,7 +100,6 @@ class MapController {
 
             var x2js = new X2JS();
             var res = x2js.xml_str2json(xmlRes.data);
-
                 var addresses = [];
                 angular.forEach(res.sokRes.stedsnavn, function (item) {
 
