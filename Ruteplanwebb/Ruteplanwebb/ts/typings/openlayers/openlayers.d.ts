@@ -4,7 +4,7 @@
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
 declare module OpenLayers {
-
+    var ImgPath : string;
     export interface MapOptions {
 
         projection?: Projection;
