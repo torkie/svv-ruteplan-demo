@@ -3,6 +3,7 @@
 ///<reference path="../ts/typings/leaflet/esri-leaflet.d.ts"/>
 ///<reference path="../ts/typings/leaflet/leaflet-mouseposition.d.ts"/>
 ///<reference path="../ts/typings/leaflet/proj4leaflet.d.ts"/>
+///<reference path="../ts/typings/leaflet/leaflet.awesome-markers.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
 
@@ -66,18 +67,36 @@ class MapDirective {
 
             var mousePos = new L.Control.MousePosition({ numDigits: 1 });
             mousePos.addTo(this.map);
+            var localMap = this.map;
 
             function updatePoints(value: AddressItem[]): void {
                 if (this.markers != null) {
-                    angular.forEach(this.markers, function (item) {
-                        this.map.removeLayer(item);
+                    angular.forEach(this.markers, item => {
+                        localMap.removeLayer(item);
                     });
                 }
                 this.markers = new Array<L.Marker>();
-                angular.forEach(value, function (item) {
-                    var m = L.marker(item.location);
-                    this.markers.push(m);
-                    m.addTo(this.map);
+                var localMarkers = this.markers;
+                angular.forEach(value, item => {
+
+                    var icon = null;
+                    if (localMarkers.length == 0) {
+                        icon = L.AwesomeMarkers.icon({
+                            icon: 'play',
+                            markerColor: 'green',
+                            prefix: 'fa'
+                        });
+                    }
+                    else if (localMarkers.length == value.length - 1 && value.length > 1) {
+                        icon = L.AwesomeMarkers.icon({
+                            icon: 'stop',
+                            markerColor: 'red',
+                            prefix: 'fa'
+                        });
+                    }
+                    var m = L.marker(item.location, { icon: icon });
+                    localMarkers.push(m);
+                    m.addTo(localMap);
                 });
             };
 
@@ -89,6 +108,4 @@ class MapDirective {
     }
 } 
 
-svvRuteplanApp.directive('map', function () {
-    return new MapDirective();
-});
+svvRuteplanApp.directive('map', () => new MapDirective());

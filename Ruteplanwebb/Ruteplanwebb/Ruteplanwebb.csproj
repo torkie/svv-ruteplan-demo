@@ -19,6 +19,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="css\app.css" />
+    <Content Include="images\markers-matte%402x.png" />
+    <Content Include="images\markers-matte.png" />
+    <Content Include="images\markers-plain.png" />
+    <Content Include="images\markers-shadow%402x.png" />
+    <Content Include="images\markers-shadow.png" />
+    <Content Include="images\markers-soft%402x.png" />
+    <Content Include="images\markers-soft.png" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />
@@ -296,6 +303,7 @@
     <Content Include="lib\bootstrap\ui-bootstrap-0.10.0.min.js" />
     <Content Include="lib\bootstrap\ui-bootstrap-tpls-0.10.0.js" />
     <Content Include="lib\bootstrap\ui-bootstrap-tpls-0.10.0.min.js" />
+    <Content Include="lib\leaflet\css\leaflet.awesome-markers.css" />
     <Content Include="lib\leaflet\css\leaflet.css" />
     <Content Include="lib\leaflet\esri-leaflet.js" />
     <Content Include="lib\leaflet\images\layers-2x.png" />
@@ -306,6 +314,7 @@
     <Content Include="lib\leaflet\leaflet-0.6.4.js" />
     <Content Include="lib\leaflet\leaflet-0.6.4.min.js" />
     <Content Include="lib\leaflet\leaflet-mouseposition.js" />
+    <Content Include="lib\leaflet\leaflet.awesome-markers.js" />
     <Content Include="lib\leaflet\proj4leaflet.js" />
     <Content Include="lib\openlayers\img\blank.gif" />
     <Content Include="lib\openlayers\img\cloud-popup-relative.png" />
@@ -375,6 +384,7 @@
     <Content Include="lib\openlayers\theme\default\img\zoom-panel.png" />
     <Content Include="lib\openlayers\theme\default\style.css" />
     <Content Include="lib\proj4js\proj4.js" />
+    <Content Include="lib\xml2json\xml2json.min.js" />
     <Content Include="template\typeahead\typeahead-match.html" />
     <Content Include="template\typeahead\typeahead-popup.html" />
     <Content Include="Views\MapView.html" />
@@ -390,9 +400,11 @@
     <TypeScriptCompile Include="ts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\esri-leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\leaflet-mouseposition.d.ts" />
+    <TypeScriptCompile Include="ts\typings\leaflet\leaflet.awesome-markers.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\proj4leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\openlayers\openlayers.d.ts" />
+    <TypeScriptCompile Include="ts\typings\xml2json\xml2json.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="js\app.ts" />
@@ -441,9 +453,7 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="route.ashx.cs">
       <DependentUpon>route.ashx</DependentUpon>
@@ -478,7 +488,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:56086/</IISUrl>
+          <IISUrl>http://localhost:52808/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
