@@ -64,12 +64,10 @@ class MapController {
 
         /* Does route calculation*/
         $scope.getRoute = (fromX: number, fromY: number, toX: number, toY: number) => {
-            $http.get('route.ashx', {
+            $http.get('routingService', {
                 params: {
-                    fromX: fromX,
-                    fromY: fromY,
-                    toX: toX,
-                    toY: toY
+                    stops: fromX + "," + fromY + ";" + toX + "," + toY,
+                    format: "json"
                 }
             }).then(() => {
             });
