@@ -9,7 +9,7 @@
 
 /* AngularDirective for &lt;map&gt; that displays an leaflet map*/
 class MapDirective {
-    restrict: string
+    restrict: string;
     replace: boolean;
     template: string;
     link: any;
@@ -98,7 +98,7 @@ class MapDirective {
                     localMarkers.push(m);
                     m.addTo(localMap);
                 });
-            };
+            }
 
             scope.$watch(attrs.pointsource, (value) => {
                 updatePoints(value);
