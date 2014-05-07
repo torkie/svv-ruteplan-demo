@@ -29,6 +29,7 @@
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />
+    <TypeScriptCompile Include="js\helpers\CompressedGeometryHelper.ts" />
     <TypeScriptCompile Include="js\MapController.ts" />
     <TypeScriptCompile Include="js\Controllers.ts" />
     <TypeScriptCompile Include="js\MapDirective.ts" />
@@ -389,14 +390,15 @@
     <Content Include="template\typeahead\typeahead-popup.html" />
     <Content Include="Views\MapView.html" />
     <Content Include="web.config" />
+    <TypeScriptCompile Include="tests\js\helpers\CompressedGeometryHelperTests.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-mocks.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-resource.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-sanitize.d.ts" />
-    <TypeScriptCompile Include="ts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="ts\typings\jasmine\jasmine-1-3.d.ts" />
     <TypeScriptCompile Include="ts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\esri-leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\leaflet-mouseposition.d.ts" />
@@ -453,7 +455,9 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="lib\jasmine\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="route.ashx.cs">
       <DependentUpon>route.ashx</DependentUpon>
