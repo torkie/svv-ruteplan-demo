@@ -69,7 +69,11 @@ class MapController {
                     stops: fromX + "," + fromY + ";" + toX + "," + toY,
                     format: "json"
                 }
-            }).then(() => {
+            }).success((data: any, status: number, headers: (headerName: string) => string, config: any) => {
+                var bbox = data.directions[0].summary.envelope;
+                var sw = $scope.map.options.crs.projection.unproject(new L.Point(bbox.xmin, bbox.ymin));
+                var ne = $scope.map.options.crs.projection.unproject(new L.Point(bbox.xmax, bbox.ymax));
+                $scope.map.fitBounds(L.latLngBounds(sw, ne));
             });
         };
 
