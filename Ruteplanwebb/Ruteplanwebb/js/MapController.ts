@@ -27,10 +27,9 @@ class MapController {
     constructor(
         private $scope: IMapControllerScope, private $http: ng.IHttpService) {
 
-
-        $scope.getLocations = (val) => { return this.getLocationsSk(val,$http); };
-
-        
+        $scope.getLocations = (val) => {
+            return this.getLocationsSk($scope, val, $http);
+        };
 
         /* Update markers in the map (from and to marker)*/
         $scope.updateMarkers = function() {
@@ -91,7 +90,7 @@ class MapController {
     }
 
     /* Does return locations to the autocomplete boxes for from and to place*/
-    getLocationsSk = (val, $http: ng.IHttpService) => $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
+    getLocationsSk = ($scope, val, $http: ng.IHttpService) => $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
         params: {
             navn: val + "*",
             maxAnt: 20,
@@ -107,8 +106,8 @@ class MapController {
             angular.forEach(res.sokRes.stedsnavn, function(item) {
                 var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
                 var retPt = pt;
-                if (this.map.options.crs != null) {
-                    retPt = this.map.options.crs.projection.unproject(pt);
+                if ($scope.map.options.crs != null) {
+                    retPt = $scope.map.options.crs.projection.unproject(pt);
                 }
                 addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
             });
@@ -125,7 +124,7 @@ class MapController {
     });
 
     /* Does return locations to the autocomplete boxes for from and to place*/
-    getLocationsGoogle = (val, $http : ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+    getLocationsGoogle = ($scope, val, $http : ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: val,
             sensor: false,
