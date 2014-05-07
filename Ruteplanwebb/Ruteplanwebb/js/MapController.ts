@@ -27,14 +27,13 @@ class MapController {
     constructor(
         private $scope: IMapControllerScope, private $http: ng.IHttpService) {
 
-
-        $scope.getLocations = (val) => { return this.getLocationsSk(val,$http); };
-
-        
+        $scope.getLocations = (val) => {
+            return this.getLocationsSk($scope, val, $http);
+        };
 
         /* Update markers in the map (from and to marker)*/
         $scope.updateMarkers = function() {
-            var markers = new Array();
+            var markers = [];
             if (this.fromPoint != null)
                 markers.push(this.fromPoint);
             if (this.toPoint != null)
@@ -62,16 +61,18 @@ class MapController {
             $scope.getRoute(fromX, fromY, toX, toY);
         };
 
-        /* Does route calculation*/
+        /* Does route calculation */
         $scope.getRoute = (fromX: number, fromY: number, toX: number, toY: number) => {
-            $http.get('route.ashx', {
+            $http.get('routingService', {
                 params: {
-                    fromX: fromX,
-                    fromY: fromY,
-                    toX: toX,
-                    toY: toY
+                    stops: fromX + "," + fromY + ";" + toX + "," + toY,
+                    format: "json"
                 }
-            }).then(() => {
+            }).success((data: any) => {
+                var bbox = data.directions[0].summary.envelope;
+                var sw = $scope.map.options.crs.projection.unproject(new L.Point(bbox.xmin, bbox.ymin));
+                var ne = $scope.map.options.crs.projection.unproject(new L.Point(bbox.xmax, bbox.ymax));
+                $scope.map.fitBounds(L.latLngBounds(sw, ne));
             });
         };
 
@@ -89,11 +90,11 @@ class MapController {
     }
 
     /* Does return locations to the autocomplete boxes for from and to place*/
-    getLocationsSk = (val, $http: ng.IHttpService) => $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
+    getLocationsSk = ($scope, val, $http: ng.IHttpService) => $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
         params: {
             navn: val + "*",
             maxAnt: 20,
-            eksakteForst: true,
+            eksakteForst: true
         }
     }).then(function(xmlRes) {
 
@@ -105,8 +106,8 @@ class MapController {
             angular.forEach(res.sokRes.stedsnavn, function(item) {
                 var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
                 var retPt = pt;
-                if (this.map.options.crs != null) {
-                    retPt = this.map.options.crs.projection.unproject(pt);
+                if ($scope.map.options.crs != null) {
+                    retPt = $scope.map.options.crs.projection.unproject(pt);
                 }
                 addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
             });
@@ -122,8 +123,8 @@ class MapController {
         return addresses;
     });
 
-    /* Does return locations to the autocomplete boxes for from and to place*/
-    getLocationsGoogle = (val, $http : ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+    /* Does return locations to the autocomplete boxes for from and to place */
+    getLocationsGoogle = ($scope, val, $http : ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: val,
             sensor: false,
