@@ -33,7 +33,7 @@ class MapController {
 
         /* Update markers in the map (from and to marker)*/
         $scope.updateMarkers = function() {
-            var markers = new Array();
+            var markers = [];
             if (this.fromPoint != null)
                 markers.push(this.fromPoint);
             if (this.toPoint != null)
@@ -61,14 +61,14 @@ class MapController {
             $scope.getRoute(fromX, fromY, toX, toY);
         };
 
-        /* Does route calculation*/
+        /* Does route calculation */
         $scope.getRoute = (fromX: number, fromY: number, toX: number, toY: number) => {
             $http.get('routingService', {
                 params: {
                     stops: fromX + "," + fromY + ";" + toX + "," + toY,
                     format: "json"
                 }
-            }).success((data: any, status: number, headers: (headerName: string) => string, config: any) => {
+            }).success((data: any) => {
                 var bbox = data.directions[0].summary.envelope;
                 var sw = $scope.map.options.crs.projection.unproject(new L.Point(bbox.xmin, bbox.ymin));
                 var ne = $scope.map.options.crs.projection.unproject(new L.Point(bbox.xmax, bbox.ymax));
@@ -94,7 +94,7 @@ class MapController {
         params: {
             navn: val + "*",
             maxAnt: 20,
-            eksakteForst: true,
+            eksakteForst: true
         }
     }).then(function(xmlRes) {
 
@@ -123,7 +123,7 @@ class MapController {
         return addresses;
     });
 
-    /* Does return locations to the autocomplete boxes for from and to place*/
+    /* Does return locations to the autocomplete boxes for from and to place */
     getLocationsGoogle = ($scope, val, $http : ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: val,
