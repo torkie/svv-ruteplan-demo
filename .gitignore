@@ -22,3 +22,7 @@ packages
 # nodejs packages
 node_modules
 
+/Ruteplanwebb/Ruteplanwebb/js/helpers/CompressedGeometryHelper.js
+/Ruteplanwebb/Ruteplanwebb/js/helpers/CompressedGeometryHelper.js.map
+/Ruteplanwebb/Ruteplanwebb/tests/js/helpers/CompressedGeometryHelperTests.js
+/Ruteplanwebb/Ruteplanwebb/tests/js/helpers/CompressedGeometryHelperTests.js.map
