@@ -44,7 +44,7 @@ class OpenLayersDirective {
                 tileOrigin: new OpenLayers.LonLat(-2500000, 9045984)
             };
 
-            var layer = new OpenLayers.Layer.ArcGISCache("GeocacheTrafikk",
+            var background = new OpenLayers.Layer.ArcGISCache("GeocacheTrafikk",
                 [
                     "http://m1.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
                     "http://m2.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
@@ -59,6 +59,8 @@ class OpenLayersDirective {
                 layerOptions
             );
 
+            var markers = new OpenLayers.Layer.Markers("Markers");
+
             var mapOptions = {
                 theme: null,
                 projection: new OpenLayers.Projection("EPSG:25833"),
@@ -72,11 +74,12 @@ class OpenLayersDirective {
             };
 
             var map = new OpenLayers.Map("map", mapOptions);
-            map.addLayer(layer);
+            map.addLayers([background, markers]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
             this.map = map;
             scope.map = this.map;
+            scope.markers = markers;
         };
     }
 
