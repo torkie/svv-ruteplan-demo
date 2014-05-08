@@ -35,36 +35,35 @@ class OpenLayersDirective {
                 0.661459656252646
             ];
 
+            var mapExt = new OpenLayers.Bounds(-2500000, 3500000, 3045984, 9045984);
+
             var layerOptions = {
                 type: "jpg",
-                isBaseLayer: true
+                resolutions: mapResolutions,
+                maxExtent: mapExt,
+                tileOrigin: new OpenLayers.LonLat(-2500000, 9045984)
             };
 
             var layer = new OpenLayers.Layer.ArcGISCache("GeocacheTrafikk",
-            [
-                'http://m1.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m2.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m3.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m4.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m5.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m6.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m7.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m8.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer',
-                'http://m9.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer'
-            ],
-            {
-                type: "jpg",
-                resolutions: mapResolutions,
-                maxExtent: new OpenLayers.Bounds(-25e5, 35e5, 3045984, 9045984),
-                tileOrigin: new OpenLayers.LonLat(-2500000, 9045984)
-            });
-
+                [
+                    "http://m1.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m2.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m3.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m4.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m5.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m6.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m7.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m8.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer",
+                    "http://m9.nvdbcache.geodataonline.no/ArcGIS/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer"
+                ],
+                layerOptions
+            );
 
             var mapOptions = {
                 theme: null,
                 projection: new OpenLayers.Projection("EPSG:25833"),
                 units: "m",
-                maxExtent: new OpenLayers.Bounds(-2500000, 3500000, 3045984, 9045984),
+                maxExtent: mapExt,
                 controls: [
                     new OpenLayers.Control.Attribution(),
                     new OpenLayers.Control.Navigation(),
@@ -73,20 +72,10 @@ class OpenLayersDirective {
             };
 
             var map = new OpenLayers.Map("map", mapOptions);
-             /*{
-                projection: new OpenLayers.Projection("EPSG:25833"),
-                units: "m",
-                tileSize: new OpenLayers.Size(256, 256),
-                tileOrigin: new OpenLayers.LonLat(-2500000, 9045984),
-                resolutions: mapResolutions,
-                maxExtent: new OpenLayers.Bounds(-703779.1632476, 6101556.06812566, 1460982.49960906, 7949325.09699705),
-                numZoomLevels: 17
-            });*/
-
             map.addLayer(layer);
+            map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
             this.map = map;
-            this.map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
             scope.map = this.map;
         };
     }
