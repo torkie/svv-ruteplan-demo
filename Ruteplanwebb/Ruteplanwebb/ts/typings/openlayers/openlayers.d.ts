@@ -4,14 +4,26 @@
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
 declare module OpenLayers {
-
+    var ImgPath : string;
     export interface MapOptions {
 
-        projection?: string;
+        projection?: Projection;
 
         maxExtend?: Bounds;
 
         center?: LonLat;
+
+        units?: string;
+
+        zoom?: number;
+
+        numZoomLevels?: number;
+
+        resolutions?: number[];
+
+        tileSize?: Size;
+
+        baseLayer?: Layer;
     }
 
     export interface DistanceOptions {
@@ -3849,8 +3861,12 @@ declare module OpenLayers {
             crossOriginKeyword?: string;
         }
 
-        export class ArcGIS93Rest { }
-        export class ArcGISCache { }
+        export class ArcGIS93Rest extends Layer.Grid {
+            constructor(name: any, url: any, options?: any);
+        }
+        export class ArcGISCache extends Layer.Grid {
+            constructor(name: any, url: any, options?: any);
+        }
         export class ArcIMS { }
         export class Bing { }
         export class Boxes { }

@@ -108,4 +108,4 @@ class MapDirective {
     }
 } 
 
-svvRuteplanApp.directive('map', () => new MapDirective());
+//svvRuteplanApp.directive('map', () => new MapDirective());
