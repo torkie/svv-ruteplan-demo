@@ -21,13 +21,6 @@ interface IMapControllerScope extends ng.IScope {
     markers: OpenLayers.Layer.Markers;
 }
 
-interface BoundingBox {
-    xmin: number;
-    ymin: number;
-    xmax: number;
-    ymax: number;
-}
-
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
     constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService) {
@@ -47,8 +40,8 @@ class MapController {
                     format: "json"
                 }
             }).success((data: any) => {
-                var bbox = <BoundingBox>data.directions[0].summary.envelope;
-                $scope.map.zoomToExtent([bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
+                var bbox = data.directions[0].summary.envelope;
+                $scope.map.zoomToExtent(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
             });
         };
 
