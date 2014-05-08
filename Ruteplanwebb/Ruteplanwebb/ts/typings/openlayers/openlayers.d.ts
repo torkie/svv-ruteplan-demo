@@ -1419,6 +1419,9 @@ declare module OpenLayers {
           * Returns a copy of this lonlat, but wrapped around the "dateline" (as specified by the borders of maxExtent).
           */
         wrapDateLine(maxExtend: Bounds): LonLat;
+
+        lon: number;
+        lat: number;
     }
 
     export class Map {
