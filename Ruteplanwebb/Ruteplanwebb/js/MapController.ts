@@ -15,51 +15,43 @@ interface IMapControllerScope extends ng.IScope {
     doRouteCalculation();
     getRoute(fromX: number, fromY: number, toX: number, toY: number);
     updateMarkers();
+    updateMarkers2();
     markerPoints: AddressItem[];
     fromPoint: AddressItem;
     toPoint: AddressItem;
     map: L.Map;
-    
+    selectedFrom: any;
+    fromAddress: AddressItem;
+    toAddress: AddressItem;
+    markers: OpenLayers.Layer.Markers;
 }
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
-    constructor(
-        private $scope: IMapControllerScope, private $http: ng.IHttpService) {
+    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService) {
 
         $scope.getLocations = (val) => {
             return this.getLocationsSk($scope, val, $http);
         };
 
-        /* Update markers in the map (from and to marker)*/
-        $scope.updateMarkers = function() {
-            var markers = [];
-            if (this.fromPoint != null)
-                markers.push(this.fromPoint);
-            if (this.toPoint != null)
-                markers.push(this.toPoint);
-
-            this.markerPoints = markers;
-        };
-
-        $scope.doRouteCalculation = () => {
-
-            var fromX = $scope.fromPoint.location.lng;
-            var fromY = $scope.fromPoint.location.lat;
-            var toX = $scope.toPoint.location.lng;
-            var toY = $scope.toPoint.location.lat;
-
-            if ($scope.map.options.crs != null) {
-                var pt = $scope.map.options.crs.project($scope.fromPoint.location);
-                fromX = pt.x;
-                fromY = pt.y;
-                pt = $scope.map.options.crs.project($scope.toPoint.location);
-                toX = pt.x;
-                toY = pt.y;
-            }
-
-            $scope.getRoute(fromX, fromY, toX, toY);
-        };
+//        $scope.doRouteCalculation = () => {
+//
+//            var fromX = $scope.fromPoint.location.lng;
+//            var fromY = $scope.fromPoint.location.lat;
+//            var toX = $scope.toPoint.location.lng;
+//            var toY = $scope.toPoint.location.lat;
+//
+//            if ($scope.map.options.crs != null) {
+//                var pt = $scope.map.options.crs.project($scope.fromPoint.location);
+//                fromX = pt.x;
+//                fromY = pt.y;
+//                pt = $scope.map.options.crs.project($scope.toPoint.location);
+//                toX = pt.x;
+//                toY = pt.y;
+//            }
+//
+//            $scope.getRoute(fromX, fromY, toX, toY);
+//        };
 
         /* Does route calculation */
         $scope.getRoute = (fromX: number, fromY: number, toX: number, toY: number) => {
@@ -76,16 +68,23 @@ class MapController {
             });
         };
 
-        /*Called when an autocomplete result is selected*/
-        $scope.onSelectFrom = (adressItem: AddressItem) => {
-            $scope.fromPoint = adressItem;
-            $scope.updateMarkers();
-        };
+        $scope.updateMarkers2 = () => {
+            console.log("UpdateMarkers2");
+            console.log($scope.fromAddress.location);
+            console.log($scope.toAddress);
 
-        /*Called when an autocomplete result is selected*/
-        $scope.onSelectTo = (adressItem: AddressItem) => {
-            $scope.toPoint = adressItem;
-            $scope.updateMarkers();
+            $scope.markers.clearMarkers();
+
+            var size = new OpenLayers.Size(21, 25);
+            var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
+            var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', size, offset);
+
+            if ($scope.fromAddress != null) {
+                $scope.markers.addMarker(new OpenLayers.Marker($scope.fromAddress.location, icon));
+            }
+            if ($scope.toAddress != null) {
+                $scope.markers.addMarker(new OpenLayers.Marker($scope.toAddress.location, icon.clone()));
+            }
         };
     }
 
@@ -104,27 +103,23 @@ class MapController {
 
         if (angular.isArray(res.sokRes.stedsnavn)) {
             angular.forEach(res.sokRes.stedsnavn, function(item) {
-                var pt = new L.Point(parseFloat(item.aust), parseFloat(item.nord));
-                var retPt = pt;
-                if ($scope.map.options.crs != null) {
-                    retPt = $scope.map.options.crs.projection.unproject(pt);
-                }
-                addresses.push({ name: item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")", location: retPt });
+                var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
+                var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
+                var address = new AddressItem(name, location);
+                addresses.push(address);
             });
         } else if (res.sokRes.stedsnavn != null) {
-            var stedsnavn = res.sokRes.stedsnavn;
-            var sPoint = new L.Point(parseFloat(stedsnavn.aust), parseFloat(stedsnavn.nord));
-            var sRetPt = sPoint;
-            if (this.map.options.crs != null) {
-                sRetPt = this.map.options.crs.projection.unproject(sPoint);
-            }
-            addresses.push({ name: stedsnavn.stedsnavn + ", " + stedsnavn.fylkesnavn + " (" + stedsnavn.navnetype + ")", location: sRetPt });
+            var item = res.sokRes.stedsnavn;
+            var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
+            var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
+            var address = new AddressItem(name, location);
+            addresses.push(address);
         }
         return addresses;
     });
 
     /* Does return locations to the autocomplete boxes for from and to place */
-    getLocationsGoogle = ($scope, val, $http : ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
+    getLocationsGoogle = ($scope, val, $http: ng.IHttpService) => $http.get('http://maps.googleapis.com/maps/api/geocode/json', {
         params: {
             address: val,
             sensor: false,
@@ -142,10 +137,3 @@ class MapController {
         return addresses;
     });
 }
-
-
-
-
-
-
-

@@ -1,14 +1,13 @@
-// todo: decouple from leaflet
-///<reference path="../ts/typings/leaflet/leaflet.d.ts"/>
+///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 
 /* Holder for addresses returned from autocomplete*/
 class AddressItem {
-    name: string;
-    location : L.LatLng;
+    constructor(public name: string, public location: OpenLayers.LonLat) {
+    }
 }
 
 class RouteResponseHolder {
-    data : RouteResponse;
+    data: RouteResponse;
 }
 
 class RouteResponse {
