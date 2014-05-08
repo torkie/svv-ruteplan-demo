@@ -302,7 +302,8 @@ declare module OpenLayers {
     }
 
     export class Icon {
-        // TODO
+        constructor(url?: string, size?: Size, offset?: Pixel, calculateOffset?: any);
+        clone();
     }
 
     export class Kinetic {
@@ -973,7 +974,7 @@ declare module OpenLayers {
     }
 
     export class Marker {
-        // TODO
+        constructor (lonlat: LonLat, icon: Icon);
     }
 
     export class Popup {
@@ -4589,8 +4590,10 @@ declare module OpenLayers {
         export class MapServer {
             // TODO
         }
-        export class Markers {
-            // TODO
+        export class Markers extends Layer {
+            constructor(name: String, options?: any);
+            addMarker(marker: Marker);
+            clearMarkers();
         }
 
         export class OSM extends Layer.XYZ {
