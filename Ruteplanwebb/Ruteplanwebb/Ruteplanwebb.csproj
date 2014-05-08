@@ -34,7 +34,6 @@
     <TypeScriptCompile Include="js\Controllers.ts" />
     <TypeScriptCompile Include="js\MapDirective.ts" />
     <TypeScriptCompile Include="js\OpenLayersDirective.ts" />
-    <TypeScriptCompile Include="js\SearchBarDirective.ts" />
     <Content Include="lib\angular\angular-animate.js" />
     <Content Include="lib\angular\angular-animate.min.js" />
     <Content Include="lib\angular\angular-cookies.js" />
