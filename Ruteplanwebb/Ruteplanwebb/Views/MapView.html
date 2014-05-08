@@ -1,3 +1,19 @@
-﻿﻿<map id="map"></map>
-<searchbar id="searchbar"></searchbar>
+﻿﻿
+<div id="searchbar">
+    <div><b>Ruteplan demo</b><br/>
+        Fra: <input type="text" id="searchFrom" ng-model="selectedFrom"
+                    typeahead="address.name for address in getLocations($viewValue) | filter:$viewValue"
+                    typeahead-leading="loadingAdressFrom"
+                    typeahead-on-select="onSelectFrom($item,$model,$label)"/>
+        <i ng-show="loadingAdressFrom" class="glyphicon glyphicon-refresh"></i>
+        Til: <input type="text" id="searchTo" ng-model="selectedTo"
+                    typeahead="address.name for address in getLocations($viewValue) | filter:$viewValue"
+                    typeahead-leading="loadingAdressTo"
+                    typeahead-on-select="onSelectTo($item,$model,$label)"/>
+        <i ng-show="loadingAdressTo" class="glyphicon glyphicon-refresh"></i>
+        <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()"/></div>
+</div>
+
+<map id="map"></map>
+
 <coordinatedisplayer></coordinatedisplayer>
