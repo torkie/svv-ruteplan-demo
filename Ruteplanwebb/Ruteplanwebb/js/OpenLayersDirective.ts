@@ -2,6 +2,7 @@
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
+///<reference path="scopes.ts"/>
 
 class OpenLayersDirective {
     restrict: string;
@@ -15,7 +16,7 @@ class OpenLayersDirective {
 
         OpenLayers.ImgPath = "/lib/openlayers/theme/default/img/";
 
-        this.link = function(scope: any, element: any, attrs: any) {
+        this.link = function(scope: IMapControllerScope, element: any, attrs: any) {
             var mapResolutions = [
                 21674.7100160867,
                 10837.3550080434,
@@ -59,7 +60,26 @@ class OpenLayersDirective {
                 layerOptions
             );
 
-            var markers = new OpenLayers.Layer.Markers("Markers");
+            var markerLayer = new OpenLayers.Layer.Markers("Markers");
+
+            var style = new OpenLayers.Style({
+                graphicZIndex: 0,
+                strokeOpacity: 0.8,
+                strokeColor: "#7777E7",
+                strokeWidth: 5
+            });
+
+            var linesStyleMap = new OpenLayers.StyleMap({
+                "default": style
+            });
+
+            var routeLayer = new OpenLayers.Layer.Vector("Route", {
+                isBaseLayer: false,
+                styleMap: linesStyleMap,
+                rendererOptions: {
+                    zIndexing: true
+                }
+            });
 
             var mapOptions = {
                 theme: null,
@@ -74,12 +94,12 @@ class OpenLayersDirective {
             };
 
             var map = new OpenLayers.Map("map", mapOptions);
-            map.addLayers([background, markers]);
+            map.addLayers([background, routeLayer, markerLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
-            this.map = map;
-            scope.map = this.map;
-            scope.markers = markers;
+            scope.map = map;
+            scope.markerLayer = markerLayer;
+            scope.routeLayer = routeLayer;
         };
     }
 

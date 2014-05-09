@@ -344,15 +344,11 @@
     <Content Include="lib\openlayers\img\zoom-plus-mini.png" />
     <Content Include="lib\openlayers\img\zoom-world-mini.png" />
     <Content Include="lib\openlayers\img\zoombar.png" />
-    <Content Include="lib\openlayers\license.txt" />
-    <Content Include="lib\openlayers\news.txt" />
     <Content Include="lib\openlayers\OpenLayers.js" />
-    <Content Include="lib\openlayers\readme.txt" />
-    <Content Include="lib\openlayers\release-license.txt" />
-    <Content Include="lib\openlayers\repository-license.txt" />
-    <Content Include="lib\openlayers\theme\default\framedCloud.css" />
     <Content Include="lib\openlayers\theme\default\google.css" />
+    <Content Include="lib\openlayers\theme\default\google.tidy.css" />
     <Content Include="lib\openlayers\theme\default\ie6-style.css" />
+    <Content Include="lib\openlayers\theme\default\ie6-style.tidy.css" />
     <Content Include="lib\openlayers\theme\default\img\add_point_off.png" />
     <Content Include="lib\openlayers\theme\default\img\add_point_on.png" />
     <Content Include="lib\openlayers\theme\default\img\blank.gif" />
@@ -388,7 +384,9 @@
     <Content Include="lib\openlayers\theme\default\img\zoom-panel-NOALPHA.png" />
     <Content Include="lib\openlayers\theme\default\img\zoom-panel.png" />
     <Content Include="lib\openlayers\theme\default\style.css" />
+    <Content Include="lib\openlayers\theme\default\style.mobile.css" />
     <Content Include="lib\openlayers\theme\default\style.mobile.tidy.css" />
+    <Content Include="lib\openlayers\theme\default\style.tidy.css" />
     <Content Include="lib\proj4js\proj4.js" />
     <Content Include="lib\xml2json\xml2json.min.js" />
     <Content Include="template\typeahead\typeahead-match.html" />
@@ -400,6 +398,7 @@
     <Content Include="tests\teamcity-runner\run-for-teamcity.html" />
     <Content Include="Views\MapView.html" />
     <Content Include="web.config" />
+    <TypeScriptCompile Include="js\routing.ts" />
     <TypeScriptCompile Include="tests\js\helpers\CompressedGeometryHelperTests.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-cookies.d.ts" />

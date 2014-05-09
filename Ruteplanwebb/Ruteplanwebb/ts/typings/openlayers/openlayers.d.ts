@@ -1010,7 +1010,7 @@ declare module OpenLayers {
     }
 
     export class Style {
-        // TODO
+        constructor(style: any, options?: any);
     }
 
     export class Style2 {
@@ -1018,7 +1018,7 @@ declare module OpenLayers {
     }
 
     export class StyleMap {
-        // TODO
+        constructor(style: any, options?: any);
     }
 
     export class Symbolizer {
@@ -3132,9 +3132,7 @@ declare module OpenLayers {
         }
 
         export class LineString extends Geometry.Curve {
-
-            // TODO
-
+            constructor(points: Point[]);
         }
 
         export class LinearRing extends Geometry.LineString {
@@ -3144,9 +3142,7 @@ declare module OpenLayers {
         }
 
         export class MultiLineString extends Geometry.Collection {
-
-            // TODO
-
+            constructor(components: Geometry.LineString[]);
         }
 
         export class MultiPoint extends Geometry.Collection {
@@ -3460,9 +3456,7 @@ declare module OpenLayers {
 
     module Feature {
         export class Vector {
-
-            // TODO
-
+            constructor(geometry: Geometry, attributes?: any, style?: any);
         }
     }
 
@@ -4670,8 +4664,10 @@ declare module OpenLayers {
         export class UTFGrid {
             // TODO
         }
-        export class Vector {
-            // TODO
+        export class Vector extends Layer {
+            constructor(name: string, options?: any);
+            addFeatures(features: Feature.Vector[]);
+            removeAllFeatures();
         }
 
         export class WMS extends Layer.Grid {

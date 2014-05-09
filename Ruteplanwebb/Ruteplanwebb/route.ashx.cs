@@ -1,4 +1,9 @@
-﻿using no.vegvesen.routeplanning;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
+using System.Web.UI;
+using no.vegvesen.routeplanning;
 using System.Globalization;
 using System.Net;
 using System.Web;
@@ -17,18 +22,12 @@ namespace Ruteplanwebb
 
         public void ProcessRequest(HttpContext context)
         {
-            string fromX = context.Request.QueryString["fromx"];
-            string fromY = context.Request.QueryString["fromy"];
-            string toX = context.Request.QueryString["tox"];
-            string toY = context.Request.QueryString["toy"];
-
-            RouteResponse ret = null;
-
-            var wq =
-                WebRequest.Create(
-                    string.Format(CultureInfo.InvariantCulture,
-                        "http://multirit.triona.se/routingService_v1_0/routingService?stops={0},{1};{2},{3}&returnDirections=true&returnGeometry=true&format=xml",
-                        fromX, fromY, toX, toY));
+            string url = "http://multirit.triona.se/routingService_v1_0/routingService?";
+            foreach (var param in context.Request.QueryString.AllKeys)
+            {
+                url += param + "=" + context.Request.QueryString[param] + "&";
+            }
+            var wq = WebRequest.Create(url);
 
             using (var resp = wq.GetResponse())
             {
@@ -36,28 +35,26 @@ namespace Ruteplanwebb
                 {
                     if (respstream != null)
                     {
-                        var rret = m_serializer.Deserialize(respstream) as DetermineRouteResponseType;
-                        if (rret != null)
+                        
+                        var buf = new List<byte>();
+                        while (respstream.CanRead)
                         {
-                            ret = new RouteResponse();
-                            ret.TotalTravelTime = rret.RouteSummary.TotalTime.value;
-                            ret.TotalDistance = rret.RouteSummary.TotalDistance.value;
-                            ret.RouteEnvelope = new[]
-                            {
-                                rret.RouteSummary.RouteEnvelope.minx, rret.RouteSummary.RouteEnvelope.miny, rret.RouteSummary.RouteEnvelope.maxx,
-                                rret.RouteSummary.RouteEnvelope.maxy
-                            };
+                            var b = new byte[8192];
+                            int nr = respstream.Read(b, 0, b.Length);
+                            buf.AddRange(b.Take(nr));
+                            if (nr == 0)
+                                break;
                         }
+
+                        //foreach (var h in resp.Headers.AllKeys)
+                        //{
+                        //    context.Response.Headers.Add(h, resp.Headers[h]);
+                       // }
+                        context.Response.OutputStream.Write(buf.ToArray(), 0, buf.Count);
                     }
+
                 }
-
             }
-
-
-            context.Response.ContentType = "application/json";
-
-            var ser = new JavaScriptSerializer();
-            context.Response.Write(ser.Serialize(ret));
         }
 
         private class RouteResponse

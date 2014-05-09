@@ -14,4 +14,27 @@
 
 <map id="map"></map>
 
+<div id="routedesc">
+    <h1>Rute</h1>
+
+    <p>
+        Fra: <br>
+        {{ fromAddress.name }} <br>
+        <i> {{ fromAddress.location.lon }} {{ fromAddress.location.lat }} </i><br>
+    </p>
+
+    <p>
+        Til: <br>
+        {{ toAddress.name }} <br>
+        <i> {{ toAddress.location.lon }} {{ toAddress.location.lat }} </i><br>
+    </p>
+
+    <p>
+    <ul>
+        <li ng-repeat="info in routeInfo">{{ info.name + " time: " + info.time + " distance: " + info.distance}}</li>
+    </ul>
+    </p>
+
+</div>
+
 <coordinatedisplayer></coordinatedisplayer>
