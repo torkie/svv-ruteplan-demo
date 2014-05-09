@@ -25,19 +25,19 @@ class MapController {
                         {
                             graphicZIndex: 2,
                             strokeOpacity: 1,
-                            strokeColor: "#0000ff",
+                            strokeColor: "#008CFF",
                             strokeWidth: 5
                         },
                         {
                             graphicZIndex: 1,
                             strokeOpacity: 1,
-                            strokeColor: "#00ff00",
+                            strokeColor: "#858585",
                             strokeWidth: 5
                         },
                         {
                             graphicZIndex: 0,
                             strokeOpacity: 1,
-                            strokeColor: "#ff0000",
+                            strokeColor: "#858585",
                             strokeWidth: 5
                         }
                     ];
@@ -55,7 +55,7 @@ class MapController {
                         });
                         var geometry = new OpenLayers.Geometry.MultiLineString(components);
                         features.push(new OpenLayers.Feature.Vector(geometry, {}, styles[style]));
-                        style++;
+                        if (style < styles.length - 1) style++;
                     });
 
                     $scope.routeLayer.addFeatures(features);
