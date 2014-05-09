@@ -14,7 +14,9 @@ angular.module("routing", [])
                 }
             }).success((data: any) => {
                 var bbox = data.directions[0].summary.envelope;
-                callback(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
+                bbox = <number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax];
+                var route0 = data.routes.features[0];
+                callback(bbox, route0);
             });
         };
 

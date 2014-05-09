@@ -14,8 +14,25 @@ class MapController {
 
         $scope.doRouteCalculation = () => {
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
-                function(bbox) {
+                function(bbox, route0) {
                     $scope.map.zoomToExtent(bbox);
+
+                    var points = [];
+                    angular.forEach(route0.geometry.paths, function(path) {
+                       angular.forEach(path, function(point){
+                           points.push(new OpenLayers.Geometry.Point(<number>point[0], <number>point[1]));
+                       });
+                    });
+
+                    var geometry = new OpenLayers.Geometry.LineString(points);
+
+                    var attributes = {
+
+                    };
+
+                    var feature = new OpenLayers.Feature.Vector(geometry, attributes);
+
+                    $scope.routeLayer.addFeatures([feature]);
                 }
             );
         };
