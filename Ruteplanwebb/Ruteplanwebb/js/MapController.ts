@@ -26,7 +26,7 @@ class MapController {
     constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: any) {
 
         $scope.getLocations = (val) => {
-            return this.getLocationsSk($scope, val, $http);
+            return routingService.getLocationsSk(val);
         };
 
         $scope.doRouteCalculation = () => {
@@ -52,35 +52,5 @@ class MapController {
             }
         };
     }
-
-    /* Does return locations to the autocomplete boxes for from and to place*/
-    getLocationsSk = ($scope, val, $http: ng.IHttpService) => $http.get('https://ws.geonorge.no/SKWS3Index/ssr/sok', {
-        params: {
-            navn: val + "*",
-            maxAnt: 20,
-            eksakteForst: true
-        }
-    }).then(function(xmlRes) {
-        var x2Js = new X2JS();
-        var res = x2Js.xml_str2json(xmlRes.data);
-        var addresses = new Array<AddressItem>();
-
-        var add = (item: any) => {
-            var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
-            var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
-            var address = new AddressItem(name, location);
-            addresses.push(address);
-        };
-
-        if (angular.isArray(res.sokRes.stedsnavn)) {
-            angular.forEach(res.sokRes.stedsnavn, function(item) {
-                add(item);
-            });
-        } else if (res.sokRes.stedsnavn != null) {
-            add(res.sokRes.stedsnavn);
-        }
-
-        return addresses;
-    });
 
 }
