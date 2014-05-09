@@ -21,18 +21,18 @@ class MapController {
         };
 
         $scope.updateMarkers = () => {
-            $scope.markers.clearMarkers();
+            $scope.markerLayer.clearMarkers();
 
             var size = new OpenLayers.Size(21, 25);
             var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
 
             if ($scope.fromAddress != null) {
                 var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-green.png', size, offset);
-                $scope.markers.addMarker(new OpenLayers.Marker($scope.fromAddress.location, icon));
+                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.fromAddress.location, icon));
             }
             if ($scope.toAddress != null) {
                 var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', size, offset);
-                $scope.markers.addMarker(new OpenLayers.Marker($scope.toAddress.location, icon));
+                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.toAddress.location, icon));
             }
         };
     }
