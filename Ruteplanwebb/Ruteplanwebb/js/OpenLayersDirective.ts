@@ -74,7 +74,11 @@ class OpenLayersDirective {
             });
 
             var routeLayer = new OpenLayers.Layer.Vector("Route", {
-                isBaseLayer: false, styleMap: linesStyleMap
+                isBaseLayer: false,
+                styleMap: linesStyleMap,
+                rendererOptions: {
+                    zIndexing: true
+                }
             });
 
             var mapOptions = {
