@@ -14,25 +14,50 @@ class MapController {
 
         $scope.doRouteCalculation = () => {
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
-                function(bbox, route0) {
+                function(bbox, routes) {
                     $scope.map.zoomToExtent(bbox);
 
-                    var points = [];
-                    angular.forEach(route0.geometry.paths, function(path) {
-                       angular.forEach(path, function(point){
-                           points.push(new OpenLayers.Geometry.Point(<number>point[0], <number>point[1]));
-                       });
+                    var features = [];
+
+                    var styles = [
+                        {
+                            graphicZIndex: 2,
+                            strokeOpacity: 1,
+                            strokeColor: "#0000ff",
+                            strokeWidth: 5
+                        },
+                        {
+                            graphicZIndex: 1,
+                            strokeOpacity: 1,
+                            strokeColor: "#00ff00",
+                            strokeWidth: 5
+                        },
+                        {
+                            graphicZIndex: 0,
+                            strokeOpacity: 1,
+                            strokeColor: "#ff0000",
+                            strokeWidth: 5
+                        }
+                    ];
+
+                    var style = 0;
+                    var forEach = angular.forEach;
+                    forEach(routes, function(route) {
+                        var components = [];
+                        forEach(route.geometry.paths, function(path) {
+                            var points = [];
+                            forEach(path, function(point) {
+                                points.push(new OpenLayers.Geometry.Point(<number>point[0], <number>point[1]));
+                            });
+                            components.push(new OpenLayers.Geometry.LineString(points));
+                        });
+                        var geometry = new OpenLayers.Geometry.MultiLineString(components);
+                        features.push(new OpenLayers.Feature.Vector(geometry, {}, styles[style]));
+                        style++;
                     });
 
-                    var geometry = new OpenLayers.Geometry.LineString(points);
-
-                    var attributes = {
-
-                    };
-
-                    var feature = new OpenLayers.Feature.Vector(geometry, attributes);
-
-                    $scope.routeLayer.addFeatures([feature]);
+                    $scope.routeLayer.removeAllFeatures();
+                    $scope.routeLayer.addFeatures(features);
                 }
             );
         };

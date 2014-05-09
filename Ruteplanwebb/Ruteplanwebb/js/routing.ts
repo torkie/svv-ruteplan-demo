@@ -16,7 +16,9 @@ angular.module("routing", [])
                 var bbox = data.directions[0].summary.envelope;
                 bbox = <number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax];
                 var route0 = data.routes.features[0];
-                callback(bbox, route0);
+                var route1 = data.routes.features[1];
+                var route2 = data.routes.features[2];
+                callback(bbox, [route0, route1, route2]);
             });
         };
 
