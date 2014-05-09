@@ -90,7 +90,7 @@ class OpenLayersDirective {
             };
 
             var map = new OpenLayers.Map("map", mapOptions);
-            map.addLayers([background, markerLayer, routeLayer]);
+            map.addLayers([background, routeLayer, markerLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
             scope.map = map;
