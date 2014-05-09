@@ -16,13 +16,11 @@ packages
 .tscache
 
 # ignore js files in these folders, we're using typescript (*.ts)
-/Ruteplanwebb/Ruteplanwebb/js/*.js
-/Ruteplanwebb/Ruteplanwebb/js/*.js.map
+/Ruteplanwebb/Ruteplanwebb/js/**/*.js
+/Ruteplanwebb/Ruteplanwebb/js/**/*.js.map
+/Ruteplanwebb/Ruteplanwebb/tests/**/*.js
+/Ruteplanwebb/Ruteplanwebb/tests/**/*.js.map
+
 
 # nodejs packages
 node_modules
-
-/Ruteplanwebb/Ruteplanwebb/js/helpers/CompressedGeometryHelper.js
-/Ruteplanwebb/Ruteplanwebb/js/helpers/CompressedGeometryHelper.js.map
-/Ruteplanwebb/Ruteplanwebb/tests/js/helpers/CompressedGeometryHelperTests.js
-/Ruteplanwebb/Ruteplanwebb/tests/js/helpers/CompressedGeometryHelperTests.js.map
