@@ -17,10 +17,11 @@ angular.module("routing", [])
                 var bounds = null;
                 angular.forEach(data.directions, function(direction) {
                     var bbox = direction.summary.envelope;
+                    var routeBounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax];
                     if (bounds == null) {
-                        bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax])
+                        bounds = routeBounds;
                     } else {
-                        bounds.extend(new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]));
+                        bounds.extend(routeBounds);
                     }
                 });
 
