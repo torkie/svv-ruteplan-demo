@@ -5,10 +5,7 @@
 /* $scope for MapController with extra methods and properties*/
 interface IMapControllerScope extends ng.IScope {
     getLocations(adress: string);
-    onSelectFrom(adressItem: AddressItem);
-    onSelectTo(adressItem: AddressItem);
     doRouteCalculation();
-    getRoute(fromX: number, fromY: number, toX: number, toY: number);
     updateMarkers();
     map: OpenLayers.Map;
     fromAddress: AddressItem;
