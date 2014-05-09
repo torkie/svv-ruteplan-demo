@@ -17,7 +17,7 @@ angular.module("routing", [])
                 var bounds = null;
                 angular.forEach(data.directions, function(direction) {
                     var bbox = direction.summary.envelope;
-                    var routeBounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax];
+                    var routeBounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
                     if (bounds == null) {
                         bounds = routeBounds;
                     } else {
