@@ -1,17 +1,8 @@
 ﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="domain.ts"/>
+///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 ///<reference path="app.ts"/>
-
-/* $scope for MapController with extra methods and properties*/
-interface IMapControllerScope extends ng.IScope {
-    getLocations(adress: string);
-    doRouteCalculation();
-    updateMarkers();
-    map: OpenLayers.Map;
-    fromAddress: AddressItem;
-    toAddress: AddressItem;
-    markers: OpenLayers.Layer.Markers;
-}
+///<reference path="domain.ts"/>
+///<reference path="scopes.ts"/>
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {

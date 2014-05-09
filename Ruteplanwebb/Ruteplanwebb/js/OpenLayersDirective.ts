@@ -2,6 +2,7 @@
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
+///<reference path="scopes.ts"/>
 
 class OpenLayersDirective {
     restrict: string;
@@ -15,7 +16,7 @@ class OpenLayersDirective {
 
         OpenLayers.ImgPath = "/lib/openlayers/theme/default/img/";
 
-        this.link = function(scope: any, element: any, attrs: any) {
+        this.link = function(scope: IMapControllerScope, element: any, attrs: any) {
             var mapResolutions = [
                 21674.7100160867,
                 10837.3550080434,
