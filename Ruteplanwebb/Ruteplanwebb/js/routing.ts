@@ -23,6 +23,7 @@ angular.module("routing", [])
                 params: {
                     navn: val + "*",
                     maxAnt: 20,
+                    antPerSide: 20,
                     eksakteForst: true
                 }
             }).then(function(xmlRes) {
