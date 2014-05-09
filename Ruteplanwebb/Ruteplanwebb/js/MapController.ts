@@ -13,6 +13,8 @@ class MapController {
         };
 
         $scope.doRouteCalculation = () => {
+            $scope.routeLayer.removeAllFeatures();
+
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
                 function(bbox, routes) {
                     $scope.map.zoomToExtent(bbox);
@@ -56,7 +58,6 @@ class MapController {
                         style++;
                     });
 
-                    $scope.routeLayer.removeAllFeatures();
                     $scope.routeLayer.addFeatures(features);
                 }
             );
