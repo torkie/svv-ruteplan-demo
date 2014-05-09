@@ -34,12 +34,6 @@ class MapController {
                             strokeColor: "#858585",
                             strokeWidth: 5
                         },
-                        {
-                            graphicZIndex: 0,
-                            strokeOpacity: 1,
-                            strokeColor: "#858585",
-                            strokeWidth: 5
-                        }
                     ];
 
                     var style = 0;
