@@ -13,9 +13,18 @@ angular.module("routing", [])
                     format: "json"
                 }
             }).success((data: any) => {
-                var bbox = data.directions[0].summary.envelope;
-                bbox = <number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax];
-                callback(bbox, data.routes.features);
+                // calculate bounding box for all routes
+                var bounds = null;
+                angular.forEach(data.directions, function(direction) {
+                    var bbox = direction.summary.envelope;
+                    if (bounds == null) {
+                        bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax])
+                    } else {
+                        bounds.extend(new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]));
+                    }
+                });
+
+                callback(bounds, data.routes.features);
             });
         };
 
