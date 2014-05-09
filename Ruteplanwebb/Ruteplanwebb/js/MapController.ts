@@ -1,8 +1,5 @@
 ﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/leaflet/leaflet.d.ts"/>
-///<reference path="../ts/typings/leaflet/esri-leaflet.d.ts"/>
-///<reference path="../ts/typings/leaflet/leaflet-mouseposition.d.ts"/>
-///<reference path="../ts/typings/leaflet/proj4leaflet.d.ts"/>
+///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 ///<reference path="domain.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="../ts/typings/xml2json/xml2json.d.ts"/>

@@ -30,6 +30,7 @@
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />
     <TypeScriptCompile Include="js\helpers\CompressedGeometryHelper.ts" />
+    <Content Include="js\helpers\OpenLayers.AwsomeIcon.s" />
     <TypeScriptCompile Include="js\MapController.ts" />
     <TypeScriptCompile Include="js\Controllers.ts" />
     <TypeScriptCompile Include="js\MapDirective.ts" />

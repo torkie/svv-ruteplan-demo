@@ -104,7 +104,7 @@ declare module OpenLayers {
     }
 
     export class Event {
-        // TODO
+        static stopObservingElement(elem : HTMLElement);
     }
 
     export class Events {
@@ -1038,7 +1038,9 @@ declare module OpenLayers {
     }
 
     export class Util {
-        // TODO
+        static createUniqueID(baseId: string): string;
+        static createDiv();
+        static modifyAlphaImageDiv(dic : HTMLElement, a1 : any, a2 : any, size : OpenLayers.Size, url : string, position : string);
     }
 
     export class WPSClient {
@@ -2919,6 +2921,7 @@ declare module OpenLayers {
          * Note that if sz passed in is null, returns false.
          */
         equals(sz: Size): boolean;
+
 
         CLASS_NAME: string;
     }
