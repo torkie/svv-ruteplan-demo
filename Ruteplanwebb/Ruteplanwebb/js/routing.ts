@@ -25,7 +25,23 @@ angular.module("routing", [])
                     }
                 });
 
-                callback(bounds, data.routes.features);
+                // create geometry features from routes
+                var features = [];
+                var forEach = angular.forEach;
+                forEach(data.routes.features, function(route) {
+                    var components = [];
+                    forEach(route.geometry.paths, function(path) {
+                        var points = [];
+                        forEach(path, function(point) {
+                            points.push(new OpenLayers.Geometry.Point(<number>point[0], <number>point[1]));
+                        });
+                        components.push(new OpenLayers.Geometry.LineString(points));
+                    });
+                    var geometry = new OpenLayers.Geometry.MultiLineString(components);
+                    features.push(new OpenLayers.Feature.Vector(geometry));
+                });
+
+                callback(bounds, features);
             });
         };
 

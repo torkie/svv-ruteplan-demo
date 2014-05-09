@@ -16,11 +16,11 @@ class MapController {
             $scope.routeLayer.removeAllFeatures();
 
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
-                function(bounds, routes) {
+                function(bounds, features) {
+                    // scale bounds to better fit the map
                     $scope.map.zoomToExtent(bounds.scale(1.1));
 
-                    var features = [];
-
+                    // apply styles to features
                     var styles = [
                         {
                             graphicZIndex: 2,
@@ -37,21 +37,12 @@ class MapController {
                     ];
 
                     var style = 0;
-                    var forEach = angular.forEach;
-                    forEach(routes, function(route) {
-                        var components = [];
-                        forEach(route.geometry.paths, function(path) {
-                            var points = [];
-                            forEach(path, function(point) {
-                                points.push(new OpenLayers.Geometry.Point(<number>point[0], <number>point[1]));
-                            });
-                            components.push(new OpenLayers.Geometry.LineString(points));
-                        });
-                        var geometry = new OpenLayers.Geometry.MultiLineString(components);
-                        features.push(new OpenLayers.Feature.Vector(geometry, {}, styles[style]));
+                    angular.forEach(features, function(feature) {
+                        feature.style = styles[style];
                         if (style < styles.length - 1) style++;
                     });
 
+                    // add features to map
                     $scope.routeLayer.addFeatures(features);
                 }
             );
