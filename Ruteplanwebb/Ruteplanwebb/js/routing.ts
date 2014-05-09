@@ -47,8 +47,8 @@ angular.module("routing", [])
                 forEach(data.directions, function(direction) {
                     routeInfo.push({
                         name: direction.routeName,
-                        distance: direction.totalDistance,
-                        time: direction.totalTime
+                        distance: direction.summary.totalLength,
+                        time: direction.summary.totalTime
                     });
                 });
 
