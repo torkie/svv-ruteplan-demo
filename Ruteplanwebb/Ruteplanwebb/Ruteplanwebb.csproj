@@ -26,11 +26,12 @@
     <Content Include="images\markers-shadow.png" />
     <Content Include="images\markers-soft%402x.png" />
     <Content Include="images\markers-soft.png" />
+    <Content Include="js\helpers\OpenLayers.Awsome.Icon.js" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />
+    <TypeScriptCompile Include="js\helpers\OpenLayers.Awsome.Icon.d.ts" />
     <TypeScriptCompile Include="js\helpers\CompressedGeometryHelper.ts" />
-    <Content Include="js\helpers\OpenLayers.AwsomeIcon.s" />
     <TypeScriptCompile Include="js\MapController.ts" />
     <TypeScriptCompile Include="js\Controllers.ts" />
     <TypeScriptCompile Include="js\MapDirective.ts" />
@@ -434,30 +435,6 @@
     <Content Include="lib\angular\angular-touch.min.js.map" />
     <Content Include="lib\angular\angular.min.js.map" />
     <Content Include="lib\jasmine\jasmine-1.3.1\MIT.LICENSE" />
-    <None Include="ruteplan\felles\cct\SemantiskeTyper-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ruteplan\felles\feiltype\SVVFeilType-2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ruteplan\felles\kodelista\KodelisteFiltype-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ruteplan\felles\kodelista\KodelisteMaleenhet-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ruteplan\felles\kodelista\KodelisteMimetype_ISO-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ruteplan\felles\kodelista\KodelisteValuta_ISO-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ruteplan\geodata\routeplanning\OpenLS.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ruteplan\geodata\routeplanning\RouteplanningMessages-1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -470,10 +447,6 @@
     <Compile Include="route.ashx.cs">
       <DependentUpon>route.ashx</DependentUpon>
     </Compile>
-    <Compile Include="ruteplan\geodata\routeplanning\RouteplanningMessages-1.cs">
-      <DependentUpon>RouteplanningMessages-1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ruteplan\geodata\routeplanning\RouteplanningTypes-1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

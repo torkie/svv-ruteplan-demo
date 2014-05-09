@@ -53,16 +53,13 @@ class MapController {
         $scope.updateMarkers = () => {
             $scope.markerLayer.clearMarkers();
 
-            var size = new OpenLayers.Size(21, 25);
-            var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
-
             if ($scope.fromAddress != null) {
-                var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-green.png', size, offset);
-                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.fromAddress.location, icon));
+                var faicon = new OpenLayers.AwsomeIcon('play', 'green', 'white', 'fa');
+                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.fromAddress.location, faicon));
             }
             if ($scope.toAddress != null) {
-                var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png', size, offset);
-                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.toAddress.location, icon));
+                var fato= new OpenLayers.AwsomeIcon('stop', 'red', 'white', 'fa');
+                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.toAddress.location, fato));
             }
         };
     }

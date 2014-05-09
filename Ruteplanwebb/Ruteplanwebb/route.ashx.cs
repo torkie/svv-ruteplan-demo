@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Web.UI;
-using no.vegvesen.routeplanning;
 using System.Globalization;
 using System.Net;
 using System.Web;
@@ -17,9 +16,6 @@ namespace Ruteplanwebb
     /// </summary>
     public class Route : IHttpHandler
     {
-
-        private static readonly XmlSerializer m_serializer = new XmlSerializer(typeof (DetermineRouteResponseType));
-
         public void ProcessRequest(HttpContext context)
         {
             string url = "http://multirit.triona.se/routingService_v1_0/routingService?";

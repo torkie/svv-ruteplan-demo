@@ -306,6 +306,8 @@ declare module OpenLayers {
         clone();
     }
 
+    
+
     export class Kinetic {
         // TODO
     }
@@ -1040,7 +1042,7 @@ declare module OpenLayers {
     export class Util {
         static createUniqueID(baseId: string): string;
         static createDiv();
-        static modifyAlphaImageDiv(dic : HTMLElement, a1 : any, a2 : any, size : OpenLayers.Size, url : string, position : string);
+        static modifyAlphaImageDiv(div: HTMLElement, id: string, px : OpenLayers.Pixel, size: OpenLayers.Size, imgUrl: string, position: string, border : string, sizing : string, opacity:number);
     }
 
     export class WPSClient {
@@ -2606,7 +2608,7 @@ declare module OpenLayers {
     }
 
     export class Class {
-
+        constructor(self : any);
     }
 
     export class Date {
@@ -2690,7 +2692,7 @@ declare module OpenLayers {
          * Parameters:
          * element - {DOMElement}
          */
-        remove(element: HTMLElement): void;
+        static remove(element: HTMLElement): void;
 
         /**
          * APIFunction: getHeight

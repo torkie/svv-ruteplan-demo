@@ -78,7 +78,9 @@ class OpenLayersDirective {
                 styleMap: linesStyleMap,
                 rendererOptions: {
                     zIndexing: true
-                }
+                },
+                renderers : ['Canvas','SVG','VML']
+
             });
 
             var mapOptions = {
