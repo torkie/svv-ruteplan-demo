@@ -23,26 +23,18 @@ interface IMapControllerScope extends ng.IScope {
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
-    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService) {
+    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: any) {
 
         $scope.getLocations = (val) => {
             return this.getLocationsSk($scope, val, $http);
         };
 
         $scope.doRouteCalculation = () => {
-            var fromX = $scope.fromAddress.location.lon;
-            var fromY = $scope.fromAddress.location.lat;
-            var toX = $scope.toAddress.location.lon;
-            var toY = $scope.toAddress.location.lat;
-            $http.get('routingService', {
-                params: {
-                    stops: fromX + "," + fromY + ";" + toX + "," + toY,
-                    format: "json"
+            routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
+                function(bbox) {
+                    $scope.map.zoomToExtent(bbox);
                 }
-            }).success((data: any) => {
-                var bbox = data.directions[0].summary.envelope;
-                $scope.map.zoomToExtent(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
-            });
+            );
         };
 
         $scope.updateMarkers = () => {
