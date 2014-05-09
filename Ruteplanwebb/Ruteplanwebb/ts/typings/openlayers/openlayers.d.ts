@@ -3139,9 +3139,7 @@ declare module OpenLayers {
         }
 
         export class MultiLineString extends Geometry.Collection {
-
-            // TODO
-
+            constructor(components: Geometry.LineString[]);
         }
 
         export class MultiPoint extends Geometry.Collection {
@@ -4666,6 +4664,7 @@ declare module OpenLayers {
         export class Vector extends Layer {
             constructor(name: string, options?: any);
             addFeatures(features: Feature.Vector[]);
+            removeAllFeatures();
         }
 
         export class WMS extends Layer.Grid {
