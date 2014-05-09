@@ -28,6 +28,13 @@
         {{ toAddress.name }} <br>
         <i> {{ toAddress.location.lon }} {{ toAddress.location.lat }} </i><br>
     </p>
+
+    <p>
+    <ul>
+        <li ng-repeat="info in routeInfo">{{ info.name }}</li>
+    </ul>
+    </p>
+
 </div>
 
 <coordinatedisplayer></coordinatedisplayer>

@@ -13,6 +13,8 @@ angular.module("routing", [])
                     format: "json"
                 }
             }).success((data: any) => {
+                var forEach = angular.forEach;
+
                 // calculate bounding box for all routes
                 var bounds = null;
                 angular.forEach(data.directions, function(direction) {
@@ -27,7 +29,6 @@ angular.module("routing", [])
 
                 // create geometry features from routes
                 var features = [];
-                var forEach = angular.forEach;
                 forEach(data.routes.features, function(route) {
                     var components = [];
                     forEach(route.geometry.paths, function(path) {
@@ -41,7 +42,17 @@ angular.module("routing", [])
                     features.push(new OpenLayers.Feature.Vector(geometry));
                 });
 
-                callback(bounds, features);
+                // route info, directions[0].routeName
+                var routeInfo = [];
+                forEach(data.directions, function(direction) {
+                    routeInfo.push({
+                        name: direction.routeName,
+                        distance: direction.totalDistance,
+                        time: direction.totalTime
+                    });
+                });
+
+                callback(bounds, features, routeInfo);
             });
         };
 
