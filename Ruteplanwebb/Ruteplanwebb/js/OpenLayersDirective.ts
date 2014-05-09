@@ -62,6 +62,21 @@ class OpenLayersDirective {
 
             var markerLayer = new OpenLayers.Layer.Markers("Markers");
 
+            var style = new OpenLayers.Style({
+                graphicZIndex: 0,
+                strokeOpacity: 0.8,
+                strokeColor: "#7777E7",
+                strokeWidth: 5
+            });
+
+            var linesStyleMap = new OpenLayers.StyleMap({
+                "default": style
+            });
+
+            var routeLayer = new OpenLayers.Layer.Vector("Route", {
+                isBaseLayer: false, styleMap: linesStyleMap
+            });
+
             var mapOptions = {
                 theme: null,
                 projection: new OpenLayers.Projection("EPSG:25833"),
@@ -75,12 +90,12 @@ class OpenLayersDirective {
             };
 
             var map = new OpenLayers.Map("map", mapOptions);
-            map.addLayers([background, markerLayer]);
+            map.addLayers([background, markerLayer, routeLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
-            this.map = map;
-            scope.map = this.map;
+            scope.map = map;
             scope.markerLayer = markerLayer;
+            scope.routeLayer = routeLayer;
         };
     }
 

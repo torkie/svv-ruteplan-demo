@@ -11,4 +11,5 @@ interface IMapControllerScope extends ng.IScope {
     fromAddress: AddressItem;
     toAddress: AddressItem;
     markerLayer: OpenLayers.Layer.Markers;
+    routeLayer: OpenLayers.Layer.Vector;
 }
