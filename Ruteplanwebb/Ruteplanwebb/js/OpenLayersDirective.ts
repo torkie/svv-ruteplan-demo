@@ -42,7 +42,8 @@ class OpenLayersDirective {
                 type: "jpg",
                 resolutions: mapResolutions,
                 maxExtent: mapExt,
-                tileOrigin: new OpenLayers.LonLat(-2500000, 9045984)
+                tileOrigin: new OpenLayers.LonLat(-2500000, 9045984),
+                attribution: 'Kartdata <a href="http://vegvesen.no">Statens Vegvesen</a>, <a href="http://statkart.no">Statens Kartverk</a> og Kommuner'
             };
 
             var background = new OpenLayers.Layer.ArcGISCache("GeocacheTrafikk",
@@ -98,6 +99,13 @@ class OpenLayersDirective {
             var map = new OpenLayers.Map("map", mapOptions);
             map.addLayers([background, routeLayer, markerLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
+
+            var mousePositionCtrl = new OpenLayers.Control.MousePosition({
+                numDigits: 1,
+                separator: ', '
+                }
+                );
+            map.addControl(mousePositionCtrl,null);
 
             scope.map = map;
             scope.markerLayer = markerLayer;

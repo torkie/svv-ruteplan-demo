@@ -3173,6 +3173,10 @@ declare module OpenLayers {
 
         }
 
+        export class MousePosition {
+            constructor(options: any);
+        }
+
         export class Attribution {
 
             // TODO
@@ -3263,11 +3267,7 @@ declare module OpenLayers {
 
         }
 
-        export class MousePosition {
-
-            // TODO
-
-        }
+       
 
         export class NavToolbar {
 

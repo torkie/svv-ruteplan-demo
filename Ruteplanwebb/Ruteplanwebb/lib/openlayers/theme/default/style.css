@@ -35,8 +35,8 @@ div.olLayerDiv {
 }
 .olControlAttribution {
     font-size: smaller;
-    right: 3px;
-    bottom: 4.5em;
+    right: 5px;
+    bottom: 5px;
     position: absolute;
     display: block;
 }
@@ -75,8 +75,8 @@ div.olLayerDiv {
 }
 
 div.olControlMousePosition {
-    bottom: 0;
-    right: 3px;
+    bottom: 5px;
+    left: 5px;
     display: block;
     position: absolute;
     font-family: Arial;
