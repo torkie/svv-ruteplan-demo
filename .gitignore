@@ -17,6 +17,7 @@ packages
 
 # ignore js files in these folders, we're using typescript (*.ts)
 /Ruteplanwebb/Ruteplanwebb/js/**/*.js
+!/Ruteplanwebb/Ruteplanwebb/js/helpers/OpenLayers.Awsome.Icon.js
 /Ruteplanwebb/Ruteplanwebb/js/**/*.js.map
 /Ruteplanwebb/Ruteplanwebb/tests/**/*.js
 /Ruteplanwebb/Ruteplanwebb/tests/**/*.js.map
