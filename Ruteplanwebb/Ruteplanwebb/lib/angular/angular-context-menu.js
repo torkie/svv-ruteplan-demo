@@ -45,12 +45,16 @@ angular
 
                       var x, y;
 
-                      if ('layerX' in event) {
-                          x = event.layerX;
-                          y = event.layerY;
+                      //alert(event.target);
+                      //console.log(event);
+                      //console.log(element);
+
+                      if ('pageX' in event) {
+                          x = event.pageX - element.prop('offsetLeft');
+                          y = event.pageY - element.prop('offsetTop');
                       } else {
-                          x = event.offsetX;
-                          y = event.offsetY;
+                          x = event.x - element.prop('offsetLeft');
+                          y = event.y - element.prop('offsetTop');
                       }
 
 
