@@ -106,6 +106,12 @@ class OpenLayersDirective {
                 }
                 );
             map.addControl(mousePositionCtrl,null);
+            map.events.register('click', map, () => {
+                if (scope.contextMenuHandleWindowClicked != null) {
+                    scope.contextMenuHandleWindowClicked(map.div);
+                }
+            },false);
+
 
             scope.map = map;
             scope.markerLayer = markerLayer;
