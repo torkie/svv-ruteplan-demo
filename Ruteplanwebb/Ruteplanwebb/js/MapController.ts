@@ -68,8 +68,14 @@ class MapController {
 
         };
 
-        $scope.contextMenuSetFrom = (loc: any) => {
-          alert('hej' + loc);
+        $scope.contextMenuSetFrom = (loc:any) => {
+            $scope.fromAddress = new AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.updateMarkers();
+        };
+
+        $scope.contextMenuSetTo = (loc: any) => {
+            $scope.toAddress = new AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.updateMarkers();
         };
         
     }

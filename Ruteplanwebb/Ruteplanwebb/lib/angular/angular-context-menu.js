@@ -43,7 +43,18 @@ angular
                       event.preventDefault();
                       event.stopPropagation();
 
-                      $scope.loc = { x: Math.max(0, event.pageX), y: Math.max(0, event.pageY) };
+                      var x, y;
+
+                      if ('layerX' in event) {
+                          x = event.layerX;
+                          y = event.layerY;
+                      } else {
+                          x = event.offsetX;
+                          y = event.offsetY;
+                      }
+
+
+                      $scope.contextMenuLocation = { x: Math.max(0, x), y: Math.max(0, y) };
 
                       $scope.$apply(function () {
                           fn($scope, { $event: event });
