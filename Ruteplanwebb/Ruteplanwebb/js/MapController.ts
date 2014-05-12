@@ -1,5 +1,6 @@
 ﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
+///<reference path="helpers/OpenLayers.Awsome.Icon.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
 ///<reference path="scopes.ts"/>
