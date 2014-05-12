@@ -80,7 +80,7 @@ class OpenLayersDirective {
                 rendererOptions: {
                     zIndexing: true
                 },
-                renderers : ['Canvas','SVG','VML']
+                //renderers : ['Canvas','SVG','VML']
 
             });
 

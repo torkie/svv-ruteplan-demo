@@ -95,7 +95,15 @@ span {
     margin-bottom: 5px;
     background-color: lightgray;
     border: 1px darkgray solid;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    cursor: pointer;
 }
+
+    #route-list > li:nth-child(1) {
+        background-color: #add8e6;
+        border-color: #008CFF;
+    }
 
 .route-item-name {
     font-size: 1.1em;

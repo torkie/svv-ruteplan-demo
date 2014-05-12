@@ -52,6 +52,9 @@ angular.module("routing", [])
                 });
             });
 
+            //features = features.reverse();
+            //routeInfo = routeInfo.reverse();
+
             callback(bounds, features, routeInfo);
         });
     };
