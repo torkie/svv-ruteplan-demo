@@ -16,7 +16,7 @@ class OpenLayersDirective {
 
         OpenLayers.ImgPath = "/lib/openlayers/theme/default/img/";
 
-        this.link = function(scope: IMapControllerScope, element: any, attrs: any) {
+        this.link = (scope: IMapControllerScope, element: any, attrs: any) => {
             var mapResolutions = [
                 21674.7100160867,
                 10837.3550080434,
@@ -101,10 +101,10 @@ class OpenLayersDirective {
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
             var mousePositionCtrl = new OpenLayers.Control.MousePosition({
-                numDigits: 1,
-                separator: ', '
+                    numDigits: 1,
+                    separator: ', '
                 }
-                );
+            );
             map.addControl(mousePositionCtrl,null);
             map.events.register('click', map, () => {
                 if (scope.contextMenuHandleWindowClicked != null) {
