@@ -115,4 +115,5 @@ class OpenLayersDirective {
 
 }
 
-svvRuteplanApp.directive("map", () => new OpenLayersDirective());
+angular.module("rpwDirectives", [])
+    .directive("map", () => new OpenLayersDirective());
