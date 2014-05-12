@@ -31,6 +31,7 @@
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />
+    <TypeScriptCompile Include="js\filters.ts" />
     <TypeScriptCompile Include="js\helpers\OpenLayers.Awsome.Icon.d.ts" />
     <TypeScriptCompile Include="js\helpers\CompressedGeometryHelper.ts" />
     <TypeScriptCompile Include="js\MapController.ts" />
@@ -401,6 +402,7 @@
     <Content Include="Views\MapView.html" />
     <Content Include="web.config" />
     <TypeScriptCompile Include="js\routing.ts" />
+    <TypeScriptCompile Include="js\scopes.ts" />
     <TypeScriptCompile Include="tests\js\helpers\CompressedGeometryHelperTests.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-cookies.d.ts" />
