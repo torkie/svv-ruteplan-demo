@@ -29,11 +29,12 @@
         <i> {{ toAddress.location.lon }} {{ toAddress.location.lat }} </i><br>
     </p>
 
-    <p>
-    <ul>
-        <li ng-repeat="info in routeInfo">{{ info.name + " time: " + info.time + " distance: " + info.distance}}</li>
+    <ul id="route-list">
+        <li ng-repeat="info in routeInfo">
+            <div class="route-item-name"> {{ info.name }}</div>
+            <span class="route-item-info">{{ info.time | time }}, {{ info.distance | distance }}</span>
+        </li>
     </ul>
-    </p>
 
 </div>
 

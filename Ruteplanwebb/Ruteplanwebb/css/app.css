@@ -84,3 +84,20 @@ span {
     text-align: center !important;
     padding: 2px !important;
 }
+
+#route-list {
+    list-style: none;
+    padding: 0;
+}
+
+#route-list > li {
+    padding: 0.5em;
+    margin-bottom: 5px;
+    background-color: lightgray;
+    border: 1px darkgray solid;
+}
+
+.route-item-name {
+    font-size: 1.1em;
+    font-weight: bold;
+}
