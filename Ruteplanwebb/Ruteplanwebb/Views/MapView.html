@@ -2,13 +2,13 @@
 <div id="searchbar">
     <div><b>Ruteplan demo</b><br/>
         Fra: <input type="text" id="searchFrom" ng-model="fromAddress"
-                    typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
-                    typeahead-editable="false"
-                    typeahead-on-select="updateMarkers()"/>
+       data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
+       data-typeahead-editable="false"
+       data-typeahead-on-select="updateMarkers()" />
         Til: <input type="text" id="searchTo" ng-model="toAddress"
-                    typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
-                    typeahead-editable="false"
-                    typeahead-on-select="updateMarkers()"/>
+       data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
+       data-typeahead-editable="false"
+       data-typeahead-on-select="updateMarkers()" />
         <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()"/></div>
 </div>
 
@@ -46,5 +46,3 @@
     </p>
 
 </div>
-
-<coordinatedisplayer></coordinatedisplayer>
