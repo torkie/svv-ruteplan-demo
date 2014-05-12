@@ -26,24 +26,15 @@
 </div>
 <div id="routedesc">
     <h1>Rute</h1>
-
-    <p>
-        Fra: <br>
-        {{ fromAddress.name }} <br>
-        <i> {{ fromAddress.location.lon }} {{ fromAddress.location.lat }} </i><br>
-    </p>
-
-    <p>
-        Til: <br>
-        {{ toAddress.name }} <br>
-        <i> {{ toAddress.location.lon }} {{ toAddress.location.lat }} </i><br>
-    </p>
-
+    <div ng-show="fromAddress"><i class="fa fa-play-circle" style="color: gray"></i> {{ fromAddress.name }}, {{ fromAddress.location.lon }} {{ fromAddress.location.lat }}</div>
+    <div ng-show="fromAddress && toAddress"  style="height: 14px; margin-left: 2px"><i class="fa fa-long-arrow-down" style="color: lightgray"></i><span style="width: 200px; display: block; height: 1px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px; margin-top: -12px">&nbsp;</span></div>
+    <div ng-show="toAddress"><i class="fa fa-dot-circle-o" style="color: gray"></i> {{ toAddress.name }}, {{ toAddress.location.lon }} {{ toAddress.location.lat }}</div>
+    <br/>
     <ul id="route-list">
-        <li ng-repeat="info in routeInfo">
-            <div class="route-item-name"> {{ info.name }}</div>
-            <span class="route-item-info">{{ info.time | time }}, {{ info.distance | distance }}</span>
-        </li>
-    </ul>
+            <li ng-repeat="info in routeInfo">
+                <div class="route-item-name"> {{ info.name }}</div>
+                <span class="route-item-info">{{ info.time | time }}, {{ info.distance | distance }}</span>
+            </li>
+        </ul>
 
 </div>
