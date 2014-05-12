@@ -45,10 +45,6 @@ angular
 
                       var x, y;
 
-                      //alert(event.target);
-                      //console.log(event);
-                      //console.log(element);
-
                       if ('pageX' in event) {
                           x = event.pageX - element.prop('offsetLeft');
                           y = event.pageY - element.prop('offsetTop');
