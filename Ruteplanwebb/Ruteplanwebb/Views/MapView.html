@@ -2,18 +2,28 @@
 <div id="searchbar">
     <div><b>Ruteplan demo</b><br/>
         Fra: <input type="text" id="searchFrom" ng-model="fromAddress"
-                    typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
-                    typeahead-editable="false"
-                    typeahead-on-select="updateMarkers()"/>
+       data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
+       data-typeahead-editable="false"
+       data-typeahead-on-select="updateMarkers()" />
         Til: <input type="text" id="searchTo" ng-model="toAddress"
-                    typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
-                    typeahead-editable="false"
-                    typeahead-on-select="updateMarkers()"/>
+       data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
+       data-typeahead-editable="false"
+       data-typeahead-on-select="updateMarkers()" />
         <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()"/></div>
 </div>
 
-<map id="map"></map>
-
+<map data-context-menu="contextMenuOpened" id="map" data-target="mapMenu">
+</map>
+<div class="dropdown" style="position: absolute"  id="mapMenu">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetFrom(contextMenuLocation)"><i class="fa fa-play" style="color: green;margin-right: 5px"></i> Sett startpunkt</a>
+        </li>
+        <li role="presentation">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetTo(contextMenuLocation)"><i class="fa fa-stop" style="color: red;margin-right: 5px"></i> Sett Sluttpunkt</a>
+        </li>
+    </ul>
+</div>
 <div id="routedesc">
     <h1>Rute</h1>
 
@@ -37,5 +47,3 @@
     </ul>
 
 </div>
-
-<coordinatedisplayer></coordinatedisplayer>

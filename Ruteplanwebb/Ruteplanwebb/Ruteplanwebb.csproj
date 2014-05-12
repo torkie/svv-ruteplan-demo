@@ -27,6 +27,7 @@
     <Content Include="images\markers-soft%402x.png" />
     <Content Include="images\markers-soft.png" />
     <Content Include="js\helpers\OpenLayers.Awsome.Icon.js" />
+    <Content Include="lib\angular\angular-context-menu.js" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />

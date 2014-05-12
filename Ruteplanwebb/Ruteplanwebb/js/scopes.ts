@@ -13,4 +13,7 @@ interface IMapControllerScope extends ng.IScope {
     markerLayer: OpenLayers.Layer.Markers;
     routeLayer: OpenLayers.Layer.Vector;
     routeInfo: any;
+    contextMenuHandleWindowClicked : any;
+    contextMenuSetFrom(windowLocation:any);
+    contextMenuSetTo(windowLocation: any);
 }

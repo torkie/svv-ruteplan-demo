@@ -3,6 +3,7 @@
 
 var rpwApp = angular.module("rpwApp", [
     'ngRoute',
+    "ng-context-menu"
     "ui.bootstrap",
     'rpwControllers',
     "rpwFilters",
