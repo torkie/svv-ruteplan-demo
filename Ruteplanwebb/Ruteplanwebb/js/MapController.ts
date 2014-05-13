@@ -7,7 +7,7 @@
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
-    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: any) {
+    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: any, $location : ng.ILocationService) {
 
         $scope.getLocations = (val) => {
             return routingService.getLocationsSk(val);
@@ -59,10 +59,12 @@ class MapController {
             if ($scope.fromAddress != null) {
                 var faicon = new OpenLayers.AwsomeIcon('play', 'green', 'white', 'fa');
                 $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.fromAddress.location, faicon));
+                $location.search('from', JSON.stringify($scope.fromAddress));
             }
             if ($scope.toAddress != null) {
                 var fato= new OpenLayers.AwsomeIcon('stop', 'red', 'white', 'fa');
                 $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.toAddress.location, fato));
+                $location.search('to', JSON.stringify($scope.toAddress));
             }
             //If both from and to are set, do route calculculation automatically
             if ($scope.fromAddress != null && $scope.toAddress != null) {
@@ -88,6 +90,16 @@ class MapController {
         };
 
         $scope.showRoute = id => id === $scope.selectedRouteId;
+
+
+        if ($location.search().from != null)
+            $scope.fromAddress = JSON.parse($location.search().from);
+        if ($location.search().to != null)
+            $scope.toAddress = JSON.parse($location.search().to);
+
+        $scope.$watch('markerLayer', () => {
+            $scope.updateMarkers();
+        });
 
     }
 

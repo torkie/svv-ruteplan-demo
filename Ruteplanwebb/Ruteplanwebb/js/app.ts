@@ -1,8 +1,9 @@
 /// <reference path="../ts/typings/angularjs/angular.d.ts"/>
 /// <reference path="../ts/typings/angularjs/angular-route.d.ts"/>
+/// <reference path="../ts/typings/angularjs/angular-ui-router.d.ts"/>
 
 var rpwApp = angular.module("rpwApp", [
-    'ngRoute',
+    'ui.router',
     "ng-context-menu",
     "ui.bootstrap",
     'rpwControllers',
@@ -10,14 +11,14 @@ var rpwApp = angular.module("rpwApp", [
     "rpwDirectives"
 ]);
 
-rpwApp.config(['$routeProvider',
-    ($routeprovider: ng.route.IRouteProvider) => {
-        $routeprovider.
-            when('/', {
+rpwApp.config(['$stateProvider', '$urlRouterProvider',
+    ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider : ng.ui.IUrlRouterProvider) => {
+        $urlRouterProvider.otherwise("/");
+        $stateProvider.
+            state('mappage', {
+                url: '/?from&to',
                 templateUrl: 'Views/MapView.html',
-                controller: 'MapController'
-            }).
-            otherwise({
-                redirectTo: '/'
-            });
+                controller: 'MapController',
+                reloadOnSearch: false
+    });
     }]);

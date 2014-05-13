@@ -29,6 +29,7 @@
     <Content Include="images\markers-soft.png" />
     <Content Include="js\helpers\OpenLayers.Awsome.Icon.js" />
     <Content Include="lib\angular\angular-context-menu.js" />
+    <Content Include="lib\angular\angular-ui-router.min.js" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />
@@ -411,6 +412,7 @@
     <TypeScriptCompile Include="ts\typings\angularjs\angular-resource.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-sanitize.d.ts" />
+    <TypeScriptCompile Include="ts\typings\angularjs\angular-ui-router.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="ts\typings\jasmine\jasmine-1-3.d.ts" />
     <TypeScriptCompile Include="ts\typings\jquery\jquery.d.ts" />
