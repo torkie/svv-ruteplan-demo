@@ -11,7 +11,7 @@ angular.module("rpwFilters", [])
             if (hours > 0) {
                 output += hours + " time";
                 if (hours > 1) {
-                    output += "r"
+                    output += "r";
                 }
                 if (mins > 0) output += " ";
             }
@@ -38,5 +38,10 @@ angular.module("rpwFilters", [])
             } else {
                 return input;
             }
+        }
+    })
+    .filter("round", function() {
+        return function(input) {
+            return Math.round(input);
         }
     });

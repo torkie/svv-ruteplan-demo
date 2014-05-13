@@ -9,8 +9,6 @@
 class MapController {
     constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: any) {
 
-        $scope.Math = Math;
-         
         $scope.getLocations = (val) => {
             return routingService.getLocationsSk(val);
         };
