@@ -10,6 +10,8 @@
   },
   "devDependencies": {
     "grunt": "^0.4.4",
+    "grunt-cli": "^0.1.13",
+    "grunt-karma": "^0.8.3",
     "grunt-ts": "^1.11.2",
     "karma": "^0.12.16",
     "karma-jasmine": "^0.1.5",
