@@ -31,7 +31,7 @@
     <div ng-show="toAddress"><i class="fa fa-dot-circle-o" style="color: gray"></i> {{ toAddress.name }}, {{ toAddress.location.lon }} {{ toAddress.location.lat }}</div>
     <br/>
     <ul id="route-list">
-        <li ng-repeat="direction in directions" ng-click="selectRoute(direction)">
+        <li ng-repeat="direction in directions" ng-click="selectRoute(direction)" ng-class="{active:showRoute(direction.routeId)}">
             <div class="route-item-name">{{ direction.routeName }}</div>
             <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
             <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
@@ -41,5 +41,4 @@
             </ul>
         </li>
     </ul>
-
 </div>

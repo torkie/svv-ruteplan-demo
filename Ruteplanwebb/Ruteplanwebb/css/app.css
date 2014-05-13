@@ -90,6 +90,11 @@ span {
     padding: 0;
 }
 
+.active {
+    background-color: #add8e6 !important;
+    border-color: #008CFF !important;
+}
+
 #route-list > li {
     padding: 0.5em;
     margin-bottom: 5px;
@@ -99,11 +104,6 @@ span {
     -moz-border-radius: 3px;
     cursor: pointer;
 }
-
-    #route-list > li:nth-child(1) {
-        background-color: #add8e6;
-        border-color: #008CFF;
-    }
 
 .route-item-name {
     font-size: 1.1em;
