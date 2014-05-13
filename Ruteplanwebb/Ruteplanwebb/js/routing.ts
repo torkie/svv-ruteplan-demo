@@ -11,7 +11,7 @@ angular.module("routing", [])
             params: {
                 stops: from.lon + "," + from.lat + ";" + to.lon + "," + to.lat,
                 format: "json",
-                lang: "nb-NO"
+                lang: "nb-no"
             }
         }).success((data: any) => {
             var forEach = angular.forEach;
