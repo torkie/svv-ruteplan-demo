@@ -80,6 +80,17 @@ class MapController {
             $scope.toAddress = new AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
             $scope.updateMarkers();
         };
+
+        $scope.selectedRouteId = "";
+
+        $scope.selectRoute = function(direction) {
+            console.log(direction);
+            $scope.selectedRouteId = direction.routeId;
+        };
+
+        $scope.showRoute = function(id) {
+            return id === $scope.selectedRouteId;
+        }
         
     }
 

@@ -16,4 +16,7 @@ interface IMapControllerScope extends ng.IScope {
     contextMenuHandleWindowClicked : any;
     contextMenuSetFrom(windowLocation:any);
     contextMenuSetTo(windowLocation: any);
+    selectRoute: any;
+    showRoute: any;
+    selectedRouteId: any;
 }
