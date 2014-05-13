@@ -49,6 +49,8 @@ class MapController {
 
                     // add features to map
                     $scope.routeLayer.addFeatures(features);
+                    if (directions != null && directions.length > 0)
+                        $scope.selectedRouteId = directions[0].routeId;
                 }
             );
         };
