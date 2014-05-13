@@ -13,11 +13,11 @@ var rpwApp = angular.module("rpwApp", [
 rpwApp.config(['$routeProvider',
     ($routeprovider: ng.route.IRouteProvider) => {
         $routeprovider.
-            when('/map', {
+            when('/', {
                 templateUrl: 'Views/MapView.html',
                 controller: 'MapController'
             }).
             otherwise({
-                redirectTo: '/map'
+                redirectTo: '/'
             });
     }]);
