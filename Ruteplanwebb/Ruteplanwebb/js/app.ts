@@ -6,6 +6,7 @@ var rpwApp = angular.module("rpwApp", [
     'ui.router',
     "ng-context-menu",
     "ui.bootstrap",
+    'ngSanitize',
     'rpwControllers',
     "rpwFilters",
     "rpwDirectives"

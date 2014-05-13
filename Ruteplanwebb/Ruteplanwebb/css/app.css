@@ -28,6 +28,7 @@ span {
     z-index: 1;
     background: #ffffff;
     padding: 10px;
+    overflow: scroll;
 }
 
 #searchbar DIV {
@@ -90,22 +91,85 @@ span {
     padding: 0;
 }
 
-.active {
-    background-color: #add8e6 !important;
-    border-color: #008CFF !important;
+#route-desc-list {
+    list-style: none;
+    padding: 0;
+    list-style-type: none;
 }
 
-#route-list > li {
+
+
+.routeheader {
     padding: 0.5em;
     margin-bottom: 5px;
     background-color: lightgray;
     border: 1px darkgray solid;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
+    border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
     cursor: pointer;
+}
+
+.active > .routeheader{
+    background-color: black !important;
+    border: 0;
+    border-bottom-color: transparent;
+    color: white;
+    font-weight: bold;
+    
+}
+
+.active {
+    background-color: #f5f5f5;
+    border: 1px solid lightgray;
+    color:black;
+    border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+}
+
+#route-desc-list > li {
+    border: 1px transparent solid;
+    border-bottom-color: darkgray;
 }
 
 .route-item-name {
     font-size: 1.1em;
     font-weight: bold;
+}
+
+.signpost {
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    padding: 3px;
+    display: inline-block;
+    margin:3px;
+    border: 1px solid gray;
+    font-size:10px;
+}
+.signpost-E {
+    background-color: #228b22;
+    color: white;
+}
+.signpost-R {
+    background-color: #ff9600;
+    color: black;
+}
+
+.signpost-F {
+    background-color: white;
+    color: black;
+}
+
+.signpost-K {
+    visibility: hidden;
+    display: none;
+}
+
+.signpost-P {
+    visibility: hidden;
+    display: none;
+}
+
+.signpost-S {
+    visibility: hidden;
+    display: none;
 }

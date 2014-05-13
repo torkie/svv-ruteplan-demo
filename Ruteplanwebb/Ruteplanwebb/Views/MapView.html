@@ -32,11 +32,13 @@
     <br/>
     <ul id="route-list">
         <li ng-repeat="direction in directions" ng-click="selectRoute(direction.routeId)" ng-class="{active:showRoute(direction.routeId)}">
-            <div class="route-item-name">{{ direction.routeName }}</div>
-            <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
+            <div class="routeheader">
+                <div class="route-item-name">{{ direction.routeName }}</div>
+                <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
+            </div>
             <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
                 <li ng-repeat="feature in direction.features">
-                    <div>{{feature.attributes.text | direction }}</div>
+                    <div><div class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}</div>
                 </li>
             </ul>
         </li>

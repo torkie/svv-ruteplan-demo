@@ -43,6 +43,14 @@ angular.module("routing", [])
                 features.push(new OpenLayers.Feature.Vector(geometry));
             });
 
+            forEach(data.directions, (direction) => {
+                forEach(direction.features, (feature) => {
+                    feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
+                    feature.roadNumber = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2");
+                    feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
+                });
+            });
+
             var directions = data.directions;
 
             callback(bounds, features, directions);

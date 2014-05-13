@@ -31,10 +31,20 @@ angular.module("rpwFilters", [])
         }
     })
     .filter("direction", function() {
-        return function(input) {
+        return function(input : string) {
             var i = input.indexOf("}");
             if (i > 0) {
-                return input.substr(i + 2);
+                return input.substr(i + 1);
+            } else {
+                return input;
+            }
+        }
+    })
+    .filter("signpost", function () {
+        return function (input: string) {
+            var i = input.indexOf("}");
+            if (i > 0) {
+                return input.replace(/\{([ERFKPS])(\d+)\}.*/i, "<div class='road-sign-$1'>$1v $2</div>");
             } else {
                 return input;
             }
