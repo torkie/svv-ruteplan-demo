@@ -21,9 +21,9 @@ class MapController {
                     $scope.directions = directions;
 
                     // zoom map if current bounds does not contain route
-                    if (!$scope.map.getExtent().containsBounds(bounds)) {
+                    //if (!$scope.map.getExtent().containsBounds(bounds)) {
                         $scope.map.zoomToExtent(bounds);
-                    }
+                    //}
 
                     // apply styles to features
                     var styles = [
