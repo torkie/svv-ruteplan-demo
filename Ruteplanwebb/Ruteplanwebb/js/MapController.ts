@@ -20,8 +20,10 @@ class MapController {
                 (bounds, features, directions) => {
                     $scope.directions = directions;
 
-                    // scale bounds to better fit the map
-                    $scope.map.zoomToExtent(bounds.scale(1.1));
+                    // zoom map if current bounds does not contain route
+                    if (!$scope.map.getExtent().containsBounds(bounds)) {
+                        $scope.map.zoomToExtent(bounds);
+                    }
 
                     // apply styles to features
                     var styles = [

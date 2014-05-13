@@ -1341,7 +1341,7 @@ declare module OpenLayers {
         /**
          * Returns whether the bounds object contains the given <OpenLayers.Bounds>.
          */
-        containsBounds(bounds: Bounds, partial: boolean, inclusive: boolean): boolean;
+        containsBounds(bounds: Bounds, partial?: boolean, inclusive?: boolean): boolean;
 
         /**
          * Returns the the quadrant ("br", "tr", "tl", "bl") in which the given
