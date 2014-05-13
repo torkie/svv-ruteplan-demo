@@ -83,9 +83,8 @@ class MapController {
 
         $scope.selectedRouteId = "";
 
-        $scope.selectRoute = function(direction) {
-            console.log(direction);
-            $scope.selectedRouteId = direction.routeId;
+        $scope.selectRoute = function(routeId) {
+            $scope.selectedRouteId = routeId;
         };
 
         $scope.showRoute = function(id) {
