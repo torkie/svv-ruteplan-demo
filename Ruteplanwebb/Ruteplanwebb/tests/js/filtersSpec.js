@@ -15,4 +15,15 @@ describe("filter", function() {
                 expect(timeFilter(122)).toBe("2 timer 2 minutter");
             }));
     });
+
+    describe("distance", function() {
+
+        it("should format distance",
+            inject(function(distanceFilter) {
+                expect(distanceFilter(1000)).toBe("1 kilometer");
+                expect(distanceFilter(2000)).toBe("2 kilometer");
+                expect(distanceFilter(2500)).toBe("3 kilometer");
+            }));
+    });
+
 });
