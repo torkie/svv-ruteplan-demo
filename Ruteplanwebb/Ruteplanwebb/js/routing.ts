@@ -10,7 +10,8 @@ angular.module("routing", [])
         $http.get('routingService', {
             params: {
                 stops: from.lon + "," + from.lat + ";" + to.lon + "," + to.lat,
-                format: "json"
+                format: "json",
+                lang: "nb-no"
             }
         }).success((data: any) => {
             var forEach = angular.forEach;
