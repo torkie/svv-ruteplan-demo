@@ -5,20 +5,24 @@ angular.module("rpwFilters", [])
         return function(input) {
             var hours = Math.floor(input / 60);
             var mins = Math.round(input - (hours * 60));
-            var fmin = function(mins) {
-                if (mins > 1) {
-                    return mins + " minutter";
-                } else if (mins == 1) {
-                    return mins + " minutt";
-                } else {
-                    return "";
-                }
-            };
+
+            var output = "";
+
             if (hours > 0) {
-                return hours + " timer " + mins + " minutter";
-            } else {
-                return mins + " minutter";
+                output += hours + " time";
+                if (hours > 1) {
+                    output += "r"
+                }
+                if (mins > 0) output += " ";
             }
+            if (mins > 0) {
+                output += mins + " minutt";
+                if (mins > 1) {
+                    output += "er";
+                }
+            }
+
+            return output;
         }
     })
     .filter("distance", function() {
