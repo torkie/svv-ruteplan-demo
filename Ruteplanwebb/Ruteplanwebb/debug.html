@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html ng-app>
+<head>
+</head>
+<body>
+
+<h1>Debug stuffs</h1>
+
+<h2>Compressed geometry</h2>
+
+<div ng-controller="geometryController">
+    <form>
+        <textarea type="text" ng-model="geometry" rows="5" cols="80"></textarea><br/>
+        <button ng-click="decompress(geometry)">Decompress</button>
+        <pre>{{ decompressedGeometry }}</pre>
+    </form>
+</div>
+
+<script src="lib/angular/angular.js"></script>
+<script src="js/helpers/CompressedGeometryHelper.js"></script>
+
+<script>
+    function geometryController($scope) {
+        $scope.geometry = "+34+p06kg+jq450o+cg+ls+ls+s4+ls+io+12c+fk+io+0+18k-68+1o8-io+2kc-18k+1bo-p0+12c-12c+p0-30s";
+        $scope.decompressedGeometry = "";
+
+        $scope.decompress = function(geometry) {
+            try {
+                var points = SVV.Ruteplan.Helpers.CompressedGeometryHelper.extractPointsFromCompressedGeometry(geometry);
+                $scope.decompressedGeometry = JSON.stringify(points, null, "\t");
+            } catch (err) {
+                $scope.decompressedGeometry = "" + err;
+            }
+        };
+    }
+</script>
+
+</body>
+
+</html>
