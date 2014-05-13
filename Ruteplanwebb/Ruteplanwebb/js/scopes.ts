@@ -19,4 +19,5 @@ interface IMapControllerScope extends ng.IScope {
     selectRoute: any;
     showRoute: any;
     selectedRouteId: any;
+    Math : Math;
 }

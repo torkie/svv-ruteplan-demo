@@ -9,6 +9,8 @@
 class MapController {
     constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: any) {
 
+        $scope.Math = Math;
+         
         $scope.getLocations = (val) => {
             return routingService.getLocationsSk(val);
         };
@@ -83,14 +85,12 @@ class MapController {
 
         $scope.selectedRouteId = "";
 
-        $scope.selectRoute = function(routeId) {
+        $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;
         };
 
-        $scope.showRoute = function(id) {
-            return id === $scope.selectedRouteId;
-        }
-        
+        $scope.showRoute = id => id === $scope.selectedRouteId;
+
     }
 
 }
