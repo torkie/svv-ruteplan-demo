@@ -29,4 +29,14 @@ angular.module("rpwFilters", [])
         return function(input) {
             return Math.round(input / 1000) + " kilometer";
         }
+    })
+    .filter("direction", function() {
+        return function(input) {
+            var i = input.indexOf("}");
+            if (i > 0) {
+                return input.substr(i + 2);
+            } else {
+                return input;
+            }
+        }
     });

@@ -26,4 +26,12 @@ describe("filter", function() {
             }));
     });
 
+    describe("direction", function() {
+
+        it("should remove road tag",
+            inject(function(directionFilter) {
+                expect(directionFilter("{K13707} Start on Kirkegata")).toBe("Start on Kirkegata");
+            }));
+    });
+
 });

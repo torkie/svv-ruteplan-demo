@@ -36,7 +36,7 @@
             <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
             <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
                 <li ng-repeat="feature in direction.features">
-                    <div>{{feature.attributes.text}}</div>
+                    <div>{{feature.attributes.text | direction }}</div>
                 </li>
             </ul>
         </li>
