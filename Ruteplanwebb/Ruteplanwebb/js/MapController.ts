@@ -17,8 +17,8 @@ class MapController {
             $scope.routeLayer.removeAllFeatures();
 
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
-                (bounds, features, routeInfo) => {
-                    $scope.routeInfo = routeInfo;
+                (bounds, features, directions) => {
+                    $scope.directions = directions;
 
                     // scale bounds to better fit the map
                     $scope.map.zoomToExtent(bounds.scale(1.1));

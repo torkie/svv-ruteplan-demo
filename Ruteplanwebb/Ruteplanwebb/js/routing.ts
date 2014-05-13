@@ -42,20 +42,9 @@ angular.module("routing", [])
                 features.push(new OpenLayers.Feature.Vector(geometry));
             });
 
-            // route info, directions[0].routeName
-            var routeInfo = [];
-            forEach(data.directions, direction => {
-                routeInfo.push({
-                    name: direction.routeName,
-                    distance: direction.summary.totalLength,
-                    time: direction.summary.totalTime
-                });
-            });
+            var directions = data.directions;
 
-            //features = features.reverse();
-            //routeInfo = routeInfo.reverse();
-
-            callback(bounds, features, routeInfo);
+            callback(bounds, features, directions);
         });
     };
 

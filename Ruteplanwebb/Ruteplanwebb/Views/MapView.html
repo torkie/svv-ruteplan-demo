@@ -31,10 +31,15 @@
     <div ng-show="toAddress"><i class="fa fa-dot-circle-o" style="color: gray"></i> {{ toAddress.name }}, {{ toAddress.location.lon }} {{ toAddress.location.lat }}</div>
     <br/>
     <ul id="route-list">
-            <li ng-repeat="info in routeInfo">
-                <div class="route-item-name"> {{ info.name }}</div>
-                <span class="route-item-info">{{ info.time | time }}, {{ info.distance | distance }}</span>
-            </li>
-        </ul>
+        <li ng-repeat="direction in directions">
+            <div class="route-item-name"> {{ direction.routeName }}</div>
+            <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
+            <ul id="route-desc-list">
+                <li ng-repeat="feature in direction.features">
+                    <div>{{feature.attributes.text}}</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
 
 </div>
