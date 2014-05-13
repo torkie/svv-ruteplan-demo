@@ -19,6 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="css\app.css" />
+    <Content Include="debug.html" />
     <Content Include="images\markers-matte%402x.png" />
     <Content Include="images\markers-matte.png" />
     <Content Include="images\markers-plain.png" />
