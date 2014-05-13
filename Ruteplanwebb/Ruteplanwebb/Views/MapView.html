@@ -25,22 +25,29 @@
     </ul>
 </div>
 <div id="routedesc">
-    <h1>Rute</h1>
+    <h4>Rute</h4>
     <div ng-show="fromAddress"><i class="fa fa-play-circle" style="color: gray"></i> {{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }}</div>
     <div ng-show="fromAddress && toAddress"  style="height: 14px; margin-left: 2px"><i class="fa fa-long-arrow-down" style="color: lightgray"></i><span style="width: 200px; display: block; height: 1px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px; margin-top: -12px">&nbsp;</span></div>
     <div ng-show="toAddress"><i class="fa fa-dot-circle-o" style="color: gray"></i> {{ toAddress.name }}, {{ toAddress.location.lon | round }}, {{ toAddress.location.lat | round }}</div>
     <br/>
     <ul id="route-list">
-        <li ng-repeat="direction in directions" ng-click="selectRoute(direction.routeId)" ng-class="{active:showRoute(direction.routeId)}">
-            <div class="routeheader">
-                <div class="route-item-name">{{ direction.routeName }}</div>
-                <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
-            </div>
-            <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
-                <li ng-repeat="feature in direction.features">
-                    <div><div class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}</div>
-                </li>
-            </ul>
+        <li ng-repeat="direction in directions" ng-click="selectRoute(direction.routeId)">
+            <div class="routedesc" ng-class="{active:showRoute(direction.routeId)}">
+                <div class=" routeheader">
+                    <div class="route-item-name">{{ direction.routeName }}</div>
+                    <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
+                </div>
+                <div class="routestats">
+                    <img src="/images/car-icon.png" height="20" /> {{direction.TotalTollSmall}}kr
+                    <img src="/images/Truck-icon.png" height="20" /> {{direction.TotalTollLarge}}kr
+                    </div>
+
+                    <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
+                        <li ng-repeat="feature in direction.features">
+                            <div><div class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}</div>
+                        </li>
+                    </ul>
+                </div>
         </li>
     </ul>
 </div>

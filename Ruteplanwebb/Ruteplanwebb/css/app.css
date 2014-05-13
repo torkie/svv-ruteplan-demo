@@ -101,15 +101,14 @@ span {
 
 .routeheader {
     padding: 0.5em;
-    margin-bottom: 5px;
     background-color: lightgray;
     border: 1px darkgray solid;
-    border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
     cursor: pointer;
 }
 
-.active > .routeheader{
+.active .routeheader{
     background-color: black !important;
     border: 0;
     border-bottom-color: transparent;
@@ -122,13 +121,26 @@ span {
     background-color: #f5f5f5;
     border: 1px solid lightgray;
     color:black;
-    border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+}
+.routestats {
+    padding: 5px;
+    border-bottom: 1px solid darkgray;
+}
+.routedesc {
+    margin-bottom: 5px;
 }
 
-#route-desc-list > li {
-    border: 1px transparent solid;
+#route-desc-list li {
+    border: 1px transparent dotted;
     border-bottom-color: darkgray;
+    padding-left: 5px;
+}
+
+#route-desc-list li:hover {
+    background-color: lightgray;
+    cursor: pointer;
 }
 
 .route-item-name {
@@ -141,7 +153,8 @@ span {
     -moz-border-radius: 2px;
     padding: 3px;
     display: inline-block;
-    margin:3px;
+    margin: 3px;
+    margin-left: 0;
     border: 1px solid gray;
     font-size:10px;
 }

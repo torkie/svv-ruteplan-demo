@@ -52,6 +52,10 @@ angular.module("routing", [])
             });
 
             var directions = data.directions;
+            for (var i = 0; i < directions.length; i++) {
+                directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
+                directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
+            }
 
             callback(bounds, features, directions);
         });

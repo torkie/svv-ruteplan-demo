@@ -20,6 +20,8 @@
   <ItemGroup>
     <Content Include="css\app.css" />
     <Content Include="debug.html" />
+    <Content Include="images\car-icon.gif" />
+    <Content Include="images\car-icon.png" />
     <Content Include="images\markers-matte%402x.png" />
     <Content Include="images\markers-matte.png" />
     <Content Include="images\markers-plain.png" />
@@ -27,6 +29,7 @@
     <Content Include="images\markers-shadow.png" />
     <Content Include="images\markers-soft%402x.png" />
     <Content Include="images\markers-soft.png" />
+    <Content Include="images\Truck-icon.png" />
     <Content Include="js\helpers\OpenLayers.Awsome.Icon.js" />
     <Content Include="lib\angular\angular-context-menu.js" />
     <Content Include="lib\angular\angular-ui-router.min.js" />
