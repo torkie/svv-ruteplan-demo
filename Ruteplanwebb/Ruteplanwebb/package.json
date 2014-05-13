@@ -11,6 +11,14 @@
   "devDependencies": {
     "grunt": "^0.4.4",
     "grunt-ts": "^1.11.2",
+    "karma": "^0.12.16",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
     "typescript": "^1.0.0"
+  },
+  "scripts": {
+    "pretest": "npm install",
+    "test": "karma start tests/karma.conf.js",
+    "test-single-run": "karma start tests/karma.conf.js --single-run"
   }
 }
