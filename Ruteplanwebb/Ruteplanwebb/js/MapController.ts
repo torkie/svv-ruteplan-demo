@@ -55,6 +55,14 @@ class MapController {
             );
         };
 
+        $scope.reverseRoute = function () {
+            var from = $scope.fromAddress;
+            $scope.fromAddress = $scope.toAddress;
+            $scope.toAddress = from;
+
+            $scope.updateMarkers();
+        }
+
         $scope.updateMarkers = () => {
             $scope.markerLayer.clearMarkers();
 
