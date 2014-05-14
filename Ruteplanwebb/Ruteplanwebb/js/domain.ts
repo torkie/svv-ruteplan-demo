@@ -15,6 +15,14 @@ module SVV.RutePlan {
 
     export class RouteResponseDirection {
         summary: RouteResponseSummary;
+        features: RouteResponseDirectionFeature[];
+    }
+
+    export class RouteResponseDirectionFeature {
+        attributes : RouteResponseDirectionFeatureAttributes;
+    }
+     export class RouteResponseDirectionFeatureAttributes {
+        text : string;
     }
 
     export class ViewDirection extends RouteResponseDirection {
@@ -22,6 +30,11 @@ module SVV.RutePlan {
         TotalTollSmall: number;
         Bounds: OpenLayers.Bounds;
         routeId : number;
+    }
+
+    export class ViewDirectionFeature extends RouteResponseDirectionFeature {
+        roadCat: string;
+        roadNumber: number;
     }
 
     export class RouteResponseRoute {

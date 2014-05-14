@@ -27,18 +27,6 @@ class RoutingService {
         }).success((data: SVV.RutePlan.RouteResponse) => {
             var forEach = angular.forEach;
 
-            // calculate bounding box for all routes
-            var bounds = null;
-            angular.forEach(data.directions, direction => {
-                var bbox = direction.summary.envelope;
-                var routeBounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
-                if (bounds == null) {
-                    bounds = routeBounds;
-                } else {
-                    bounds.extend(routeBounds);
-                }
-            });
-
             // create geometry features from routes
             var features = [];
             forEach(data.routes.features, route => {
@@ -54,23 +42,28 @@ class RoutingService {
                 features.push(new OpenLayers.Feature.Vector(geometry));
             });
 
-            forEach(data.directions, (direction) => {
-                forEach(direction.features, (feature) => {
-                    feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
-                    feature.roadNumber = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2");
-                    feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
-                });
-            });
-
+            // calculate bounding box for all routes
+            var totalBounds = null;
             var directions = <SVV.RutePlan.ViewDirection[]>data.directions;
             for (var i = 0; i < directions.length; i++) {
+                forEach(directions[i].features, (feature: SVV.RutePlan.ViewDirectionFeature) => {
+                    feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
+                    feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
+                    feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
+                });
                 directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
                 directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
                 var bbox = directions[i].summary.envelope;
                 directions[i].Bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
+
+                if (totalBounds == null) {
+                    totalBounds = directions[i].Bounds;
+                } else {
+                    totalBounds.extend(directions[i].Bounds);
+                }
             }
 
-            callback(bounds, features, directions);
+            callback(totalBounds, features, directions);
         });
     };
 
