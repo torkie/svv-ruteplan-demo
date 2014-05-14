@@ -37,7 +37,11 @@
 
     <br/>
 
-    <ul id="route-list">
+    <div id="calculation-in-progress-marker" ng-show="directions == null && fromAddress && toAddress">
+        <img src="images/ajax-loader.gif" />
+    </div>
+
+    <ul id="route-list" ng-show="directions != null">
         <li ng-repeat="direction in directions" ng-click="selectRoute(direction.routeId)">
             <div class="routedesc" ng-class="{active:showRoute(direction.routeId)}">
                 <div class=" routeheader">
