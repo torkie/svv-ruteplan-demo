@@ -63,6 +63,14 @@ module SVV.RutePlan {
         ymax: number;
     }
 
+    export interface IRoutingService {
+        calculateRoute(stops: OpenLayers.LonLat[], callback: SVV.RutePlan.IRouteCalculationCallback);
+    }
+
+    export interface IGeoCodeService {
+        getLocations(val:string) : ng.IPromise<SVV.RutePlan.AddressItem[]>;
+    }
+
     export interface IRouteCalculationCallback {
         (totalBounds : OpenLayers.Bounds, features : RouteResponseRouteFeature[], directions : ViewDirection[]) : void;
     }

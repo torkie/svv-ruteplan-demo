@@ -6,7 +6,7 @@
 angular.module("routing", [])
     .factory("routingService", $http => new RoutingService($http));
 
-class RoutingService {
+class RoutingService implements SVV.RutePlan.IRoutingService {
     constructor(private $http: ng.IHttpService) {
     }
 
@@ -67,35 +67,7 @@ class RoutingService {
         });
     };
 
-    getLocationsSk = val => this.$http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
-        params: {
-            navn: val + "*",
-            maxAnt: 20,
-            antPerSide: 20,
-            eksakteForst: true
-        }
-    }).then(xmlRes => {
-        var x2Js = new X2JS();
-        var res = x2Js.xml_str2json(xmlRes.data);
-        var addresses = new Array<SVV.RutePlan.AddressItem>();
-
-        var add = (item: any) => {
-            var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
-            var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
-            var address = new SVV.RutePlan.AddressItem(name, location);
-            addresses.push(address);
-        };
-
-        if (angular.isArray(res.sokRes.stedsnavn)) {
-            angular.forEach(res.sokRes.stedsnavn, item => {
-                add(item);
-            });
-        } else if (res.sokRes.stedsnavn != null) {
-            add(res.sokRes.stedsnavn);
-        }
-
-        return addresses;
-    });
+    
 }
 
 

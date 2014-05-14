@@ -7,10 +7,10 @@
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
-    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: RoutingService, $location : ng.ILocationService) {
+    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: SVV.RutePlan.IRoutingService,  geoCodeService: SVV.RutePlan.IGeoCodeService, $location : ng.ILocationService) {
 
         $scope.getLocations = (val) => {
-            return routingService.getLocationsSk(val);
+            return geoCodeService.getLocations(val);
         };
 
         $scope.doRouteCalculation = () => {
