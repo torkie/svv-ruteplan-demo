@@ -20,10 +20,11 @@ class MapController {
             var locations = [];
             var idx = 0;
             locations[idx++] = $scope.fromAddress.location;
+
             if ($scope.intermediateAddresses != null) {
-                for(var ai in $scope.intermediateAddresses) {
-                    locations[idx++] = ai.location;
-                }
+                angular.forEach($scope.intermediateAddresses, (med) => {
+                    locations[idx++] = med.location;
+                });
             }
             locations[idx] = $scope.toAddress.location;
 
@@ -99,18 +100,22 @@ class MapController {
                 $scope.intermediateAddresses = [];
             }
 
+            var latlon = $scope.map.getLonLatFromPixel(loc);
+
             var idx = $scope.intermediateAddresses.length;
-            $scope.intermediateAddresses[idx] = new AddressItem("Via: Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.intermediateAddresses[idx] = new AddressItem("Via: Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
         $scope.contextMenuSetFrom = (loc:any) => {
-            $scope.fromAddress = new AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            var latlon = $scope.map.getLonLatFromPixel(loc);
+            $scope.fromAddress = new AddressItem("Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
         $scope.contextMenuSetTo = (loc: any) => {
-            $scope.toAddress = new AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            var latlon = $scope.map.getLonLatFromPixel(loc);
+            $scope.toAddress = new AddressItem("Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
