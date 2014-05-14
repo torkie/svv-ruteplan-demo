@@ -61,6 +61,13 @@ span {
     transition: text-shadow 1s;
 }
 
+#route-header-list > li.intermediate {
+    padding-left: 5px;
+}
+
+#route-header-list > li.intermediate::before {
+    content: "\f04c";
+}
 
 #routedesc {
     position: absolute;

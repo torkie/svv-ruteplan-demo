@@ -20,7 +20,7 @@
             <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetFrom(contextMenuLocation)"><i class="fa fa-play" style="color: green;margin-right: 5px"></i> Sett startpunkt</a>
         </li>
         <li role="presentation" ng-show="fromAddress && toAddress">
-            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuAddIntermediate(contextMenuLocation)"><i class="fa fa-expand" style="color: green;margin-right: 5px"></i> Legg til viapunkt</a>
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuAddIntermediate(contextMenuLocation)"><i class="fa fa-pause" style="color: rgb(238,146,46) ;margin-right: 5px"></i> Legg til viapunkt</a>
         </li>
         <li role="presentation">
             <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetTo(contextMenuLocation)"><i class="fa fa-stop" style="color: red;margin-right: 5px"></i> Sett Sluttpunkt</a>
@@ -31,6 +31,9 @@
     <h4>Rute</h4>
     <ul id="route-header-list">
         <li ng-show="fromAddress"> {{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }}</li>
+        <li class="intermediate" ng-repeat="addr in intermediateAddresses">
+            {{ addr.name }}, {{ addr.location.lon | round }}, {{ addr.location.lat | round }}
+        </li>
         <li ng-show="fromAddress && toAddress" class="divider">
             <span style="width: 200px; display: inline-block; height: 12px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px;">&nbsp;</span>
             <span id="reverse-order-button" class="fa fa-random" style="color: grey;" ng-click="reverseRoute()"></span>
