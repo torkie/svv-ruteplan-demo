@@ -1,3 +1,4 @@
+///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 
 module SVV.RutePlan {
