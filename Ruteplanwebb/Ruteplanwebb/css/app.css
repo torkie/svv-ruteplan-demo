@@ -39,34 +39,25 @@ span {
 
 #route-header-list > li:first-child::before {
     content: "\f144";
+    color: green;
+}
+
+#route-header-list > li.intermediate::before {
+    content: "\f04c";
+    color: rgb(238,146,46);
 }
 
 #route-header-list > li:last-child::before {
     content: "\f192";
-}
-
-
-#route-header-list > li.divider:before {
-    content: "\f175";
-    padding-left: 3px;
-    color: lightgrey;
+    color: red;
 }
 
 #reverse-order-button {
-    padding-left: 40px;
 }
 
 #reverse-order-button:hover {
     text-shadow: 0.1em 0.1em 0.05em #333;
     transition: text-shadow 1s;
-}
-
-#route-header-list > li.intermediate {
-    padding-left: 5px;
-}
-
-#route-header-list > li.intermediate::before {
-    content: "\f04c";
 }
 
 #routedesc {
