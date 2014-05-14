@@ -9,18 +9,18 @@ interface IMapControllerScope extends ng.IScope {
     reverseRoute();
     updateMarkers();
     map: OpenLayers.Map;
-    fromAddress: AddressItem;
-    intermediateAddresses: AddressItem[];
-    toAddress: AddressItem;
+    fromAddress: SVV.RutePlan.AddressItem;
+    intermediateAddresses: SVV.RutePlan.AddressItem[];
+    toAddress: SVV.RutePlan.AddressItem;
     markerLayer: OpenLayers.Layer.Markers;
     routeLayer: OpenLayers.Layer.Vector;
-    directions: any;
+    directions: SVV.RutePlan.ViewDirection[];
     contextMenuHandleWindowClicked : any;
     contextMenuSetFrom(windowLocation:any);
     contextMenuAddIntermediate(windowLocation:any);
     contextMenuSetTo(windowLocation: any);
-    zoomToDirection(routeId :any);
+    zoomToDirection(routeId :number);
     selectRoute: any;
     showRoute: any;
-    selectedRouteId: any;
+    selectedRouteId: number;
 }

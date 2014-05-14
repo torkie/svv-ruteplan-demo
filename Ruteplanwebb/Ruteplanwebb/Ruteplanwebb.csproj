@@ -410,6 +410,7 @@
     <Content Include="web.config" />
     <TypeScriptCompile Include="js\routing.ts" />
     <TypeScriptCompile Include="js\scopes.ts" />
+    <TypeScriptCompile Include="js\searching.ts" />
     <TypeScriptCompile Include="tests\js\helpers\CompressedGeometryHelperTests.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-cookies.d.ts" />

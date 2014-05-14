@@ -4,9 +4,13 @@
 ///<reference path="domain.ts"/>
 
 angular.module("routing", [])
-    .factory("routingService", $http => {
+    .factory("routingService", $http => new RoutingService($http));
 
-    var calculateRoute = (stops: OpenLayers.LonLat[], callback: any) => {
+class RoutingService implements SVV.RutePlan.IRoutingService {
+    constructor(private $http: ng.IHttpService) {
+    }
+
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RutePlan.IRouteCalculationCallback) => {
         var strings = [];
         var idx = 0;
         angular.forEach(stops, (stop) => {
@@ -14,26 +18,14 @@ angular.module("routing", [])
         });
         var stopsArg = strings.join(";");
 
-        $http.get('routingService', {
+        this.$http.get('routingService', {
             params: {
                 stops: stopsArg,
                 format: "json",
                 lang: "nb-no"
             }
-        }).success((data: any) => {
+        }).success((data: SVV.RutePlan.RouteResponse) => {
             var forEach = angular.forEach;
-
-            // calculate bounding box for all routes
-            var bounds = null;
-            angular.forEach(data.directions, direction => {
-                var bbox = direction.summary.envelope;
-                var routeBounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
-                if (bounds == null) {
-                    bounds = routeBounds;
-                } else {
-                    bounds.extend(routeBounds);
-                }
-            });
 
             // create geometry features from routes
             var features = [];
@@ -50,59 +42,32 @@ angular.module("routing", [])
                 features.push(new OpenLayers.Feature.Vector(geometry));
             });
 
-            forEach(data.directions, (direction) => {
-                forEach(direction.features, (feature) => {
+            // calculate bounding box for all routes
+            var totalBounds = null;
+            var directions = <SVV.RutePlan.ViewDirection[]>data.directions;
+            for (var i = 0; i < directions.length; i++) {
+                forEach(directions[i].features, (feature: SVV.RutePlan.ViewDirectionFeature) => {
                     feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
-                    feature.roadNumber = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2");
+                    feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
                     feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
                 });
-            });
-
-            var directions = data.directions;
-            for (var i = 0; i < directions.length; i++) {
                 directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
                 directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
                 var bbox = directions[i].summary.envelope;
                 directions[i].Bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
+
+                if (totalBounds == null) {
+                    totalBounds = directions[i].Bounds;
+                } else {
+                    totalBounds.extend(directions[i].Bounds);
+                }
             }
 
-            callback(bounds, features, directions);
+            callback(totalBounds, features, directions);
         });
     };
 
-    var getLocationsSk = val => $http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
-        params: {
-            navn: val + "*",
-            maxAnt: 20,
-            antPerSide: 20,
-            eksakteForst: true
-        }
-    }).then(xmlRes => {
-        var x2Js = new X2JS();
-        var res = x2Js.xml_str2json(xmlRes.data);
-        var addresses = new Array<AddressItem>();
+    
+}
 
-        var add = (item: any) => {
-            var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
-            var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
-            var address = new AddressItem(name, location);
-            addresses.push(address);
-        };
 
-        if (angular.isArray(res.sokRes.stedsnavn)) {
-            angular.forEach(res.sokRes.stedsnavn, item => {
-                add(item);
-            });
-        } else if (res.sokRes.stedsnavn != null) {
-            add(res.sokRes.stedsnavn);
-        }
-
-        return addresses;
-    });
-
-    return {
-        calculateRoute: calculateRoute,
-        getLocationsSk: getLocationsSk
-    }
-
-});

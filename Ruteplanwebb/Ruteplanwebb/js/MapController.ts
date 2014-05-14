@@ -7,10 +7,10 @@
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
-    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: any, $location : ng.ILocationService) {
+    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: SVV.RutePlan.IRoutingService,  geoCodeService: SVV.RutePlan.IGeoCodeService, $location : ng.ILocationService) {
 
         $scope.getLocations = (val) => {
-            return routingService.getLocationsSk(val);
+            return geoCodeService.getLocations(val);
         };
 
         $scope.doRouteCalculation = () => {
@@ -29,7 +29,7 @@ class MapController {
             locations[idx] = $scope.toAddress.location;
 
             routingService.calculateRoute(locations,
-                (bounds, features, directions) => {
+                (bounds, features : SVV.RutePlan.RouteResponseRouteFeature[], directions : SVV.RutePlan.ViewDirection[]) => {
                     $scope.directions = directions;
 
                     // zoom map if current bounds does not contain route
@@ -67,7 +67,7 @@ class MapController {
             );
         };
 
-        $scope.reverseRoute = function () {
+        $scope.reverseRoute = () => {
             var from = $scope.fromAddress;
             $scope.fromAddress = $scope.toAddress;
             $scope.toAddress = from;
@@ -101,25 +101,24 @@ class MapController {
             }
 
             var latlon = $scope.map.getLonLatFromPixel(loc);
-
             var idx = $scope.intermediateAddresses.length;
-            $scope.intermediateAddresses[idx] = new AddressItem("Via: Punkt i kartet", latlon);
+            $scope.intermediateAddresses[idx] = new SVV.RutePlan.AddressItem("Via: Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
         $scope.contextMenuSetFrom = (loc:any) => {
-            var latlon = $scope.map.getLonLatFromPixel(loc);
-            $scope.fromAddress = new AddressItem("Punkt i kartet", latlon);
+			var latlon = $scope.map.getLonLatFromPixel(loc);
+            $scope.fromAddress = new SVV.RutePlan.AddressItem("Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
         $scope.contextMenuSetTo = (loc: any) => {
-            var latlon = $scope.map.getLonLatFromPixel(loc);
-            $scope.toAddress = new AddressItem("Punkt i kartet", latlon);
+			var latlon = $scope.map.getLonLatFromPixel(loc);
+            $scope.toAddress = new SVV.RutePlan.AddressItem("Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
-        $scope.selectedRouteId = "";
+        $scope.selectedRouteId = null;
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;

@@ -1,17 +1,77 @@
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 
-/* Holder for addresses returned from autocomplete*/
-class AddressItem {
-    constructor(public name: string, public location: OpenLayers.LonLat) {
+module SVV.RutePlan {
+
+    /* Holder for addresses returned from autocomplete*/
+    export class AddressItem {
+        constructor(public name: string, public location: OpenLayers.LonLat) {
+        }
     }
-}
 
-class RouteResponseHolder {
-    data: RouteResponse;
-}
+    export class RouteResponse {
+        directions: RouteResponseDirection[];
+        routes: RouteResponseRoute;
+    }
 
-class RouteResponse {
-    totalDistance: number;
-    totalTravelTime: number;
-    routeEnvelope: number[];
+    export class RouteResponseDirection {
+        summary: RouteResponseSummary;
+        features: RouteResponseDirectionFeature[];
+    }
+
+    export class RouteResponseDirectionFeature {
+        attributes : RouteResponseDirectionFeatureAttributes;
+    }
+     export class RouteResponseDirectionFeatureAttributes {
+        text : string;
+    }
+
+    export class ViewDirection extends RouteResponseDirection {
+        TotalTollLarge: number;
+        TotalTollSmall: number;
+        Bounds: OpenLayers.Bounds;
+        routeId : number;
+    }
+
+    export class ViewDirectionFeature extends RouteResponseDirectionFeature {
+        roadCat: string;
+        roadNumber: number;
+    }
+
+    export class RouteResponseRoute {
+        features: RouteResponseRouteFeature[];
+    }
+
+    export class RouteResponseRouteFeature {
+        attributes: Attributes[];
+    }
+
+    export class Attributes {
+
+    }
+
+
+    export class RouteResponseSummary {
+        totalDistance: number;
+        totalTravelTime: number;
+        envelope: Envelope;
+    }
+
+    export class Envelope {
+        xmin: number;
+        ymin: number;
+        xmax: number;
+        ymax: number;
+    }
+
+    export interface IRoutingService {
+        calculateRoute(stops: OpenLayers.LonLat[], callback: SVV.RutePlan.IRouteCalculationCallback);
+    }
+
+    export interface IGeoCodeService {
+        getLocations(val:string) : ng.IPromise<SVV.RutePlan.AddressItem[]>;
+    }
+
+    export interface IRouteCalculationCallback {
+        (totalBounds : OpenLayers.Bounds, features : RouteResponseRouteFeature[], directions : ViewDirection[]) : void;
+    }
 }
