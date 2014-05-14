@@ -15,6 +15,7 @@ class MapController {
 
         $scope.doRouteCalculation = () => {
             $scope.routeLayer.removeAllFeatures();
+            $scope.directions = null;
 
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
                 (bounds, features, directions) => {

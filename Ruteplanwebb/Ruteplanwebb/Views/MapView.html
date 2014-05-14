@@ -28,7 +28,10 @@
     <h4>Rute</h4>
     <ul id="route-header-list">
         <li ng-show="fromAddress"> {{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }}</li>
-        <li ng-show="fromAddress && toAddress" class="divider"><span style="width: 200px; display: inline-block; height: 12px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px;">&nbsp;</span><span id="reverse-order-button" class="fa fa-random" style="color: grey;" ng-click="reverseRoute()"></span></li>
+        <li ng-show="fromAddress && toAddress" class="divider">
+            <span style="width: 200px; display: inline-block; height: 12px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px;">&nbsp;</span>
+            <span id="reverse-order-button" class="fa fa-random" style="color: grey;" ng-click="reverseRoute()"></span>
+        </li>
         <li ng-show="toAddress">{{ toAddress.name }}, {{ toAddress.location.lon | round }}, {{ toAddress.location.lat | round }}</li>
     </ul>
 
