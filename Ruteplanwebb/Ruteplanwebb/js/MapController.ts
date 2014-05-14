@@ -72,7 +72,10 @@ class MapController {
             $scope.fromAddress = $scope.toAddress;
             $scope.toAddress = from;
 
-            $scope.intermediateAddresses.reverse();
+            if ($scope.intermediateAddresses != undefined) {
+                $scope.intermediateAddresses.reverse();
+            }
+
 
             $scope.updateMarkers();
         }
