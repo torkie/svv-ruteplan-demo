@@ -148,6 +148,31 @@ span {
     font-weight: bold;
 }
 
+.routeheader .tool {
+    padding: 4px;
+}
+
+.routeheader .tool:hover {
+    font-size: 120%;
+    color: black;
+}
+
+.active .routeheader .tool:hover {
+    font-size: 120%;
+    color: #f0e68c; 
+}
+
+.routeheader .tool.zoom:hover:after {
+    content: "Zoom til";
+    font-family: 'Segoe UI', sans-serif;
+    margin-left: 3px;
+}
+.routeheader .tool.download:hover:after {
+    font-family: 'Segoe UI', sans-serif;
+    content: "Last ned";
+    margin-left: 3px;
+}
+
 .signpost {
     border-radius: 2px;
     -moz-border-radius: 2px;

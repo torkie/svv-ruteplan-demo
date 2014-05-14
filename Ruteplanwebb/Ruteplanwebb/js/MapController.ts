@@ -93,6 +93,9 @@ class MapController {
 
         $scope.showRoute = id => id === $scope.selectedRouteId;
 
+        $scope.zoomToDirection = (routeId: number) => {
+            $scope.map.zoomToExtent($scope.directions[routeId].Bounds);
+        };
 
         if ($location.search().from != null)
             $scope.fromAddress = JSON.parse($location.search().from);

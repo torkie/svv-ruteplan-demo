@@ -55,6 +55,8 @@ angular.module("routing", [])
             for (var i = 0; i < directions.length; i++) {
                 directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
                 directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
+                var bbox = directions[i].summary.envelope;
+                directions[i].Bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
             }
 
             callback(bounds, features, directions);

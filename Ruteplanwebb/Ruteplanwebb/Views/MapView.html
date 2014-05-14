@@ -33,7 +33,8 @@
     <ul id="route-list">
         <li ng-repeat="direction in directions" ng-click="selectRoute(direction.routeId)">
             <div class="routedesc" ng-class="{active:showRoute(direction.routeId)}">
-                <div class=" routeheader">
+                <div class=" routeheader" style="position: relative">
+                    <div style="position: absolute; right: 0"><i class="fa fa-cloud-download tool download"></i><i class="fa fa-search tool zoom" ng-click="zoomToDirection(direction.routeId);"></i></div>
                     <div class="route-item-name">{{ direction.routeName }}</div>
                     <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
                 </div>
