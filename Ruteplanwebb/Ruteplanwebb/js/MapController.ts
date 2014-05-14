@@ -15,6 +15,7 @@ class MapController {
 
         $scope.doRouteCalculation = () => {
             $scope.routeLayer.removeAllFeatures();
+            $scope.directions = null;
 
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
                 (bounds, features, directions) => {
@@ -54,6 +55,14 @@ class MapController {
                 }
             );
         };
+
+        $scope.reverseRoute = function () {
+            var from = $scope.fromAddress;
+            $scope.fromAddress = $scope.toAddress;
+            $scope.toAddress = from;
+
+            $scope.updateMarkers();
+        }
 
         $scope.updateMarkers = () => {
             $scope.markerLayer.clearMarkers();
