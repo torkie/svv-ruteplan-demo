@@ -49,4 +49,8 @@ module SVV.RutePlan {
         xmax: number;
         ymax: number;
     }
+
+    export interface IRouteCalculationCallback {
+        (totalBounds : OpenLayers.Bounds, features : RouteResponseRouteFeature[], directions : ViewDirection[]) : void;
+    }
 }

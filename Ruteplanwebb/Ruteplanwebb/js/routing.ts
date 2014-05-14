@@ -4,10 +4,14 @@
 ///<reference path="domain.ts"/>
 
 angular.module("routing", [])
-    .factory("routingService", $http => {
+    .factory("routingService", $http => new RoutingService($http));
 
-    var calculateRoute = (from: OpenLayers.LonLat, to: OpenLayers.LonLat, callback: any) => {
-        $http.get('routingService', {
+class RoutingService {
+    constructor(private $http: ng.IHttpService) {
+    }
+
+    calculateRoute = (from: OpenLayers.LonLat, to: OpenLayers.LonLat, callback: SVV.RutePlan.IRouteCalculationCallback) => {
+        this.$http.get('routingService', {
             params: {
                 stops: from.lon + "," + from.lat + ";" + to.lon + "," + to.lat,
                 format: "json",
@@ -63,7 +67,7 @@ angular.module("routing", [])
         });
     };
 
-    var getLocationsSk = val => $http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
+    getLocationsSk = val => this.$http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
         params: {
             navn: val + "*",
             maxAnt: 20,
@@ -92,10 +96,6 @@ angular.module("routing", [])
 
         return addresses;
     });
+}
 
-    return {
-        calculateRoute: calculateRoute,
-        getLocationsSk: getLocationsSk
-    }
 
-});
