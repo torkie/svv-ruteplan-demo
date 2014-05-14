@@ -18,7 +18,7 @@ class MapController {
             $scope.directions = null;
 
             routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
-                (bounds, features, directions) => {
+                (bounds, features : SVV.RutePlan.RouteResponseRouteFeature[], directions : SVV.RutePlan.ViewDirection[]) => {
                     $scope.directions = directions;
 
                     // zoom map if current bounds does not contain route
@@ -56,7 +56,7 @@ class MapController {
             );
         };
 
-        $scope.reverseRoute = function () {
+        $scope.reverseRoute = () => {
             var from = $scope.fromAddress;
             $scope.fromAddress = $scope.toAddress;
             $scope.toAddress = from;
@@ -85,16 +85,16 @@ class MapController {
         };
 
         $scope.contextMenuSetFrom = (loc:any) => {
-            $scope.fromAddress = new AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.fromAddress = new SVV.RutePlan.AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
             $scope.updateMarkers();
         };
 
         $scope.contextMenuSetTo = (loc: any) => {
-            $scope.toAddress = new AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.toAddress = new SVV.RutePlan.AddressItem("Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
             $scope.updateMarkers();
         };
 
-        $scope.selectedRouteId = "";
+        $scope.selectedRouteId = null;
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;

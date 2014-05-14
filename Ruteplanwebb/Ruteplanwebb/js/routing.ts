@@ -13,7 +13,7 @@ angular.module("routing", [])
                 format: "json",
                 lang: "nb-no"
             }
-        }).success((data: any) => {
+        }).success((data: SVV.RutePlan.RouteResponse) => {
             var forEach = angular.forEach;
 
             // calculate bounding box for all routes
@@ -51,7 +51,7 @@ angular.module("routing", [])
                 });
             });
 
-            var directions = data.directions;
+            var directions = <SVV.RutePlan.ViewDirection[]>data.directions;
             for (var i = 0; i < directions.length; i++) {
                 directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
                 directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
@@ -73,12 +73,12 @@ angular.module("routing", [])
     }).then(xmlRes => {
         var x2Js = new X2JS();
         var res = x2Js.xml_str2json(xmlRes.data);
-        var addresses = new Array<AddressItem>();
+        var addresses = new Array<SVV.RutePlan.AddressItem>();
 
         var add = (item: any) => {
             var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
             var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
-            var address = new AddressItem(name, location);
+            var address = new SVV.RutePlan.AddressItem(name, location);
             addresses.push(address);
         };
 

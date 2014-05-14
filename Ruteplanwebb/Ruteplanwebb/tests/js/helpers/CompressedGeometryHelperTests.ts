@@ -2,14 +2,14 @@
  ///<reference path="../../../js/helpers/CompressedGeometryHelper.ts"/>
 describe("fromStringRadix32 Tests", () => {
     it("+1lmo -> 55000", () => {
-        expect(SVV.Ruteplan.Helpers.CompressedGeometryHelper.fromStringRadix32("+1lmo")).toBe(55000);
+        expect(SVV.RutePlan.Helpers.CompressedGeometryHelper.fromStringRadix32("+1lmo")).toBe(55000);
     });
 
 });
 
 describe("compressedGeometry Tests", () => {
     it("+34+1lmo+0 -> [550 0]", () => {
-        var res = SVV.Ruteplan.Helpers.CompressedGeometryHelper.extractPointsFromCompressedGeometry("+34+1lmo+0");
+        var res = SVV.RutePlan.Helpers.CompressedGeometryHelper.extractPointsFromCompressedGeometry("+34+1lmo+0");
         expect(res).toBeDefined();
         expect(res.length).toBe(1);
         expect(res[0].x).toBe(550);
@@ -17,7 +17,7 @@ describe("compressedGeometry Tests", () => {
     });
 
     it("+0+1+1+34+1dukkk+b7co0o+9c+0+0+34-9c-34|+34+0+71+0+71", () => {
-        var res = <SVV.Ruteplan.Helpers.Xyz[]>SVV.Ruteplan.Helpers.CompressedGeometryHelper.extractPointsFromCompressedGeometry("+0+1+1+34+1dukkk+b7co0o+9c+0+0+34-9c-34|+34+0+71+0+71");
+        var res = <SVV.RutePlan.Helpers.Xyz[]>SVV.RutePlan.Helpers.CompressedGeometryHelper.extractPointsFromCompressedGeometry("+0+1+1+34+1dukkk+b7co0o+9c+0+0+34-9c-34|+34+0+71+0+71");
         expect(res).toBeDefined();
         expect(res.length).toBe(4);
         expect(res[0].x).toBe(481901);
