@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html ng-app>
+<html ng-app="debugApp">
 <head>
 </head>
 <body>
@@ -16,11 +16,24 @@
     </form>
 </div>
 
+<h2>Shared data</h2>
+
+<div ng-controller="sharedDataController1">
+    <input type="text" ng-model="shared.stuff"/>
+</div>
+
+<div ng-controller="sharedDataController2">
+    <pre>{{shared.stuff}}</pre>
+</div>
+
 <script src="lib/angular/angular.js"></script>
 <script src="js/helpers/CompressedGeometryHelper.js"></script>
 
 <script>
-    function geometryController($scope) {
+
+    var app = angular.module("debugApp", []);
+
+    app.controller("geometryController", function($scope) {
         $scope.geometry = "+34+p06kg+jq450o+cg+ls+ls+s4+ls+io+12c+fk+io+0+18k-68+1o8-io+2kc-18k+1bo-p0+12c-12c+p0-30s";
         $scope.decompressedGeometry = "";
 
@@ -32,7 +45,24 @@
                 $scope.decompressedGeometry = "" + err;
             }
         };
-    }
+    });
+
+    app.controller("sharedDataController1", function($scope, sharedData) {
+        $scope.shared = sharedData;
+    });
+
+    app.controller("sharedDataController2", function($scope, sharedData) {
+        $scope.shared = sharedData;
+    });
+
+    app.factory("sharedData", function() {
+        var stuff = "Some stuff";
+
+        return {
+            stuff: stuff
+        };
+    });
+
 </script>
 
 </body>
