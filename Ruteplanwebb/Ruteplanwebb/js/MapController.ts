@@ -125,6 +125,14 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.removeIntermediate = (item:SVV.RutePlan.AddressItem) => {
+            var idx = $scope.intermediateAddresses.indexOf(item);
+
+            $scope.intermediateAddresses.splice(idx, 1);
+
+            $scope.updateMarkers();
+        }
+
         $scope.contextMenuSetFrom = (loc:any) => {
 			var latlon = $scope.map.getLonLatFromPixel(loc);
             $scope.fromAddress = new SVV.RutePlan.AddressItem("Punkt i kartet", latlon);

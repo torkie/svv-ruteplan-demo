@@ -55,6 +55,14 @@ span {
 #reverse-order-button {
 }
 
+#remove-intermediate-button {
+    color: darkblue;
+}
+#remove-intermediate-button:hover {
+    text-shadow: 0.1em 0.1em 0.05em #333;
+    transition: text-shadow 1s;
+}
+
 #reverse-order-button:hover {
     text-shadow: 0.1em 0.1em 0.05em #333;
     transition: text-shadow 1s;
