@@ -17,7 +17,17 @@ class MapController {
             $scope.routeLayer.removeAllFeatures();
             $scope.directions = null;
 
-            routingService.calculateRoute($scope.fromAddress.location, $scope.toAddress.location,
+            var locations = [];
+            var idx = 0;
+            locations[idx++] = $scope.fromAddress.location;
+            if ($scope.intermediateAddresses != null) {
+                for(var ai in $scope.intermediateAddresses) {
+                    locations[idx++] = ai.location;
+                }
+            }
+            locations[idx] = $scope.toAddress.location;
+
+            routingService.calculateRoute(locations,
                 (bounds, features : SVV.RutePlan.RouteResponseRouteFeature[], directions : SVV.RutePlan.ViewDirection[]) => {
                     $scope.directions = directions;
 
@@ -82,6 +92,16 @@ class MapController {
                 $scope.doRouteCalculation();
             }
 
+        };
+
+        $scope.contextMenuAddIntermediate = (loc:any) => {
+            if ($scope.intermediateAddresses === undefined) {
+                $scope.intermediateAddresses = [];
+            }
+
+            var idx = $scope.intermediateAddresses.length;
+            $scope.intermediateAddresses[idx] = new SVV.RutePlan.AddressItem("Via: Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.updateMarkers();
         };
 
         $scope.contextMenuSetFrom = (loc:any) => {

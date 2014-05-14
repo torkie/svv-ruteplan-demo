@@ -10,12 +10,14 @@ interface IMapControllerScope extends ng.IScope {
     updateMarkers();
     map: OpenLayers.Map;
     fromAddress: SVV.RutePlan.AddressItem;
-    toAddress:  SVV.RutePlan.AddressItem;
+    intermediateAddresses: SVV.RutePlan.AddressItem[];
+    toAddress: SVV.RutePlan.AddressItem;
     markerLayer: OpenLayers.Layer.Markers;
     routeLayer: OpenLayers.Layer.Vector;
     directions: SVV.RutePlan.ViewDirection[];
     contextMenuHandleWindowClicked : any;
     contextMenuSetFrom(windowLocation:any);
+    contextMenuAddIntermediate(windowLocation:any);
     contextMenuSetTo(windowLocation: any);
     zoomToDirection(routeId :number);
     selectRoute: any;

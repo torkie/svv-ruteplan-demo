@@ -10,10 +10,17 @@ class RoutingService {
     constructor(private $http: ng.IHttpService) {
     }
 
-    calculateRoute = (from: OpenLayers.LonLat, to: OpenLayers.LonLat, callback: SVV.RutePlan.IRouteCalculationCallback) => {
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RutePlan.IRouteCalculationCallback) => {
+        var strings = [];
+        var idx = 0;
+        angular.forEach(stops, (stop) => {
+            strings[idx++] = stop.lon+","+stop.lat;
+        });
+        var stopsArg = strings.join(";");
+
         this.$http.get('routingService', {
             params: {
-                stops: from.lon + "," + from.lat + ";" + to.lon + "," + to.lat,
+                stops: stopsArg,
                 format: "json",
                 lang: "nb-no"
             }

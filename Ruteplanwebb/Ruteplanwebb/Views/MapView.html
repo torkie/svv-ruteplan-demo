@@ -19,6 +19,9 @@
         <li role="presentation">
             <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetFrom(contextMenuLocation)"><i class="fa fa-play" style="color: green;margin-right: 5px"></i> Sett startpunkt</a>
         </li>
+        <li role="presentation" ng-show="fromAddress && toAddress">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuAddIntermediate(contextMenuLocation)"><i class="fa fa-expand" style="color: green;margin-right: 5px"></i> Legg til viapunkt</a>
+        </li>
         <li role="presentation">
             <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetTo(contextMenuLocation)"><i class="fa fa-stop" style="color: red;margin-right: 5px"></i> Sett Sluttpunkt</a>
         </li>
