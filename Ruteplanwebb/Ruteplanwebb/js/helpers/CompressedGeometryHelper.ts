@@ -1,4 +1,4 @@
-﻿module SVV.RutePlan.Helpers {
+﻿module SVV.RoutePlanning.Helpers {
    export class Xy {
         x: number;
         y: number;

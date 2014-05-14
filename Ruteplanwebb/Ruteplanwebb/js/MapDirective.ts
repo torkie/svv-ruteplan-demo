@@ -69,7 +69,7 @@ class MapDirective {
             mousePos.addTo(this.map);
             var localMap = this.map;
 
-            function updatePoints(value: SVV.RutePlan.AddressItem[]): void {
+            function updatePoints(value: SVV.RoutePlanning.AddressItem[]): void {
                 if (this.markers != null) {
                     angular.forEach(this.markers, item => {
                         localMap.removeLayer(item);
