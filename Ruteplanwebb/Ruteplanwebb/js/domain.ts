@@ -1,6 +1,6 @@
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 
-module SVV.RutePlan {
+module SVV.RoutePlanning {
 
     /* Holder for addresses returned from autocomplete*/
     export class AddressItem {
@@ -64,11 +64,11 @@ module SVV.RutePlan {
     }
 
     export interface IRoutingService {
-        calculateRoute(stops: OpenLayers.LonLat[], callback: SVV.RutePlan.IRouteCalculationCallback);
+        calculateRoute(stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback);
     }
 
     export interface IGeoCodeService {
-        getLocations(val:string) : ng.IPromise<SVV.RutePlan.AddressItem[]>;
+        getLocations(val:string) : ng.IPromise<SVV.RoutePlanning.AddressItem[]>;
     }
 
     export interface IRouteCalculationCallback {

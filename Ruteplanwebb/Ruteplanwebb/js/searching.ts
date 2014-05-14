@@ -6,7 +6,7 @@
 angular.module("searching", [])
     .factory("geoCodeService", $http => new KartVerketGeoCodeService($http));
 
-class KartVerketGeoCodeService implements SVV.RutePlan.IGeoCodeService {
+class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
     constructor(private $http: ng.IHttpService) {
     }
 
@@ -20,12 +20,12 @@ class KartVerketGeoCodeService implements SVV.RutePlan.IGeoCodeService {
     }).then(xmlRes => {
         var x2Js = new X2JS();
         var res = x2Js.xml_str2json(xmlRes.data);
-        var addresses = new Array<SVV.RutePlan.AddressItem>();
+        var addresses = new Array<SVV.RoutePlanning.AddressItem>();
 
         var add = (item: any) => {
             var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
             var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
-            var address = new SVV.RutePlan.AddressItem(name, location);
+            var address = new SVV.RoutePlanning.AddressItem(name, location);
             addresses.push(address);
         };
 

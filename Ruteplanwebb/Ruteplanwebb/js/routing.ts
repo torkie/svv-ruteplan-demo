@@ -6,11 +6,11 @@
 angular.module("routing", [])
     .factory("routingService", $http => new RoutingService($http));
 
-class RoutingService implements SVV.RutePlan.IRoutingService {
+class RoutingService implements SVV.RoutePlanning.IRoutingService {
     constructor(private $http: ng.IHttpService) {
     }
 
-    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RutePlan.IRouteCalculationCallback) => {
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback) => {
         var strings = [];
         var idx = 0;
         angular.forEach(stops, (stop) => {
@@ -24,7 +24,7 @@ class RoutingService implements SVV.RutePlan.IRoutingService {
                 format: "json",
                 lang: "nb-no"
             }
-        }).success((data: SVV.RutePlan.RouteResponse) => {
+        }).success((data: SVV.RoutePlanning.RouteResponse) => {
             var forEach = angular.forEach;
 
             // create geometry features from routes
@@ -44,9 +44,9 @@ class RoutingService implements SVV.RutePlan.IRoutingService {
 
             // calculate bounding box for all routes
             var totalBounds = null;
-            var directions = <SVV.RutePlan.ViewDirection[]>data.directions;
+            var directions = <SVV.RoutePlanning.ViewDirection[]>data.directions;
             for (var i = 0; i < directions.length; i++) {
-                forEach(directions[i].features, (feature: SVV.RutePlan.ViewDirectionFeature) => {
+                forEach(directions[i].features, (feature: SVV.RoutePlanning.ViewDirectionFeature) => {
                     feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
                     feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
                     feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
