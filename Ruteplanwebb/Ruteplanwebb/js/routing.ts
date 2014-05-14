@@ -6,10 +6,17 @@
 angular.module("routing", [])
     .factory("routingService", $http => {
 
-    var calculateRoute = (from: OpenLayers.LonLat, to: OpenLayers.LonLat, callback: any) => {
+    var calculateRoute = (stops: OpenLayers.LonLat[], callback: any) => {
+        var strings = [];
+        var idx = 0;
+        angular.forEach(stops, (stop) => {
+            strings[idx++] = stop.lon+","+stop.lat;
+        });
+        var stopsArg = strings.join(";");
+
         $http.get('routingService', {
             params: {
-                stops: from.lon + "," + from.lat + ";" + to.lon + "," + to.lat,
+                stops: stopsArg,
                 format: "json",
                 lang: "nb-no"
             }
