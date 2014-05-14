@@ -26,11 +26,14 @@
 </div>
 <div id="routedesc">
     <h4>Rute</h4>
-    <div ng-show="fromAddress"><i class="fa fa-play-circle" style="color: gray"></i> {{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }}</div>
-    <div ng-show="fromAddress && toAddress"  style="height: 14px; margin-left: 2px"><i class="fa fa-long-arrow-down" style="color: lightgray"></i><span style="width: 200px; display: block; height: 1px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px; margin-top: -12px">&nbsp;</span></div>
-    <div ng-show="toAddress"><i class="fa fa-dot-circle-o" style="color: gray"></i> {{ toAddress.name }}, {{ toAddress.location.lon | round }}, {{ toAddress.location.lat | round }}</div>
-	<div ng-show="fromAddress && toAddress" ng-click="reverseRoute()"><i class="fa fa-random" style="color: grey;"><span style="width: 200px; display: block; height: 1px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px; margin-top: -12px">&nbsp;</span></i></div>
+    <ul id="route-header-list">
+        <li ng-show="fromAddress"> {{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }}</li>
+        <li ng-show="fromAddress && toAddress" class="divider"><span style="width: 200px; display: inline-block; height: 12px; border: 1px solid transparent; border-bottom-color: lightgray; margin-left: 15px;">&nbsp;</span><span id="reverse-order-button" class="fa fa-random" style="color: grey;" ng-click="reverseRoute()"></span></li>
+        <li ng-show="toAddress">{{ toAddress.name }}, {{ toAddress.location.lon | round }}, {{ toAddress.location.lat | round }}</li>
+    </ul>
+
     <br/>
+
     <ul id="route-list">
         <li ng-repeat="direction in directions" ng-click="selectRoute(direction.routeId)">
             <div class="routedesc" ng-class="{active:showRoute(direction.routeId)}">

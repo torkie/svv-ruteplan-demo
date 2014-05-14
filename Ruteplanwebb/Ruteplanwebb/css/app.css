@@ -19,6 +19,49 @@ span {
     z-index: 0;
 }
 
+#route-header-list {
+    list-style: none;
+    padding: 0;
+}
+
+#route-header-list > li::before  {
+    color: grey;
+    font-family: FontAwesome;
+    box-sizing: border-box;
+    padding-right: 3px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#route-header-list > li:first-child::before {
+    content: "\f144";
+}
+
+#route-header-list > li:last-child::before {
+    content: "\f192";
+}
+
+
+#route-header-list > li.divider:before {
+    content: "\f175";
+    padding-left: 3px;
+    color: lightgrey;
+}
+
+#reverse-order-button {
+    padding-left: 40px;
+}
+
+#reverse-order-button:hover {
+    text-shadow: 0.1em 0.1em 0.05em #333;
+    transition: text-shadow 1s;
+}
+
+
 #routedesc {
     position: absolute;
     top: 100px;
