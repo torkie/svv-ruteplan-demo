@@ -12,7 +12,7 @@ interface IMapControllerScope extends ng.IScope {
     fromAddress: SVV.RoutePlanning.AddressItem;
     intermediateAddresses: SVV.RoutePlanning.AddressItem[];
     toAddress: SVV.RoutePlanning.AddressItem;
-    markerLayer: OpenLayers.Layer.Markers;
+    markerLayer: OpenLayers.Layer.Vector;
     routeLayer: OpenLayers.Layer.Vector;
     directions: SVV.RoutePlanning.ViewDirection[];
     contextMenuHandleWindowClicked : any;

@@ -81,16 +81,19 @@ class MapController {
         }
 
         $scope.updateMarkers = () => {
-            $scope.markerLayer.clearMarkers();
+            $scope.markerLayer.destroyFeatures();
 
             if ($scope.fromAddress != null) {
-                var faicon = new OpenLayers.AwsomeIcon('play', 'green', 'white', 'fa');
-                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.fromAddress.location, faicon));
+                var featureFrom = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.fromAddress.location.lon, $scope.fromAddress.location.lat),null,
+                 {externalGraphic: '/images/frommarker.png', graphicHeight: 46, graphicWidth: 35,      graphicXOffset:-17, graphicYOffset:-46  });
+                $scope.markerLayer.addFeatures([featureFrom]);
                 $location.search('from', JSON.stringify($scope.fromAddress));
             }
             if ($scope.toAddress != null) {
-                var fato= new OpenLayers.AwsomeIcon('stop', 'red', 'white', 'fa');
-                $scope.markerLayer.addMarker(new OpenLayers.Marker($scope.toAddress.location, fato));
+                var featureTo = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.toAddress.location.lon, $scope.toAddress.location.lat), null,
+                { externalGraphic: '/images/tomarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
+                $scope.markerLayer.addFeatures([featureTo]);
+
                 $location.search('to', JSON.stringify($scope.toAddress));
             }
 
@@ -98,10 +101,10 @@ class MapController {
                 var idx = 0;
 
                 angular.forEach($scope.intermediateAddresses, (addr) => {
-                    var faicon2 = new OpenLayers.AwsomeIcon('pause', 'orange', 'white', 'fa');
-                    $scope.markerLayer.addMarker(new OpenLayers.Marker(addr.location, faicon2));
-
-                    $location.search('to'+(idx++), JSON.stringify($scope.toAddress));
+                    var featurevia = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(addr.location.lon, addr.location.lat), null,
+                    { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
+                    $scope.markerLayer.addFeatures([featurevia]);
+                    $location.search('to' + (idx++), JSON.stringify($scope.toAddress));
                 });
 
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));

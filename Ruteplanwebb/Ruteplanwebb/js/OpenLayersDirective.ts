@@ -61,7 +61,7 @@ class OpenLayersDirective {
                 layerOptions
             );
 
-            var markerLayer = new OpenLayers.Layer.Markers("Markers");
+            var markerLayer = new OpenLayers.Layer.Vector("Markers");
 
             var style = new OpenLayers.Style({
                 graphicZIndex: 0,
