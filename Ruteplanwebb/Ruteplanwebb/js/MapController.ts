@@ -119,7 +119,7 @@ class MapController {
 
             var latlon = $scope.map.getLonLatFromPixel(loc);
             var idx = $scope.intermediateAddresses.length;
-            $scope.intermediateAddresses[idx] = new SVV.RoutePlanning.AddressItem("Via: Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.intermediateAddresses[idx] = new SVV.RoutePlanning.AddressItem("Via: Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
