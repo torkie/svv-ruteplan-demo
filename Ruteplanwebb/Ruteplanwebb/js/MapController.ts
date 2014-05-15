@@ -100,8 +100,6 @@ class MapController {
                 angular.forEach($scope.intermediateAddresses, (addr) => {
                     var faicon2 = new OpenLayers.AwsomeIcon('pause', 'orange', 'white', 'fa');
                     $scope.markerLayer.addMarker(new OpenLayers.Marker(addr.location, faicon2));
-
-                    $location.search('to'+(idx++), JSON.stringify($scope.toAddress));
                 });
 
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));
