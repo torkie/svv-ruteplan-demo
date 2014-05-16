@@ -1,5 +1,6 @@
 ﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
+///<reference path="../ts/typings/Proj4js/proj4js.d.ts"/>
 ///<reference path="helpers/OpenLayers.Awsome.Icon.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
@@ -9,6 +10,7 @@
 class MapController {
 
     constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService) {
+        Proj4js.defs["EPSG:25833"] = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs";
 
         var routeStyle = {
             graphicZIndex: 2,
@@ -123,11 +125,11 @@ class MapController {
                 angular.forEach($scope.blockedAreas, (area) => {
                     angular.forEach(area.points, (point) => {
                         var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
-                            { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
+                        { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
 
                         $scope.markerLayer.addFeatures([featureBlockedPoint]);
-                    })
-               });
+                    });
+                });
                 $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
             }
 
@@ -224,11 +226,14 @@ class MapController {
 
         $scope.downloadRouteAsKML = (routeId : number,$event) => {
             var elem = $event.target;
-            var kml = 'testar';
+            var format = new OpenLayers.Format.KML();
+            format.foldersName = "SVV Ruteplan Export";
+            var feat = $scope.routeLayer.features[routeId];
+            feat = new OpenLayers.Feature.Vector(feat.geometry.clone().transform(new OpenLayers.Projection('EPSG:25833'), new OpenLayers.Projection('EPSG:4326')));
+            var kml = format.write([feat]);
             var data = 'data:application/csv;charset=utf-8,' + encodeURIComponent(kml);
             elem.setAttribute("target", "_blank");
             elem.setAttribute("href", data);
-
         }
 
     }

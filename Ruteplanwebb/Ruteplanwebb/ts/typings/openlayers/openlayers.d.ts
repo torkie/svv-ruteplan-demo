@@ -286,6 +286,7 @@ declare module OpenLayers {
     }
 
     export class Feature {
+        
         // TODO
     }
 
@@ -1142,6 +1143,8 @@ declare module OpenLayers {
          * Calculate the centroid of this geometry.  This method is defined in subclasses.
          */
         getCentroid(): Geometry.Point;
+
+        transform(src : OpenLayers.Projection, dst : OpenLayers.Projection) : Geometry;
 
         static CLASS_NAME: string;
     }
@@ -3457,7 +3460,9 @@ declare module OpenLayers {
     module Feature {
         export class Vector {
             constructor(geometry: Geometry, attributes?: any, style?: any);
+            geometry : OpenLayers.Geometry;
         }
+
     }
 
     module Filter {
@@ -3546,7 +3551,17 @@ declare module OpenLayers {
             // TODO
         }
         export class KML {
-            // TODO
+            kmlns : string;
+            placemarkDesc : string;
+            foldersName : string;
+            foldersDesc : string;
+            extractAttributes : boolean;
+            kvpAttributes : boolean;
+            extractTracks : boolean;
+            trackAttributes : Array;
+            maxDepth : number;
+            write(features: Feature[]) : string;
+            read(kml : string) : Feature[];            
         }
         export class OGCExceptionReport {
             // TODO

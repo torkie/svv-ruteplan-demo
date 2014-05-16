@@ -114,7 +114,7 @@ class OpenLayersDirective {
                     scope.blockedAreas = [];
                 }
 
-                var points = []
+                var points = [];
                 angular.forEach(evt.geometry.components[0].components, (p) => {
                     points.push(p.bounds.getCenterLonLat());
                 });
