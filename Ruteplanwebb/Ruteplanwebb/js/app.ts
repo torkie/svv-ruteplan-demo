@@ -9,7 +9,8 @@ var rpwApp = angular.module("rpwApp", [
     'ngSanitize',
     'rpwControllers',
     "rpwFilters",
-    "rpwDirectives"
+    "rpwDirectives",
+    "rpwSettings"
 ]);
 
 rpwApp.config(['$stateProvider', '$urlRouterProvider',
