@@ -67,7 +67,7 @@ class MapController {
                         $scope.selectedRouteId = directions[0].routeId;
 
                 }
-            );
+            , $scope.blockedPoints);
         };
 
         $scope.reverseRoute = () => {
@@ -108,6 +108,23 @@ class MapController {
                 });
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));
             }
+
+            if ($scope.blockedPoints != undefined) {
+                angular.forEach($scope.blockedPoints, (point) => {
+                    var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
+                        { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
+                    //console.log(featureBlockedPoint);
+                    $scope.markerLayer.addFeatures([featureBlockedPoint]);
+                });
+                $location.search('blockedPoints', JSON.stringify($scope.blockedPoints));
+            }
+
+            //if ($scope.blockedAreas != undefined) {
+            //    angular.forEach($scope.blockedAreas, (area) => {
+
+             //   });
+              //  $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
+            //}
 
             //If both from and to are set, do route calculation automatically
             if ($scope.fromAddress != null && $scope.toAddress != null) {
@@ -187,6 +204,14 @@ class MapController {
         if ($location.search().intermediate != null) {
             $scope.intermediateAddresses = JSON.parse($location.search().intermediate);
         }
+
+        if ($location.search().blockedPoints != null) {
+            $scope.blockedPoints = JSON.parse($location.search().blockedPoints);
+        }
+
+        //if ($location.search().blockedAreas != null) {
+        //    $scope.blockedAreas = JSON.parse($location.search().blockedAreas);
+        //}
 
         $scope.$watch('markerLayer', () => {
             $scope.updateMarkers();

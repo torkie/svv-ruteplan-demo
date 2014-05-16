@@ -11,7 +11,7 @@ interface IMapControllerScope extends ng.IScope {
     map: OpenLayers.Map;
     fromAddress: SVV.RoutePlanning.AddressItem;
     intermediateAddresses: SVV.RoutePlanning.AddressItem[];
-    blockedPoints: OpenLayers.Geometry.Point[];
+    blockedPoints: OpenLayers.LonLat[];
     blockedAreas : OpenLayers.Geometry.Collection[];
     toAddress: SVV.RoutePlanning.AddressItem;
     markerLayer: OpenLayers.Layer.Vector;

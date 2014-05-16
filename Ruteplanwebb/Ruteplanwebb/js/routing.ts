@@ -10,15 +10,26 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
     constructor(private $http: ng.IHttpService) {
     }
 
-    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback) => {
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints? : OpenLayers.LonLat[]) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
             strings.push(stop.lon+","+stop.lat);
         });
+        var stopsParameter = strings.join(";");
+
+        strings = [];
+        console.log(blockedPoints);
+        if (blockedPoints != undefined) {
+            angular.forEach(blockedPoints, (p) => {
+                strings.push(p.lon+","+p.lat);
+            });
+        }
+        var barriersParameter = strings.join(";");
 
         this.$http.get('routingService', {
             params: {
-                stops: strings.join(";"),
+                stops: stopsParameter,
+                barriers: barriersParameter,
                 format: "json",
                 lang: "nb-no"
             }
