@@ -34,7 +34,11 @@
     </ul>
 </div>
 <div id="routedesc">
-    <h4>Rute <span id="reverse-order-button" ng-show="fromAddress && toAddress" class="fa fa-random" style="padding-left: 20px; color: darkblue;" ng-click="reverseRoute()"></span></h4>
+    <h4>
+        Rute
+        <span id="reverse-order-button" ng-show="fromAddress && toAddress" class="fa fa-random" style="padding-left: 20px; color: darkblue;" ng-click="reverseRoute()"></span>
+        <span id="remove-blocks-button" ng-show="hasBlocks()" class="fa fa-trash-o" style="padding-left: 20px; color: darkblue;" ng-click="removeBlocks()"></span>
+    </h4>
 
     <ul id="route-header-list">
         <li ng-show="fromAddress">

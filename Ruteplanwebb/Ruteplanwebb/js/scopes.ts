@@ -7,6 +7,8 @@ interface IMapControllerScope extends ng.IScope {
     getLocations(adress: string);
     doRouteCalculation();
     reverseRoute();
+    hasBlocks();
+    removeBlocks();
     updateMarkers();
     map: OpenLayers.Map;
     fromAddress: SVV.RoutePlanning.AddressItem;

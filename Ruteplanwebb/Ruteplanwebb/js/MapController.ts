@@ -83,6 +83,19 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.removeBlocks = () => {
+            $scope.blockedPoints = [];
+            $scope.blockedAreas = [];
+
+            $scope.updateMarkers();
+        };
+
+        $scope.hasBlocks = () => {
+            var points = $scope.blockedPoints != undefined && $scope.blockedPoints.length > 0;
+            var areas = $scope.blockedAreas != undefined && $scope.blockedAreas.length > 0;
+            return points || areas;
+        };
+
         $scope.updateMarkers = () => {
             $scope.markerLayer.destroyFeatures();
 
