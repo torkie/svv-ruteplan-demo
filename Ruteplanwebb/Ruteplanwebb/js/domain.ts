@@ -71,7 +71,7 @@ module SVV.RoutePlanning {
     }
 
     export interface IRoutingService {
-        calculateRoute(stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback);
+        calculateRoute(stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints? : OpenLayers.LonLat[]);
     }
 
     export interface IGeoCodeService {

@@ -102,10 +102,10 @@ class OpenLayersDirective {
                 if (scope.blockedPoints === undefined) {
                     scope.blockedPoints = [];
                 }
-                var idx = scope.blockedPoints.length;
-                scope.blockedPoints[idx] = evt.geometry;
+                scope.blockedPoints.push(evt.geometry.bounds.getCenterLonLat());
 
                 scope.toggleMapControl(null);
+                scope.updateMarkers();
             }
             var pointControl = new SVV.RoutePlanning.ControlWrapper('point',new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Point, {featureAdded : onPointAdded}));
 
@@ -117,6 +117,7 @@ class OpenLayersDirective {
                 var idx = scope.blockedAreas.length;
                 scope.blockedAreas[idx] = evt.geometry;
                 scope.toggleMapControl(null);
+                scope.updateMarkers();
             }
             var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
 
