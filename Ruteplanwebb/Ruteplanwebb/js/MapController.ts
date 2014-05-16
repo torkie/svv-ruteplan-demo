@@ -209,7 +209,7 @@ class MapController {
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;
-            angular.forEach($scope.routeLayer.features, function(feature) {
+            angular.forEach($scope.routeLayer.features, feature => {
                 if (feature.routeId === routeId) {
                     feature.style = routeStyle;
                 } else {
