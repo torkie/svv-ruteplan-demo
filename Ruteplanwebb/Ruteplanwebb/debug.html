@@ -18,12 +18,17 @@
 
 <h2>Shared data</h2>
 
+<div ng-controller="sharedDataTrigger">
+    <input type="text" ng-model="message"/>
+    <button ng-click="handleClick(message)">Click</button>
+</div>
+
 <div ng-controller="sharedDataController1">
-    <input type="text" ng-model="shared.stuff"/>
+    <pre>{{message}}</pre>
 </div>
 
 <div ng-controller="sharedDataController2">
-    <pre>{{shared.stuff}}</pre>
+    <pre>{{message}}</pre>
 </div>
 
 <script src="lib/angular/angular.js"></script>
@@ -47,20 +52,38 @@
         };
     });
 
+    app.controller("sharedDataTrigger", function($scope, sharedData) {
+        $scope.handleClick = function(message) {
+            sharedData.doBroadcast(message);
+        };
+
+        $scope.$on("handleBroadcast", function() {
+            $scope.message = sharedData.message;
+        });
+    });
+
     app.controller("sharedDataController1", function($scope, sharedData) {
-        $scope.shared = sharedData;
+        $scope.$on("handleBroadcast", function() {
+            $scope.message = "Controller1: " + sharedData.message;
+        });
     });
 
     app.controller("sharedDataController2", function($scope, sharedData) {
-        $scope.shared = sharedData;
+        $scope.$on("handleBroadcast", function() {
+            $scope.message = "Controller2: " + sharedData.message;
+        });
     });
 
-    app.factory("sharedData", function() {
-        var stuff = "Some stuff";
+    app.factory("sharedData", function($rootScope) {
+        var stuff = {};
+        stuff.message = "test123";
 
-        return {
-            stuff: stuff
+        stuff.doBroadcast = function(message) {
+            this.message = message;
+            $rootScope.$broadcast("handleBroadcast");
         };
+
+        return stuff;
     });
 
 </script>
