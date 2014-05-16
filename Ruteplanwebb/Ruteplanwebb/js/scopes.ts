@@ -24,4 +24,5 @@ interface IMapControllerScope extends ng.IScope {
     selectRoute: any;
     showRoute: any;
     selectedRouteId: number;
+    downloadRouteAsKML (routeId : number,$event) : void;
 }

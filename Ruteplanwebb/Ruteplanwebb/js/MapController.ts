@@ -175,6 +175,15 @@ class MapController {
             $scope.updateMarkers();
         });
 
+        $scope.downloadRouteAsKML = (routeId : number,$event) => {
+            var elem = $event.target;
+            var kml = 'testar';
+            var data = 'data:application/csv;charset=utf-8,' + encodeURIComponent(kml);
+            elem.setAttribute("target", "_blank");
+            elem.setAttribute("href", data);
+
+        }
+
     }
 
 }

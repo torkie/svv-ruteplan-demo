@@ -199,6 +199,8 @@ span {
 
 .routeheader .tool {
     padding: 4px;
+    color: white;
+    text-decoration: none;
 }
 
 .routeheader .tool:hover {
