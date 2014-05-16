@@ -98,14 +98,11 @@ class MapController {
             }
 
             if ($scope.intermediateAddresses != undefined) {
-                var idx = 0;
-
                 angular.forEach($scope.intermediateAddresses, (addr) => {
                     var featurevia = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(addr.location.lon, addr.location.lat), null,
                     { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
-
+                    $scope.markerLayer.addFeatures([featurevia]);
                 });
-
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));
             }
 
