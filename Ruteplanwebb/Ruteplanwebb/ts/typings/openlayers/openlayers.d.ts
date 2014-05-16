@@ -3214,9 +3214,7 @@ declare module OpenLayers {
         }
 
         export class DrawFeature {
-
-            // TODO
-
+            constructor(layer: OpenLayers.Layer.Vector, handler: OpenLayers.Handler, options: any);
         }
 
         export class EditingToolbar {
