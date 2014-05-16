@@ -112,7 +112,7 @@ class MapController {
             if ($scope.blockedPoints != undefined) {
                 angular.forEach($scope.blockedPoints, (point) => {
                     var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
-                        { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
+                        { externalGraphic: '/images/block-icon.png', graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
                     //console.log(featureBlockedPoint);
                     $scope.markerLayer.addFeatures([featureBlockedPoint]);
                 });

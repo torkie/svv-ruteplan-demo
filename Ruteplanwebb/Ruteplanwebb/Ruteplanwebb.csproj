@@ -21,6 +21,7 @@
     <Content Include="css\app.css" />
     <Content Include="debug.html" />
     <Content Include="images\ajax-loader.gif" />
+    <Content Include="images\block-icon.png" />
     <Content Include="images\car-icon.gif" />
     <Content Include="images\car-icon.png" />
     <Content Include="images\ferry-icon.png" />
