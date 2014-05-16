@@ -147,7 +147,7 @@ class MapController {
             $scope.updateMarkers();
         };
 
-        $scope.contextMenuToggleControl = (key : string) => {
+        $scope.toggleMapControl = (key : string) => {
             angular.forEach($scope.controls, (wrapper) => {
                 if (wrapper.name == key) {
                     wrapper.control.activate();
