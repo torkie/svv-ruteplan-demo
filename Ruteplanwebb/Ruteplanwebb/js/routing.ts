@@ -59,13 +59,15 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                 } else {
                     totalBounds.extend(directions[i].Bounds);
                 }
+
+                features[i].routeId = directions[i].routeId;
             }
 
             callback(totalBounds, features, directions);
         });
     };
 
-    
+
 }
 
 
