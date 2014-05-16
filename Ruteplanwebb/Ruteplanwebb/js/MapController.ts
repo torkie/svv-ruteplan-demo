@@ -182,6 +182,17 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.contextMenuBlockPoint = (loc: any) => {
+            if ($scope.blockedPoints === undefined) {
+                $scope.blockedPoints = [];
+            }
+
+            var latlon = $scope.map.getLonLatFromPixel(loc);
+            $scope.blockedPoints.push(latlon);
+
+            $scope.updateMarkers();
+        }
+
         $scope.toggleMapControl = (key : string) => {
             angular.forEach($scope.controls, (wrapper) => {
                 if (wrapper.name == key) {

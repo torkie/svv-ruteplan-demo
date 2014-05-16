@@ -25,6 +25,7 @@ interface IMapControllerScope extends ng.IScope {
     contextMenuAddIntermediate(windowLocation:any);
     contextMenuSetTo(windowLocation: any);
     toggleMapControl(ctrl : string);
+    contextMenuBlockPoint(windowLocation: any);
     zoomToDirection(routeId :number);
     removeIntermediate(item : SVV.RoutePlanning.AddressItem);
     selectRoute: any;
