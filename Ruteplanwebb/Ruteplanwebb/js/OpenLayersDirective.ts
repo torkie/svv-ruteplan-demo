@@ -98,13 +98,25 @@ class OpenLayersDirective {
             map.addLayers([background, routeLayer, markerLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
-            function onPointAdded() {
-                scope.contextMenuToggleControl(null);
+            function onPointAdded(evt : any) {
+                if (scope.blockedPoints === undefined) {
+                    scope.blockedPoints = [];
+                }
+                var idx = scope.blockedPoints.length;
+                scope.blockedPoints[idx] = evt.geometry;
+
+                scope.toggleMapControl(null);
             }
             var pointControl = new SVV.RoutePlanning.ControlWrapper('point',new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Point, {featureAdded : onPointAdded}));
 
-            function onPolygonAdded() {
-                scope.contextMenuToggleControl(null);
+            function onPolygonAdded(evt : any) {
+                if (scope.blockedAreas === undefined) {
+                    scope.blockedAreas = [];
+                }
+
+                var idx = scope.blockedAreas.length;
+                scope.blockedAreas[idx] = evt.geometry;
+                scope.toggleMapControl(null);
             }
             var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
 
