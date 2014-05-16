@@ -84,11 +84,11 @@
         </div>
         <div class="modal-body">
             <div>URL til rutetjeneste:</div>
-            <input style="width: 100%" type="text" name="url"/>
+            <input style="width: 100%" type="text" ng-model="data.url"/>
             <div>Brukernavn:</div>
-            <input style="width: 100%" type="text" name="username"/>
+            <input style="width: 100%" type="text" ng-model="data.username"/>
             <div>Passord:</div>
-            <input style="width: 100%" type="text" name="password"/>
+            <input style="width: 100%" type="text" ng-model="data.password"/>
         </div>
         <div class="modal-footer">
             <button ng-click="ok()">OK</button>

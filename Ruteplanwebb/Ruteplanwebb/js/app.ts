@@ -7,6 +7,7 @@ var rpwApp = angular.module("rpwApp", [
     "ng-context-menu",
     "ui.bootstrap",
     'ngSanitize',
+    "ngCookies",
     'rpwControllers',
     "rpwFilters",
     "rpwDirectives",
