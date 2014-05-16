@@ -98,6 +98,15 @@ class OpenLayersDirective {
             map.addLayers([background, routeLayer, markerLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
+            var controls = [
+                new SVV.RoutePlanning.ControlWrapper('point',new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Point, null)),
+                new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, null))
+            ];
+            angular.forEach(controls, (ctrl) => {
+                map.addControl(ctrl.control, null);
+            });
+
+
             var mousePositionCtrl = new OpenLayers.Control.MousePosition({
                     numDigits: 1,
                     separator: ', '
@@ -112,6 +121,7 @@ class OpenLayersDirective {
 
 
             scope.map = map;
+            scope.controls = controls;
             scope.markerLayer = markerLayer;
             scope.routeLayer = routeLayer;
         };

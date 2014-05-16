@@ -144,6 +144,16 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.contextMenuToggleControl = (key : string) => {
+            angular.forEach($scope.controls, (wrapper) => {
+                if (wrapper.name == key) {
+                    wrapper.control.activate();
+                } else {
+                    wrapper.control.deactivate();
+                }
+            });
+        };
+
         $scope.selectedRouteId = null;
 
         $scope.selectRoute = routeId => {
