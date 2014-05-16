@@ -106,7 +106,7 @@ class OpenLayersDirective {
             function onPolygonAdded() {
                 scope.contextMenuToggleControl(null);
             }
-            var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPointAdded}));
+            var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
 
             var controls = [ pointControl, polygonControl ];
             angular.forEach(controls, (ctrl) => {
