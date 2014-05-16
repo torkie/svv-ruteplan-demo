@@ -3,11 +3,11 @@
 ///<reference path="../ts/typings/xml2json/xml2json.d.ts"/>
 ///<reference path="domain.ts"/>
 
-angular.module("routing", [])
-    .factory("routingService", $http => new RoutingService($http));
+angular.module("routing", ["rpwSettings"])
+    .factory("routingService", ($http, settings) => new RoutingService($http, settings));
 
 class RoutingService implements SVV.RoutePlanning.IRoutingService {
-    constructor(private $http: ng.IHttpService) {
+    constructor(private $http: ng.IHttpService, private settings: any) {
     }
 
     calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints? : OpenLayers.LonLat[], blockedAreas? : SVV.RoutePlanning.Polygon[]) => {
