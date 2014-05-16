@@ -85,6 +85,19 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.removeBlocks = () => {
+            $scope.blockedPoints = [];
+            $scope.blockedAreas = [];
+
+            $scope.updateMarkers();
+        };
+
+        $scope.hasBlocks = () => {
+            var points = $scope.blockedPoints != undefined && $scope.blockedPoints.length > 0;
+            var areas = $scope.blockedAreas != undefined && $scope.blockedAreas.length > 0;
+            return points || areas;
+        };
+
         $scope.updateMarkers = () => {
             $scope.markerLayer.destroyFeatures();
 
@@ -170,6 +183,17 @@ class MapController {
             $scope.toAddress = new SVV.RoutePlanning.AddressItem("Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
+
+        $scope.contextMenuBlockPoint = (loc: any) => {
+            if ($scope.blockedPoints === undefined) {
+                $scope.blockedPoints = [];
+            }
+
+            var latlon = $scope.map.getLonLatFromPixel(loc);
+            $scope.blockedPoints.push(latlon);
+
+            $scope.updateMarkers();
+        }
 
         $scope.toggleMapControl = (key : string) => {
             angular.forEach($scope.controls, (wrapper) => {
