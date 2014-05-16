@@ -114,8 +114,14 @@ class OpenLayersDirective {
                     scope.blockedAreas = [];
                 }
 
-                var idx = scope.blockedAreas.length;
-                scope.blockedAreas[idx] = evt.geometry;
+                var points = []
+                angular.forEach(evt.geometry.components[0].components, (p) => {
+                    points.push(p.bounds.getCenterLonLat());
+                });
+
+                var poly = new SVV.RoutePlanning.Polygon(points);
+
+                scope.blockedAreas.push(poly);
                 scope.toggleMapControl(null);
                 scope.updateMarkers();
             }
