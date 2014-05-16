@@ -47,7 +47,6 @@
     <TypeScriptCompile Include="js\helpers\CompressedGeometryHelper.ts" />
     <TypeScriptCompile Include="js\MapController.ts" />
     <TypeScriptCompile Include="js\Controllers.ts" />
-    <TypeScriptCompile Include="js\MapDirective.ts" />
     <TypeScriptCompile Include="js\OpenLayersDirective.ts" />
     <Content Include="lib\angular\angular-animate.js" />
     <Content Include="lib\angular\angular-animate.min.js" />
