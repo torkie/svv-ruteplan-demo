@@ -15,6 +15,10 @@ module SVV.RoutePlanning {
         }
     }
 
+    export class Polygon {
+        constructor(public points : OpenLayers.LonLat[]) {}
+    }
+
     export class RouteResponse {
         directions: RouteResponseDirection[];
         routes: RouteResponseRoute;
@@ -71,7 +75,10 @@ module SVV.RoutePlanning {
     }
 
     export interface IRoutingService {
-        calculateRoute(stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints? : OpenLayers.LonLat[]);
+        calculateRoute(stops: OpenLayers.LonLat[],
+                       callback: SVV.RoutePlanning.IRouteCalculationCallback,
+                       blockedPoints? : OpenLayers.LonLat[],
+                       blockedAreas? : SVV.RoutePlanning.Polygon[]);
     }
 
     export interface IGeoCodeService {
