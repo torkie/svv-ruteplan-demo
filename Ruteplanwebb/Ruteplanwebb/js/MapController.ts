@@ -78,7 +78,7 @@ class MapController {
 
 
             $scope.updateMarkers();
-        }
+        };
 
         $scope.updateMarkers = () => {
             $scope.markerLayer.destroyFeatures();
@@ -130,7 +130,7 @@ class MapController {
             $scope.intermediateAddresses.splice(idx, 1);
 
             $scope.updateMarkers();
-        }
+        };
 
         $scope.contextMenuSetFrom = (loc:any) => {
             var latlon = $scope.map.getLonLatFromPixel(loc);
