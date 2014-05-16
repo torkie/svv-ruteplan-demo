@@ -7,14 +7,9 @@ angular.module("rpwSettings", [])
         $scope.open = function (size) {
 
             var modalInstance = $modal.open({
-                templateUrl: 'myModalContent.html',
+                templateUrl: 'settings.html',
                 controller: ModalInstanceCtrl,
-                size: size,
-                resolve: {
-                    items: function () {
-                        return $scope.items;
-                    }
-                }
+                size: size
             });
 
             modalInstance.result.then(function (selectedItem) {
@@ -27,18 +22,14 @@ angular.module("rpwSettings", [])
 
     }]);
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
-
-    $scope.items = items;
-    $scope.selected = {
-        item: $scope.items[0]
-    };
+var ModalInstanceCtrl = function ($scope, $modalInstance) {
 
     $scope.ok = function () {
-        $modalInstance.close($scope.selected.item);
+        $modalInstance.close();
     };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
 };
