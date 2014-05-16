@@ -79,9 +79,7 @@ class OpenLayersDirective {
                 styleMap: linesStyleMap,
                 rendererOptions: {
                     zIndexing: true
-                },
-                //renderers : ['Canvas','SVG','VML']
-
+                }
             });
 
             var mapOptions = {
@@ -100,6 +98,22 @@ class OpenLayersDirective {
             map.addLayers([background, routeLayer, markerLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
+            function onPointAdded() {
+                scope.contextMenuToggleControl(null);
+            }
+            var pointControl = new SVV.RoutePlanning.ControlWrapper('point',new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Point, {featureAdded : onPointAdded}));
+
+            function onPolygonAdded() {
+                scope.contextMenuToggleControl(null);
+            }
+            var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
+
+            var controls = [ pointControl, polygonControl ];
+            angular.forEach(controls, (ctrl) => {
+                map.addControl(ctrl.control, null);
+            });
+
+
             var mousePositionCtrl = new OpenLayers.Control.MousePosition({
                     numDigits: 1,
                     separator: ', '
@@ -114,6 +128,7 @@ class OpenLayersDirective {
 
 
             scope.map = map;
+            scope.controls = controls;
             scope.markerLayer = markerLayer;
             scope.routeLayer = routeLayer;
         };

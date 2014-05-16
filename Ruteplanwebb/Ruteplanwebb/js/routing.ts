@@ -12,15 +12,13 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
 
     calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback) => {
         var strings = [];
-        var idx = 0;
         angular.forEach(stops, (stop) => {
-            strings[idx++] = stop.lon+","+stop.lat;
+            strings.push(stop.lon+","+stop.lat);
         });
-        var stopsArg = strings.join(";");
 
         this.$http.get('routingService', {
             params: {
-                stops: stopsArg,
+                stops: strings.join(";"),
                 format: "json",
                 lang: "nb-no"
             }
@@ -61,13 +59,15 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                 } else {
                     totalBounds.extend(directions[i].Bounds);
                 }
+
+                features[i].routeId = directions[i].routeId;
             }
 
             callback(totalBounds, features, directions);
         });
     };
 
-    
+
 }
 
 

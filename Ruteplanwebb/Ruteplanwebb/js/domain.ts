@@ -9,6 +9,12 @@ module SVV.RoutePlanning {
         }
     }
 
+    export class ControlWrapper {
+        constructor(public name: string, public control: OpenLayers.Control) {
+
+        }
+    }
+
     export class RouteResponse {
         directions: RouteResponseDirection[];
         routes: RouteResponseRoute;

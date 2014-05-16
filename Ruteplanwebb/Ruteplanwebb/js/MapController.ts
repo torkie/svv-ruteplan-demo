@@ -7,7 +7,22 @@
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
+
     constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService) {
+
+        var routeStyle = {
+            graphicZIndex: 2,
+            strokeOpacity: 1,
+            strokeColor: "#008CFF",
+            strokeWidth: 5
+        };
+
+        var alternativeRouteStyle = {
+            graphicZIndex: 1,
+            strokeOpacity: 1,
+            strokeColor: "#858585",
+            strokeWidth: 5
+        };
 
         $scope.getLocations = (val) => {
             return geoCodeService.getLocations(val);
@@ -38,20 +53,7 @@ class MapController {
                     //}
 
                     // apply styles to features
-                    var styles = [
-                        {
-                            graphicZIndex: 2,
-                            strokeOpacity: 1,
-                            strokeColor: "#008CFF",
-                            strokeWidth: 5
-                        },
-                        {
-                            graphicZIndex: 1,
-                            strokeOpacity: 1,
-                            strokeColor: "#858585",
-                            strokeWidth: 5
-                        }
-                    ];
+                    var styles = [routeStyle, alternativeRouteStyle];
 
                     var style = 0;
                     angular.forEach(features, feature => {
@@ -63,6 +65,7 @@ class MapController {
                     $scope.routeLayer.addFeatures(features);
                     if (directions != null && directions.length > 0)
                         $scope.selectedRouteId = directions[0].routeId;
+
                 }
             );
         };
@@ -78,7 +81,7 @@ class MapController {
 
 
             $scope.updateMarkers();
-        }
+        };
 
         $scope.updateMarkers = () => {
             $scope.markerLayer.destroyFeatures();
@@ -98,15 +101,11 @@ class MapController {
             }
 
             if ($scope.intermediateAddresses != undefined) {
-                var idx = 0;
-
                 angular.forEach($scope.intermediateAddresses, (addr) => {
                     var featurevia = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(addr.location.lon, addr.location.lat), null,
                     { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
                     $scope.markerLayer.addFeatures([featurevia]);
-                    $location.search('to' + (idx++), JSON.stringify($scope.toAddress));
                 });
-
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));
             }
 
@@ -124,7 +123,7 @@ class MapController {
 
             var latlon = $scope.map.getLonLatFromPixel(loc);
             var idx = $scope.intermediateAddresses.length;
-            $scope.intermediateAddresses[idx] = new SVV.RoutePlanning.AddressItem("Via: Punkt i kartet", $scope.map.getLonLatFromPixel(loc));
+            $scope.intermediateAddresses[idx] = new SVV.RoutePlanning.AddressItem("Via: Punkt i kartet", latlon);
             $scope.updateMarkers();
         };
 
@@ -134,7 +133,7 @@ class MapController {
             $scope.intermediateAddresses.splice(idx, 1);
 
             $scope.updateMarkers();
-        }
+        };
 
         $scope.contextMenuSetFrom = (loc:any) => {
             var latlon = $scope.map.getLonLatFromPixel(loc);
@@ -148,10 +147,28 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.contextMenuToggleControl = (key : string) => {
+            angular.forEach($scope.controls, (wrapper) => {
+                if (wrapper.name == key) {
+                    wrapper.control.activate();
+                } else {
+                    wrapper.control.deactivate();
+                }
+            });
+        };
+
         $scope.selectedRouteId = null;
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;
+            angular.forEach($scope.routeLayer.features, function(feature) {
+                if (feature.routeId === routeId) {
+                    feature.style = routeStyle;
+                } else {
+                    feature.style = alternativeRouteStyle;
+                }
+                $scope.routeLayer.drawFeature(feature);
+            });
         };
 
         $scope.showRoute = id => id === $scope.selectedRouteId;
