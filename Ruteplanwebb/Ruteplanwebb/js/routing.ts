@@ -28,7 +28,6 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
         strings = [];
         if (blockedAreas != undefined) {
             angular.forEach(blockedAreas, (a) => {
-                console.log(a);
             });
         }
 

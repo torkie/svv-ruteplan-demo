@@ -128,7 +128,6 @@ class MapController {
                 angular.forEach($scope.blockedPoints, (point) => {
                     var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
                         { externalGraphic: '/images/block-icon.png', graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
-                    //console.log(featureBlockedPoint);
                     $scope.markerLayer.addFeatures([featureBlockedPoint]);
                 });
                 $location.search('blockedPoints', JSON.stringify($scope.blockedPoints));
@@ -187,6 +186,22 @@ class MapController {
             }
 
             var latlon = $scope.map.getLonLatFromPixel(loc);
+            var pt = new OpenLayers.Geometry.Point(latlon.lon, latlon.lat);
+            //Check if there is a route-feature in the map "close" and snap to that one..
+            angular.forEach($scope.routeLayer.features, (feature: OpenLayers.Feature.Vector) => {
+                var details = <any>feature.geometry.distanceTo(pt, { details: true });
+                var px1 = $scope.map.getPixelFromLonLat(new OpenLayers.LonLat(details.x0, details.y0));
+                var px2 = $scope.map.getPixelFromLonLat(new OpenLayers.LonLat(details.x1, details.y1));
+                var pxDist = Math.sqrt(Math.pow(px1.x - px2.x, 2) + Math.pow(px1.y - px2.y, 2));
+                if (pxDist < 20) {
+                    pt.x = details.x0;
+                    pt.y = details.y0;
+                }
+            });
+
+            latlon.lon = pt.x;
+            latlon.lat = pt.y;
+
             $scope.blockedPoints.push(latlon);
 
             $scope.updateMarkers();
