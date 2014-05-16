@@ -4669,6 +4669,9 @@ declare module OpenLayers {
             addFeatures(features: Feature.Vector[]);
             removeAllFeatures();
             destroyFeatures();
+            getFeatureBy(property: any, value: any);
+            drawFeature(feature: Feature, style?: Style);
+            features: Feature.Vector[];
         }
 
         export class WMS extends Layer.Grid {

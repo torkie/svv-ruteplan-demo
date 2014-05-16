@@ -7,7 +7,22 @@
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
+
     constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService) {
+
+        var routeStyle = {
+            graphicZIndex: 2,
+            strokeOpacity: 1,
+            strokeColor: "#008CFF",
+            strokeWidth: 5
+        };
+
+        var alternativeRouteStyle = {
+            graphicZIndex: 1,
+            strokeOpacity: 1,
+            strokeColor: "#858585",
+            strokeWidth: 5
+        };
 
         $scope.getLocations = (val) => {
             return geoCodeService.getLocations(val);
@@ -38,20 +53,7 @@ class MapController {
                     //}
 
                     // apply styles to features
-                    var styles = [
-                        {
-                            graphicZIndex: 2,
-                            strokeOpacity: 1,
-                            strokeColor: "#008CFF",
-                            strokeWidth: 5
-                        },
-                        {
-                            graphicZIndex: 1,
-                            strokeOpacity: 1,
-                            strokeColor: "#858585",
-                            strokeWidth: 5
-                        }
-                    ];
+                    var styles = [routeStyle, alternativeRouteStyle];
 
                     var style = 0;
                     angular.forEach(features, feature => {
@@ -63,6 +65,7 @@ class MapController {
                     $scope.routeLayer.addFeatures(features);
                     if (directions != null && directions.length > 0)
                         $scope.selectedRouteId = directions[0].routeId;
+
                 }
             );
         };
@@ -158,6 +161,14 @@ class MapController {
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;
+            angular.forEach($scope.routeLayer.features, function(feature) {
+                if (feature.routeId === routeId) {
+                    feature.style = routeStyle;
+                } else {
+                    feature.style = alternativeRouteStyle;
+                }
+                $scope.routeLayer.drawFeature(feature);
+            });
         };
 
         $scope.showRoute = id => id === $scope.selectedRouteId;
