@@ -115,8 +115,8 @@ class OpenLayersDirective {
                 }
 
                 var points = [];
-                angular.forEach(evt.geometry.components[0].components, (p) => {
-                    points.push(p.bounds.getCenterLonLat());
+                angular.forEach(evt.geometry.components[0].components, (p : OpenLayers.Geometry.Point) => {
+                    points.push(new OpenLayers.LonLat(p.x, p.y));
                 });
 
                 var poly = new SVV.RoutePlanning.Polygon(points);

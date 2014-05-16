@@ -3163,6 +3163,8 @@ declare module OpenLayers {
         }
 
         export class Polygon extends Geometry.Collection {
+        
+            constructor(components: LinearRing);
 
             // TODO
 

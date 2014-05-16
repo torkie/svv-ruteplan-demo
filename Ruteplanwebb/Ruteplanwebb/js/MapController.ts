@@ -135,13 +135,10 @@ class MapController {
             }
 
             if ($scope.blockedAreas != undefined) {
-                angular.forEach($scope.blockedAreas, (area) => {
-                    angular.forEach(area.points, (point) => {
-                        var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
-                        { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
-
-                        $scope.markerLayer.addFeatures([featureBlockedPoint]);
-                    });
+                angular.forEach($scope.blockedAreas, (area : SVV.RoutePlanning.Polygon) => {
+                    var pts = area.points.map(x => new OpenLayers.Geometry.Point(x.lon, x.lat));
+                    var featureBlockedArea = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(pts)),null, { fillColor: "red",fillOpacity: 0.7, strokeColor: "black" });
+                    $scope.markerLayer.addFeatures([featureBlockedArea]);
                 });
                 $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
             }
