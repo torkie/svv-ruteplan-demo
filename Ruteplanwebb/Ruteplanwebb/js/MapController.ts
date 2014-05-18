@@ -104,12 +104,14 @@ class MapController {
             if ($scope.fromAddress != null) {
                 var featureFrom = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.fromAddress.location.lon, $scope.fromAddress.location.lat),null,
                  {externalGraphic: '/images/frommarker.png', graphicHeight: 46, graphicWidth: 35,      graphicXOffset:-17, graphicYOffset:-46  });
+                (<any>featureFrom).draggable = true;
                 $scope.markerLayer.addFeatures([featureFrom]);
                 $location.search('from', JSON.stringify($scope.fromAddress));
             }
             if ($scope.toAddress != null) {
                 var featureTo = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.toAddress.location.lon, $scope.toAddress.location.lat), null,
                 { externalGraphic: '/images/tomarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
+                (<any>featureTo).draggable = true;
                 $scope.markerLayer.addFeatures([featureTo]);
 
                 $location.search('to', JSON.stringify($scope.toAddress));
@@ -119,6 +121,7 @@ class MapController {
                 angular.forEach($scope.intermediateAddresses, (addr) => {
                     var featurevia = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(addr.location.lon, addr.location.lat), null,
                     { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
+                    (<any>featurevia).draggable = true;
                     $scope.markerLayer.addFeatures([featurevia]);
                 });
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));
