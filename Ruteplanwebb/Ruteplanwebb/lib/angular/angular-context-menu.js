@@ -44,13 +44,12 @@ angular
                       event.stopPropagation();
 
                       var x, y;
-
                       if ('pageX' in event) {
-                          x = event.pageX - element.prop('offsetLeft');
-                          y = event.pageY - element.prop('offsetTop');
+                          x = event.pageX - event.target.getBoundingClientRect().left;
+                          y = event.pageY -  event.target.getBoundingClientRect().top;
                       } else {
-                          x = event.x - element.prop('offsetLeft');
-                          y = event.y - element.prop('offsetTop');
+                          x = event.x - event.target.getBoundingClientRect().left;
+                          y = event.y - event.target.getBoundingClientRect().top;
                       }
 
 
