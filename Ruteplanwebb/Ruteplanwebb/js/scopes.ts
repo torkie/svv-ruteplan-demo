@@ -7,6 +7,8 @@ interface IMapControllerScope extends ng.IScope {
     getLocations(adress: string);
     doRouteCalculation();
     reverseRoute();
+    hasBlocks();
+    removeBlocks();
     updateMarkers();
     map: OpenLayers.Map;
     fromAddress: SVV.RoutePlanning.AddressItem;
@@ -23,6 +25,7 @@ interface IMapControllerScope extends ng.IScope {
     contextMenuAddIntermediate(windowLocation:any);
     contextMenuSetTo(windowLocation: any);
     toggleMapControl(ctrl : string);
+    contextMenuBlockPoint(windowLocation: any);
     zoomToDirection(routeId :number);
     removeIntermediate(item : SVV.RoutePlanning.AddressItem);
     selectRoute: any;

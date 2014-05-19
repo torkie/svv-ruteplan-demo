@@ -54,6 +54,7 @@ module SVV.RoutePlanning {
 
     export class RouteResponseRouteFeature {
         attributes: Attributes[];
+        geometry: OpenLayers.Geometry;
     }
 
     export class Attributes {

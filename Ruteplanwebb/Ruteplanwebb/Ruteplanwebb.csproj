@@ -401,7 +401,7 @@
     <Content Include="lib\openlayers\theme\default\style.mobile.css" />
     <Content Include="lib\openlayers\theme\default\style.mobile.tidy.css" />
     <Content Include="lib\openlayers\theme\default\style.tidy.css" />
-    <Content Include="lib\proj4js\proj4.js" />
+    <Content Include="lib\proj4js\proj4js-compressed.js" />
     <Content Include="lib\xml2json\xml2json.min.js" />
     <Content Include="template\typeahead\typeahead-match.html" />
     <Content Include="template\typeahead\typeahead-popup.html" />
@@ -415,6 +415,7 @@
     <TypeScriptCompile Include="js\routing.ts" />
     <TypeScriptCompile Include="js\scopes.ts" />
     <TypeScriptCompile Include="js\searching.ts" />
+    <TypeScriptCompile Include="js\settings.ts" />
     <TypeScriptCompile Include="tests\js\helpers\CompressedGeometryHelperTests.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-cookies.d.ts" />
@@ -432,6 +433,7 @@
     <TypeScriptCompile Include="ts\typings\leaflet\leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\leaflet\proj4leaflet.d.ts" />
     <TypeScriptCompile Include="ts\typings\openlayers\openlayers.d.ts" />
+    <TypeScriptCompile Include="ts\typings\Proj4js\proj4js.d.ts" />
     <TypeScriptCompile Include="ts\typings\xml2json\xml2json.d.ts" />
   </ItemGroup>
   <ItemGroup>

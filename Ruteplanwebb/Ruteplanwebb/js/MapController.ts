@@ -1,5 +1,6 @@
 ﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
+///<reference path="../ts/typings/Proj4js/proj4js.d.ts"/>
 ///<reference path="helpers/OpenLayers.Awsome.Icon.d.ts"/>
 ///<reference path="app.ts"/>
 ///<reference path="domain.ts"/>
@@ -8,7 +9,8 @@
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
 
-    constructor(private $scope: IMapControllerScope, private $http: ng.IHttpService, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService) {
+    constructor(private $scope: IMapControllerScope, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService) {
+        Proj4js.defs["EPSG:25833"] = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs";
 
         var routeStyle = {
             graphicZIndex: 2,
@@ -83,6 +85,19 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.removeBlocks = () => {
+            $scope.blockedPoints = [];
+            $scope.blockedAreas = [];
+
+            $scope.updateMarkers();
+        };
+
+        $scope.hasBlocks = () => {
+            var points = $scope.blockedPoints != undefined && $scope.blockedPoints.length > 0;
+            var areas = $scope.blockedAreas != undefined && $scope.blockedAreas.length > 0;
+            return points || areas;
+        };
+
         $scope.updateMarkers = () => {
             $scope.markerLayer.destroyFeatures();
 
@@ -113,21 +128,17 @@ class MapController {
                 angular.forEach($scope.blockedPoints, (point) => {
                     var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
                         { externalGraphic: '/images/block-icon.png', graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
-                    //console.log(featureBlockedPoint);
                     $scope.markerLayer.addFeatures([featureBlockedPoint]);
                 });
                 $location.search('blockedPoints', JSON.stringify($scope.blockedPoints));
             }
 
             if ($scope.blockedAreas != undefined) {
-                angular.forEach($scope.blockedAreas, (area) => {
-                    angular.forEach(area.points, (point) => {
-                        var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
-                            { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
-
-                        $scope.markerLayer.addFeatures([featureBlockedPoint]);
-                    })
-               });
+                angular.forEach($scope.blockedAreas, (area : SVV.RoutePlanning.Polygon) => {
+                    var pts = area.points.map(x => new OpenLayers.Geometry.Point(x.lon, x.lat));
+                    var featureBlockedArea = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(pts)),null, { fillColor: "red",fillOpacity: 0.7, strokeColor: "black" });
+                    $scope.markerLayer.addFeatures([featureBlockedArea]);
+                });
                 $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
             }
 
@@ -169,6 +180,33 @@ class MapController {
             $scope.updateMarkers();
         };
 
+        $scope.contextMenuBlockPoint = (loc: any) => {
+            if ($scope.blockedPoints === undefined) {
+                $scope.blockedPoints = [];
+            }
+
+            var latlon = $scope.map.getLonLatFromPixel(loc);
+            var pt = new OpenLayers.Geometry.Point(latlon.lon, latlon.lat);
+            //Check if there is a route-feature in the map "close" and snap to that one..
+            angular.forEach($scope.routeLayer.features, (feature: OpenLayers.Feature.Vector) => {
+                var details = <any>feature.geometry.distanceTo(pt, { details: true });
+                var px1 = $scope.map.getPixelFromLonLat(new OpenLayers.LonLat(details.x0, details.y0));
+                var px2 = $scope.map.getPixelFromLonLat(new OpenLayers.LonLat(details.x1, details.y1));
+                var pxDist = Math.sqrt(Math.pow(px1.x - px2.x, 2) + Math.pow(px1.y - px2.y, 2));
+                if (pxDist < 20) {
+                    pt.x = details.x0;
+                    pt.y = details.y0;
+                }
+            });
+
+            latlon.lon = pt.x;
+            latlon.lat = pt.y;
+
+            $scope.blockedPoints.push(latlon);
+
+            $scope.updateMarkers();
+        }
+
         $scope.toggleMapControl = (key : string) => {
             angular.forEach($scope.controls, (wrapper) => {
                 if (wrapper.name == key) {
@@ -183,7 +221,7 @@ class MapController {
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;
-            angular.forEach($scope.routeLayer.features, function(feature) {
+            angular.forEach($scope.routeLayer.features, feature => {
                 if (feature.routeId === routeId) {
                     feature.style = routeStyle;
                 } else {
@@ -224,11 +262,14 @@ class MapController {
 
         $scope.downloadRouteAsKML = (routeId : number,$event) => {
             var elem = $event.target;
-            var kml = 'testar';
+            var format = new OpenLayers.Format.KML();
+            format.foldersName = "SVV Ruteplan Export";
+            var feat = $scope.routeLayer.features[routeId];
+            feat = new OpenLayers.Feature.Vector(feat.geometry.clone().transform(new OpenLayers.Projection('EPSG:25833'), new OpenLayers.Projection('EPSG:4326')));
+            var kml = format.write([feat]);
             var data = 'data:application/csv;charset=utf-8,' + encodeURIComponent(kml);
             elem.setAttribute("target", "_blank");
             elem.setAttribute("href", data);
-
         }
 
     }
