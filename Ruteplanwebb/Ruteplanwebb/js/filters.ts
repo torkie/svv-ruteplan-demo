@@ -34,7 +34,7 @@ angular.module("rpwFilters", [])
         return function(input : string) {
             var i = input.indexOf("}");
             if (i > 0) {
-                return input.substr(i + 1);
+                return input.substr(i + 2);
             } else {
                 return input;
             }
