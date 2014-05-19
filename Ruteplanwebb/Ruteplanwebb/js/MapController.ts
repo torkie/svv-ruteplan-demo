@@ -105,6 +105,10 @@ class MapController {
                 var featureFrom = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.fromAddress.location.lon, $scope.fromAddress.location.lat),null,
                  {externalGraphic: '/images/frommarker.png', graphicHeight: 46, graphicWidth: 35,      graphicXOffset:-17, graphicYOffset:-46  });
                 (<any>featureFrom).draggable = true;
+                (<any>featureFrom).onfeaturedragged = () => {  $scope.fromAddress = new SVV.RoutePlanning.AddressItem("Punkt i kartet", 
+                    new OpenLayers.LonLat((<OpenLayers.Geometry.Point>featureFrom.geometry).x,(<OpenLayers.Geometry.Point>featureFrom.geometry).y));
+                    $scope.updateMarkers();
+                };
                 $scope.markerLayer.addFeatures([featureFrom]);
                 $location.search('from', JSON.stringify($scope.fromAddress));
             }
@@ -112,16 +116,24 @@ class MapController {
                 var featureTo = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.toAddress.location.lon, $scope.toAddress.location.lat), null,
                 { externalGraphic: '/images/tomarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
                 (<any>featureTo).draggable = true;
+                 (<any>featureTo).onfeaturedragged = () => {  $scope.toAddress = new SVV.RoutePlanning.AddressItem("Punkt i kartet", 
+                    new OpenLayers.LonLat((<OpenLayers.Geometry.Point>featureTo.geometry).x,(<OpenLayers.Geometry.Point>featureTo.geometry).y));
+                    $scope.updateMarkers();
+                };
                 $scope.markerLayer.addFeatures([featureTo]);
 
                 $location.search('to', JSON.stringify($scope.toAddress));
             }
 
             if ($scope.intermediateAddresses != undefined) {
-                angular.forEach($scope.intermediateAddresses, (addr) => {
+                angular.forEach($scope.intermediateAddresses, (addr,index) => {
                     var featurevia = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(addr.location.lon, addr.location.lat), null,
                     { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
                     (<any>featurevia).draggable = true;
+                     (<any>featurevia).onfeaturedragged = () => {  $scope.intermediateAddresses[index] = new SVV.RoutePlanning.AddressItem("Punkt i kartet", 
+                    new OpenLayers.LonLat((<OpenLayers.Geometry.Point>featurevia.geometry).x,(<OpenLayers.Geometry.Point>featurevia.geometry).y));
+                    $scope.updateMarkers();
+                };
                     $scope.markerLayer.addFeatures([featurevia]);
                 });
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));

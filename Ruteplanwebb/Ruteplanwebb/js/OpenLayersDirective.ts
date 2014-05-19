@@ -116,6 +116,10 @@ class OpenLayersDirective {
             }
             var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
             var dfControl = new OpenLayers.Control.DragFeature(markerLayer);
+            dfControl.onComplete = (feature: OpenLayers.Feature.Vector, pixel: OpenLayers.Pixel) => {
+                if ((<any>feature).onfeaturedragged != null)
+                    (<any>feature).onfeaturedragged();
+            };
             var dragFeatureControl = new SVV.RoutePlanning.ControlWrapper('dragfeature', dfControl);
             var controls = [polygonControl,dragFeatureControl];
             angular.forEach(controls, (ctrl) => {

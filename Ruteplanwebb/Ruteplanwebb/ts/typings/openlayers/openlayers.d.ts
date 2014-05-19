@@ -3211,6 +3211,9 @@ declare module OpenLayers {
             constructor(layer : OpenLayers.Layer);
             activate();
             deactivate();
+            onStart(feature : Feature.Vector, pixel: Pixel);
+            onDrag(feature : Feature.Vector, pixel: Pixel);
+            onComplete(feature : Feature.Vector, pixel: Pixel);
         }
 
         export class DragPan {
