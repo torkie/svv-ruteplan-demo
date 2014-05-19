@@ -11,9 +11,9 @@ angular.module("rpwSettings", ["ngCookies"])
                 resolve: {
                     data: function() {
                         return {
-                            url: $cookies.url,
-                            username: $cookies.username,
-                            password: $cookies.password
+                            url: settings.url,
+                            username: settings.username,
+                            password: settings.password
                         }
                     }
                 }
@@ -21,10 +21,10 @@ angular.module("rpwSettings", ["ngCookies"])
 
             modalInstance.result.then(function(data) {
                 console.log("ok");
-                $cookies.url = data.url;
-                $cookies.username = data.username;
-                $cookies.password = data.password;
-                console.log($cookies);
+                settings.url = data.url;
+                settings.username = data.username;
+                settings.password = data.password;
+                settings.save();
             }, function() {
                 console.log("cancelled");
             });
@@ -51,6 +51,9 @@ angular.module("rpwSettings", ["ngCookies"])
 
         settings["save"] = function() {
             console.log("save settings");
+            $cookies.url = settings["url"];
+            $cookies.username = settings["username"];
+            $cookies.password = settings["password"];
         };
 
         return settings;
