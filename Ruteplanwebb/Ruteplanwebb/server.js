@@ -26,6 +26,7 @@ app.get("/routingService", function(req, res) {
 
     var host = "multirit.triona.se";
     var pathname = "/routingService_v1_0/routingService";
+    var headers = {};
 
     // parse backend url
     if (backend_url !== undefined) {
@@ -41,13 +42,19 @@ app.get("/routingService", function(req, res) {
                 res.end();
                 return;
             }
+
+            // add basic auth if username/password is specified
+            if (backend_username !== undefined && backend_password !== undefined) {
+                headers["Authorization"] = "Basic " + new Buffer(backend_username + ":" + backend_password).toString("base64");
+            }
         }
     }
 
     // use query parameters from request
     var options = {
         host: host,
-        path: pathname + q.search
+        path: pathname + q.search,
+        headers: headers
     };
 
     // callback for async backend request
