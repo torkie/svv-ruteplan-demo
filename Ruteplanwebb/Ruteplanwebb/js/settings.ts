@@ -38,18 +38,14 @@ angular.module("rpwSettings", ["ngCookies"])
         console.log($cookies);
 
         if ($cookies.url === undefined) {
-            settings["url"] = "http://default.com";
+            settings["url"] = "http://multirit.triona.se/routingService_v1_0/routingService";
         } else {
             settings["url"] = $cookies.url;
         }
-        if ($cookies["username"] === undefined) {
-            settings["username"] = "user";
-        } else {
+        if ($cookies["username"] !== undefined) {
             settings["username"] = $cookies.username;
         }
-        if ($cookies["password"] === undefined) {
-            settings["password"] = "pass";
-        } else {
+        if ($cookies["password"] !== undefined) {
             settings["password"] = $cookies.password;
         }
 
