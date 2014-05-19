@@ -100,6 +100,7 @@ class MapController {
 
         $scope.updateMarkers = () => {
             $scope.markerLayer.destroyFeatures();
+            $scope.barrierLayer.destroyFeatures();
 
             if ($scope.fromAddress != null) {
                 var featureFrom = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.fromAddress.location.lon, $scope.fromAddress.location.lat),null,
@@ -143,7 +144,7 @@ class MapController {
                 angular.forEach($scope.blockedPoints, (point) => {
                     var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
                         { externalGraphic: '/images/block-icon.png', graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
-                    $scope.markerLayer.addFeatures([featureBlockedPoint]);
+                    $scope.barrierLayer.addFeatures([featureBlockedPoint]);
                 });
                 $location.search('blockedPoints', JSON.stringify($scope.blockedPoints));
             }
@@ -152,7 +153,7 @@ class MapController {
                 angular.forEach($scope.blockedAreas, (area : SVV.RoutePlanning.Polygon) => {
                     var pts = area.points.map(x => new OpenLayers.Geometry.Point(x.lon, x.lat));
                     var featureBlockedArea = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(pts)),null, { fillColor: "red",fillOpacity: 0.7, strokeColor: "black" });
-                    $scope.markerLayer.addFeatures([featureBlockedArea]);
+                    $scope.barrierLayer.addFeatures([featureBlockedArea]);
                 });
                 $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
             }

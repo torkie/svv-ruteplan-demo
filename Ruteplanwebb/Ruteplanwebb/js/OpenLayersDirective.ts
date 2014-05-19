@@ -62,6 +62,7 @@ class OpenLayersDirective {
             );
 
             var markerLayer = new OpenLayers.Layer.Vector("Markers");
+            var barrierLayer = new OpenLayers.Layer.Vector("Barriers");
 
             var style = new OpenLayers.Style({
                 graphicZIndex: 0,
@@ -95,7 +96,7 @@ class OpenLayersDirective {
             };
 
             var map = new OpenLayers.Map("map", mapOptions);
-            map.addLayers([background, routeLayer, markerLayer]);
+            map.addLayers([background, routeLayer, markerLayer, barrierLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
             function onPolygonAdded(evt : any) {
@@ -111,10 +112,12 @@ class OpenLayersDirective {
                 var poly = new SVV.RoutePlanning.Polygon(points);
 
                 scope.blockedAreas.push(poly);
-                scope.toggleMapControl(null);
+
+                //Turn on drag-feature again...
+                scope.toggleMapControl('dragfeature');
                 scope.updateMarkers();
             }
-            var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
+            var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(barrierLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
             var dfControl = new OpenLayers.Control.DragFeature(markerLayer);
             dfControl.onComplete = (feature: OpenLayers.Feature.Vector, pixel: OpenLayers.Pixel) => {
                 if ((<any>feature).onfeaturedragged != null)
@@ -126,7 +129,7 @@ class OpenLayersDirective {
                 map.addControl(ctrl.control, null);
             });
 
-
+            dfControl.activate();
             var mousePositionCtrl = new OpenLayers.Control.MousePosition({
                     numDigits: 1,
                     separator: ', '
@@ -139,22 +142,12 @@ class OpenLayersDirective {
                 }
             },false);
 
-             map.events.register('featureover', map, (e) => {
-                    if (e.feature.draggable) {
-                        scope.toggleMapControl('dragfeature');
-                    };
-                });
-                 map.events.register('featureout', map, (e) => {
-                    if (e.feature.draggable) {
-                        scope.toggleMapControl(null);
-                    };
-                });
-
 
             scope.map = map;
             scope.controls = controls;
             scope.markerLayer = markerLayer;
             scope.routeLayer = routeLayer;
+            scope.barrierLayer = barrierLayer;
         };
     }
 
