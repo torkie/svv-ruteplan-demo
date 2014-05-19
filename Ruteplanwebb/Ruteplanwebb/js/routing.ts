@@ -32,7 +32,10 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                 stops: stopsParameter,
                 barriers: pointBarriersParameter,
                 format: "json",
-                lang: "nb-no"
+                lang: "nb-no",
+                backend_url: this.settings.url,
+                backend_username: this.settings.username,
+                backend_password: this.settings.password
             }
         }).success((data: SVV.RoutePlanning.RouteResponse) => {
             var forEach = angular.forEach;
