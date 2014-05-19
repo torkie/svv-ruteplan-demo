@@ -34,9 +34,6 @@ angular.module("rpwSettings", ["ngCookies"])
     .factory("settings", function($cookies) {
         var settings = {};
 
-        console.log("Cookies from settings service:");
-        console.log($cookies);
-
         if ($cookies.url === undefined) {
             settings["url"] = "http://multirit.triona.se/routingService_v1_0/routingService";
         } else {
@@ -50,10 +47,26 @@ angular.module("rpwSettings", ["ngCookies"])
         }
 
         settings["save"] = function() {
-            console.log("save settings");
-            $cookies.url = settings["url"];
-            $cookies.username = settings["username"];
-            $cookies.password = settings["password"];
+            var url = settings["url"];
+            if (url === undefined || url === "" || url === null) {
+                delete $cookies["url"];
+            } else {
+                $cookies.url = settings["url"];
+            }
+            
+            var username = settings["username"];
+            if (username === undefined || username === "" || username === null) {
+                delete $cookies["username"];
+            } else {
+                $cookies.username = settings["username"];
+            }
+
+            var password = settings["password"];
+            if (password === undefined || password === "" || password === null) {
+                delete $cookies["password"];
+            } else {
+                $cookies.password = settings["password"];
+            }
         };
 
         return settings;
