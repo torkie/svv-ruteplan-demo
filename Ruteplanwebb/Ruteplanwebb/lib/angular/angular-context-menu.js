@@ -23,8 +23,13 @@ angular
 
               function open(event, element) {
                   element.addClass('open');
-                  element.css('top', Math.max(event.pageY, 0) + 'px');
-                  element.css('left', Math.max(event.pageX, 0) + 'px');
+                  if ('pageX' in event) {
+                      element.css('top', Math.max(event.pageY, 0) + 'px');
+                      element.css('left', Math.max(event.pageX, 0) + 'px');
+                  } else {
+                      element.css('top', Math.max(event.y + document.getElementById(attrs.id).offsetTop, 0) + 'px');
+                      element.css('left', Math.max(event.x + document.getElementById(attrs.id).offsetLeft, 0) + 'px');
+                  }
                   opened = true;
               }
 
@@ -45,11 +50,11 @@ angular
 
                       var x, y;
                       if ('pageX' in event) {
-                          x = event.pageX - event.target.getBoundingClientRect().left;
-                          y = event.pageY -  event.target.getBoundingClientRect().top;
+                          x = event.pageX - document.getElementById(attrs.id).offsetLeft;
+                          y = event.pageY - document.getElementById(attrs.id).offsetTop;
                       } else {
-                          x = event.x - event.target.getBoundingClientRect().left;
-                          y = event.y - event.target.getBoundingClientRect().top;
+                          x = event.x - document.getElementById(attrs.id).offsetLeft;
+                          y = event.y - document.getElementById(attrs.id).offsetTop;
                       }
 
 

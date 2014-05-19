@@ -11,7 +11,7 @@ class OpenLayersDirective {
     link: any;
 
     constructor() {
-        this.restrict = "E";
+        this.restrict = "AE";
         this.replace = true;
 
         OpenLayers.ImgPath = "/lib/openlayers/theme/default/img/";
