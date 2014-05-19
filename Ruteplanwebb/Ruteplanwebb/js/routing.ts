@@ -26,10 +26,6 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
         var pointBarriersParameter = strings.join(";");
 
         strings = [];
-        if (blockedAreas != undefined) {
-            angular.forEach(blockedAreas, (a) => {
-            });
-        }
 
         var barriersParameter = pointBarriersParameter;
 
