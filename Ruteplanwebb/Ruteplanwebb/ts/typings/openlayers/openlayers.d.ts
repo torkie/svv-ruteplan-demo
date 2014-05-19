@@ -179,6 +179,7 @@ declare module OpenLayers {
 		 *     events.
 		 */
 		register(type: string, obj: any, func: () => void, priority: boolean) : void;
+        register(type: string, obj: any, func: (event) => void) : void;
 
 		/**
 		 * APIMethod: registerPriority
@@ -3207,9 +3208,12 @@ declare module OpenLayers {
         }
 
         export class DragFeature {
-
-            // TODO
-
+            constructor(layer : OpenLayers.Layer);
+            activate();
+            deactivate();
+            onStart(feature : Feature.Vector, pixel: Pixel);
+            onDrag(feature : Feature.Vector, pixel: Pixel);
+            onComplete(feature : Feature.Vector, pixel: Pixel);
         }
 
         export class DragPan {

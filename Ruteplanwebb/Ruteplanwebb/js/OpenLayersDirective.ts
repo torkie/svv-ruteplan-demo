@@ -115,8 +115,13 @@ class OpenLayersDirective {
                 scope.updateMarkers();
             }
             var polygonControl = new SVV.RoutePlanning.ControlWrapper('polygon', new OpenLayers.Control.DrawFeature(markerLayer, OpenLayers.Handler.Polygon, {featureAdded : onPolygonAdded}));
-
-            var controls = [ polygonControl ];
+            var dfControl = new OpenLayers.Control.DragFeature(markerLayer);
+            dfControl.onComplete = (feature: OpenLayers.Feature.Vector, pixel: OpenLayers.Pixel) => {
+                if ((<any>feature).onfeaturedragged != null)
+                    (<any>feature).onfeaturedragged();
+            };
+            var dragFeatureControl = new SVV.RoutePlanning.ControlWrapper('dragfeature', dfControl);
+            var controls = [polygonControl,dragFeatureControl];
             angular.forEach(controls, (ctrl) => {
                 map.addControl(ctrl.control, null);
             });
@@ -133,6 +138,17 @@ class OpenLayersDirective {
                     scope.contextMenuHandleWindowClicked(map.div);
                 }
             },false);
+
+             map.events.register('featureover', map, (e) => {
+                    if (e.feature.draggable) {
+                        scope.toggleMapControl('dragfeature');
+                    };
+                });
+                 map.events.register('featureout', map, (e) => {
+                    if (e.feature.draggable) {
+                        scope.toggleMapControl(null);
+                    };
+                });
 
 
             scope.map = map;

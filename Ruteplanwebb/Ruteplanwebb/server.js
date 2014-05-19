@@ -5,7 +5,7 @@ var url = require("url");
 
 app = express();
 //app.use(morgan());
-app.use(express.static(__dirname, {"index": ["default.htm", "index.html"]}));
+app.use(express.static(__dirname, {"index": ["default.htm", "index.html"], maxAge: 24 * 60 * 60 * 1000}));
 
 /*
  Dumb reverse proxy to routing service.
