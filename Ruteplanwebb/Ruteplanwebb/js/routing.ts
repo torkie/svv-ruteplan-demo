@@ -27,12 +27,10 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
 
         strings = [];
 
-        var barriersParameter = pointBarriersParameter;
-
         this.$http.get('routingService', {
             params: {
                 stops: stopsParameter,
-                barriers: barriersParameter,
+                barriers: pointBarriersParameter,
                 format: "json",
                 lang: "nb-no"
             }
