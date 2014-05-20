@@ -23,38 +23,13 @@ namespace Ruteplanwebb
             var wq = WebRequest.Create(url);
 
             using (var resp = wq.GetResponse())
+            using (var respstream = resp.GetResponseStream())
             {
-                using (var respstream = resp.GetResponseStream())
+                if (respstream != null)
                 {
-                    if (respstream != null)
-                    {
-                        
-                        var buf = new List<byte>();
-                        while (respstream.CanRead)
-                        {
-                            var b = new byte[8192];
-                            int nr = respstream.Read(b, 0, b.Length);
-                            buf.AddRange(b.Take(nr));
-                            if (nr == 0)
-                                break;
-                        }
-
-                        //foreach (var h in resp.Headers.AllKeys)
-                        //{
-                        //    context.Response.Headers.Add(h, resp.Headers[h]);
-                       // }
-                        context.Response.OutputStream.Write(buf.ToArray(), 0, buf.Count);
-                    }
-
+                    respstream.CopyTo(context.Response.OutputStream);
                 }
             }
-        }
-
-        private class RouteResponse
-        {
-            public double TotalDistance;
-            public double TotalTravelTime;
-            public double[] RouteEnvelope;
         }
 
         public bool IsReusable
