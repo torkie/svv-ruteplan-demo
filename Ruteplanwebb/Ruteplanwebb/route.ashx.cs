@@ -18,11 +18,8 @@ namespace Ruteplanwebb
     {
         public void ProcessRequest(HttpContext context)
         {
-            string url = "http://multirit.triona.se/routingService_v1_0/routingService?";
-            foreach (var param in context.Request.QueryString.AllKeys)
-            {
-                url += param + "=" + context.Request.QueryString[param] + "&";
-            }
+            string url = "http://multirit.triona.se/routingService_v1_0/routingService?" + context.Request.QueryString.ToString();
+
             var wq = WebRequest.Create(url);
 
             using (var resp = wq.GetResponse())
