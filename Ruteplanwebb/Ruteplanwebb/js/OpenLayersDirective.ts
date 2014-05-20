@@ -86,7 +86,7 @@ class OpenLayersDirective {
 
             var mapOptions = {
                 theme: null,
-                projection: new OpenLayers.Projection("EPSG:25833"),
+                projection: new OpenLayers.Projection("EPSG:32633"),
                 units: "m",
                 maxExtent: mapExt,
                 controls: [
