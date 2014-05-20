@@ -248,18 +248,34 @@ class MapController {
                 if (feature.attributes != undefined) {
 
                     if (feature.attributes.roadFeatures != undefined && feature.attributes.roadFeatures.length > 0) {
-
                         angular.forEach(feature.attributes.roadFeatures, (feat) => {
                             var type = feat.attributeType;
-                            var names = ["nvdb:Rasteplass", "nvdb:Bomstasjon"];
+                            var imageName = null;
+                            var geometry = null;
 
-                            if (names.indexOf(type) || type.match("^vegloggen")) {
-                                if (feat.location != undefined && feat.location.length == 1) {
-                                    var loc = feat.location[0];
-
-                                    var geometry = new OpenLayers.Geometry.Point(loc.easting, loc.northing);
-                                    $scope.routeFeatureLayer.addFeatures([new OpenLayers.Feature.Vector(geometry)]);
+                            if (type.match("^nvdb") || type.match("^vegloggen")) {
+                                var sub = type.substr(type.indexOf(':')+1);
+                                if (type.match("^nvdb")) {
+                                    imageName = sub;
+                                } else if (type.match("^vegloggen")) {
+                                    imageName = "trafikkmelding";
                                 }
+
+                                if (imageName != null && feat.location != undefined && feat.location.length > 0) {
+                                    var loc = feat.location[0];
+                                    geometry = new OpenLayers.Geometry.Point(loc.easting, loc.northing);
+                                } else {
+                                    console.log(feat);
+                                }
+                            }
+
+                            if (imageName != null) {
+                                var graphic = "/images/"+sub+".png";
+
+                                var f = new OpenLayers.Feature.Vector(geometry, null,
+                                    { externalGraphic: graphic, graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
+
+                                $scope.routeFeatureLayer.addFeatures([f]);
                             }
                         });
                     }
