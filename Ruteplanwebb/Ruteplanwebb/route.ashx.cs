@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Ruteplanwebb
 {
@@ -55,6 +56,13 @@ namespace Ruteplanwebb
             }
 
             var wq = WebRequest.Create(url);
+
+            if (!String.IsNullOrEmpty(backend_username))
+            {
+                var cred = Encoding.UTF8.GetBytes(backend_username + ":" + backend_password);
+                string header = "Basic " + Convert.ToBase64String(cred);
+                wq.Headers.Add("Authorization", header);
+            }
 
             using (var resp = wq.GetResponse())
             using (var respstream = resp.GetResponseStream())
