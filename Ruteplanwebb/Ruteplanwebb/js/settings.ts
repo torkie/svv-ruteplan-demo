@@ -1,7 +1,7 @@
 ///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 
 angular.module("rpwSettings", ["ngCookies"])
-    .controller("SettingsController", ["$scope", "$modal", "$cookies", "settings", function($scope, $modal, $cookies, settings) {
+    .controller("SettingsController", ["$scope", "$modal", "settings", "$cookieStore", function($scope, $modal, settings, $cookieStore) {
 
         $scope.open = function(size) {
             var modalInstance = $modal.open({
@@ -31,42 +31,15 @@ angular.module("rpwSettings", ["ngCookies"])
         };
 
     }])
-    .factory("settings", function($cookies) {
-        var settings = {};
+    .factory("settings", function($cookies, $cookieStore) {
+        var settings = $cookieStore.get("settings") || {};
 
-        if ($cookies.url === undefined) {
-            settings["url"] = "http://multirit.triona.se/routingService_v1_0/routingService";
-        } else {
-            settings["url"] = $cookies.url;
-        }
-        if ($cookies["username"] !== undefined) {
-            settings["username"] = $cookies.username;
-        }
-        if ($cookies["password"] !== undefined) {
-            settings["password"] = $cookies.password;
+        if (settings.url === undefined) {
+            settings.url = "http://multirit.triona.se/routingService_v1_0/routingService";
         }
 
-        settings["save"] = function() {
-            var url = settings["url"];
-            if (url === undefined || url === "" || url === null) {
-                delete $cookies["url"];
-            } else {
-                $cookies.url = settings["url"];
-            }
-            
-            var username = settings["username"];
-            if (username === undefined || username === "" || username === null) {
-                delete $cookies["username"];
-            } else {
-                $cookies.username = settings["username"];
-            }
-
-            var password = settings["password"];
-            if (password === undefined || password === "" || password === null) {
-                delete $cookies["password"];
-            } else {
-                $cookies.password = settings["password"];
-            }
+        settings.save = function() {
+            $cookieStore.put("settings", settings);
         };
 
         return settings;
