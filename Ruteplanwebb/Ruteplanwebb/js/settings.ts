@@ -1,7 +1,7 @@
 ///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 
 angular.module("rpwSettings", ["ngCookies"])
-    .controller("SettingsController", ["$scope", "$modal", "settings", "$cookieStore", function($scope, $modal, settings, $cookieStore) {
+    .controller("SettingsController", ["$scope", "$modal", "settings", function($scope, $modal, settings) {
 
         $scope.open = function(size) {
             var modalInstance = $modal.open({
@@ -10,28 +10,21 @@ angular.module("rpwSettings", ["ngCookies"])
                 size: size,
                 resolve: {
                     data: function() {
-                        return {
-                            url: settings.url,
-                            username: settings.username,
-                            password: settings.password
-                        }
+                        return settings;
                     }
                 }
             });
 
             modalInstance.result.then(function(data) {
                 console.log("ok");
-                settings.url = data.url;
-                settings.username = data.username;
-                settings.password = data.password;
-                settings.save();
+                data.save();
             }, function() {
                 console.log("cancelled");
             });
         };
 
     }])
-    .factory("settings", function($cookies, $cookieStore) {
+    .factory("settings", function($cookieStore) {
         var settings = $cookieStore.get("settings") || {};
 
         if (settings.url === undefined) {
@@ -53,7 +46,7 @@ var ModalInstanceCtrl = function($scope, $modalInstance, data) {
     };
 
     $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $modalInstance.dismiss("cancel");
     };
 
 };
