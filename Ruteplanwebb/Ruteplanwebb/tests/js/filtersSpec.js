@@ -13,6 +13,10 @@ describe("filter", function() {
                 expect(timeFilter(59)).toBe("59 minutter");
                 expect(timeFilter(1)).toBe("1 minutt");
                 expect(timeFilter(122)).toBe("2 timer 2 minutter");
+                expect(timeFilter(0.21666666666666667)).toBe("13 sekunder");
+                expect(timeFilter(1/60)).toBe("1 sekund");
+                expect(timeFilter(1.2)).toBe("1 minutt");
+                expect(timeFilter(1.6)).toBe("2 minutter");
             }));
     });
 
@@ -23,6 +27,7 @@ describe("filter", function() {
                 expect(distanceFilter(1000)).toBe("1 kilometer");
                 expect(distanceFilter(2000)).toBe("2 kilometer");
                 expect(distanceFilter(2500)).toBe("3 kilometer");
+                expect(distanceFilter(253)).toBe("253 meter");
             }));
     });
 
