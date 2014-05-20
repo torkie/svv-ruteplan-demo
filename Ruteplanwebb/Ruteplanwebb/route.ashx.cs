@@ -18,7 +18,30 @@ namespace Ruteplanwebb
     {
         public void ProcessRequest(HttpContext context)
         {
-            string url = "http://multirit.triona.se/routingService_v1_0/routingService?" + context.Request.QueryString.ToString();
+            var request = context.Request;
+
+            // kinda a hack to copy request.QueryString so we get a mutable instance
+            var copy = HttpUtility.ParseQueryString(request.QueryString.ToString());
+
+            // get proxy parameters
+            var backend_url = copy["backend_url"];
+            var backend_username = copy["backend_username"];
+            var backend_password = copy["backend_password"];
+
+            // remove parameters that shouldn't be passed to backend
+            copy.Remove("backend_url");
+            copy.Remove("backend_username");
+            copy.Remove("backend_password");
+
+            string url;
+            if (String.IsNullOrEmpty(backend_url))
+            {
+                url = "http://multirit.triona.se/routingService_v1_0/routingService?" + copy.ToString();
+            }
+            else
+            {
+                url = backend_url + "?" + copy.ToString();
+            }
 
             var wq = WebRequest.Create(url);
 
