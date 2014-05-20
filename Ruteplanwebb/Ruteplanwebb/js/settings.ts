@@ -30,8 +30,6 @@ angular.module("rpwSettings", ["ngCookies"])
 
             modalInstance.result.then(function(data) {
                 data.save();
-            }, function() {
-                console.log("cancelled");
             });
         };
 
