@@ -38,7 +38,7 @@ app.get("/routingService", function(req, res) {
                 pathname = backend.pathname;
             } else {
                 console.log('"unsafe" url: ' + backend_url);
-                res.status(408);
+                res.status(400);
                 res.end();
                 return;
             }
