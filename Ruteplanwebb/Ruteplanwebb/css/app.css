@@ -58,14 +58,17 @@ span {
 #reverse-order-button:hover {
     text-shadow: 0.1em 0.1em 0.05em #333;
     transition: text-shadow 1s;
+    cursor: pointer;
 }
 
 #remove-intermediate-button {
     color: darkblue;
+    cursor: pointer;
 }
 #remove-intermediate-button:hover {
     text-shadow: 0.1em 0.1em 0.05em #333;
     transition: text-shadow 1s;
+    cursor: pointer;
 }
 
 #remove-blocks-button {
@@ -74,6 +77,7 @@ span {
 #remove-blocks-button:hover {
     text-shadow: 0.1em 0.1em 0.05em #333;
     transition: text-shadow 1s;
+    cursor: pointer;
 }
 
 #routedesc {
