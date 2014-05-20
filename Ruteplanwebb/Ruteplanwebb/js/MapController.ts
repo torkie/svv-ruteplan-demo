@@ -54,19 +54,11 @@ class MapController {
                         $scope.map.zoomToExtent(bounds);
                     //}
 
-                    // apply styles to features
-                    var styles = [routeStyle, alternativeRouteStyle];
-
-                    var style = 0;
-                    angular.forEach(features, feature => {
-                        feature.style = styles[style];
-                        if (style < styles.length - 1) style++;
-                    });
-
                     // add features to map
                     $scope.routeLayer.addFeatures(features);
-                    if (directions != null && directions.length > 0)
-                        $scope.selectedRouteId = directions[0].routeId;
+                    if (directions != null && directions.length > 0) {
+                        $scope.selectRoute(directions[0].routeId);
+                    }
 
                 }
             , $scope.blockedPoints, $scope.blockedAreas);
@@ -221,7 +213,7 @@ class MapController {
             $scope.blockedPoints.push(latlon);
 
             $scope.updateMarkers();
-        }
+        };
 
         $scope.toggleMapControl = (key : string) => {
             angular.forEach($scope.controls, (wrapper) => {
