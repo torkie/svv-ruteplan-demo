@@ -33,7 +33,7 @@ app.get("/routingService", function(req, res) {
         var backend = url.parse(backend_url);
         if (backend !== undefined && backend.host !== undefined) {
             // only accept vegvesen.no and triona.se hosts
-            if (backend.host.match("(vegvesen.no|triona.se)$") !== null) {
+            if (backend.host.match("(\\.vegvesen\\.no|\\.triona\\.se)$") !== null) {
                 host = backend.host;
                 pathname = backend.pathname;
             } else {
