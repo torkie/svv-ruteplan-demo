@@ -18,6 +18,7 @@ interface IMapControllerScope extends ng.IScope {
     toAddress: SVV.RoutePlanning.AddressItem;
     markerLayer: OpenLayers.Layer.Vector;
     routeLayer: OpenLayers.Layer.Vector;
+    routeFeatureLayer : OpenLayers.Layer.Vector;
     barrierLayer : OpenLayers.Layer.Vector;
     directions: SVV.RoutePlanning.ViewDirection[];
     contextMenuHandleWindowClicked : any;

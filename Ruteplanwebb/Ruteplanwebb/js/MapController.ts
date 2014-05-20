@@ -229,6 +229,8 @@ class MapController {
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;
+
+            // Draw routes
             angular.forEach($scope.routeLayer.features, feature => {
                 if (feature.routeId === routeId) {
                     feature.style = routeStyle;
@@ -236,6 +238,32 @@ class MapController {
                     feature.style = alternativeRouteStyle;
                 }
                 $scope.routeLayer.drawFeature(feature);
+            });
+
+            // Create road features for selected route
+            $scope.routeFeatureLayer.destroyFeatures();
+
+            var features = $scope.directions[routeId].features;
+            angular.forEach(features, (feature:SVV.RoutePlanning.ViewDirectionFeature) => {
+                if (feature.attributes != undefined) {
+
+                    if (feature.attributes.roadFeatures != undefined && feature.attributes.roadFeatures.length > 0) {
+
+                        angular.forEach(feature.attributes.roadFeatures, (feat) => {
+                            var type = feat.attributeType;
+                            var names = ["nvdb:Rasteplass", "nvdb:Bomstasjon"];
+
+                            if (names.indexOf(type) || type.match("^vegloggen")) {
+                                if (feat.location != undefined && feat.location.length == 1) {
+                                    var loc = feat.location[0];
+
+                                    var geometry = new OpenLayers.Geometry.Point(loc.easting, loc.northing);
+                                    $scope.routeFeatureLayer.addFeatures([new OpenLayers.Feature.Vector(geometry)]);
+                                }
+                            }
+                        });
+                    }
+                }
             });
         };
 

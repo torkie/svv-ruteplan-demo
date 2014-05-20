@@ -32,8 +32,21 @@ module SVV.RoutePlanning {
     export class RouteResponseDirectionFeature {
         attributes : RouteResponseDirectionFeatureAttributes;
     }
-     export class RouteResponseDirectionFeatureAttributes {
+
+    export class RouteResponseDirectionFeatureAttributes {
         text : string;
+        roadFeatures : RouteResponseDirectionFeatureAttributesRoadFeatures[];
+    }
+
+    export class RouteResponseDirectionFeatureAttributesRoadFeatures {
+        attributeType : string;
+        locations : Location;
+    }
+
+    export class Location {
+        northing : number;
+        easting: number;
+        SRS : string;
     }
 
     export class ViewDirection extends RouteResponseDirection {

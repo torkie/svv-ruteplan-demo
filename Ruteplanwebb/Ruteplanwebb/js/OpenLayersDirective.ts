@@ -63,6 +63,7 @@ class OpenLayersDirective {
 
             var markerLayer = new OpenLayers.Layer.Vector("Markers");
             var barrierLayer = new OpenLayers.Layer.Vector("Barriers");
+            var routeFeatureLayer = new OpenLayers.Layer.Vector("RouteFeatures");
 
             var style = new OpenLayers.Style({
                 graphicZIndex: 0,
@@ -96,7 +97,7 @@ class OpenLayersDirective {
             };
 
             var map = new OpenLayers.Map("map", mapOptions);
-            map.addLayers([background, routeLayer, markerLayer, barrierLayer]);
+            map.addLayers([background, routeLayer, routeFeatureLayer, markerLayer, barrierLayer]);
             map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
 
             function onPolygonAdded(evt : any) {
@@ -147,6 +148,7 @@ class OpenLayersDirective {
             scope.controls = controls;
             scope.markerLayer = markerLayer;
             scope.routeLayer = routeLayer;
+            scope.routeFeatureLayer = routeFeatureLayer;
             scope.barrierLayer = barrierLayer;
         };
     }
