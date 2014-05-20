@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Ruteplanwebb
 {
@@ -40,7 +41,17 @@ namespace Ruteplanwebb
             }
             else
             {
-                url = backend_url + "?" + copy.ToString();
+                var uri = new Uri(backend_url);
+                var hostname = uri.Host;
+                var regex = new Regex("(\\.vegvesen\\.no|\\.triona\\.se)$");
+                if (regex.IsMatch(hostname)) {
+                    url = backend_url + "?" + copy.ToString();
+                } else
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    context.Response.End();
+                    return;
+                }
             }
 
             var wq = WebRequest.Create(url);
