@@ -22,6 +22,7 @@
     <Content Include="debug.html" />
     <Content Include="images\ajax-loader.gif" />
     <Content Include="images\block-icon.png" />
+    <Content Include="images\Bomstasjon.png" />
     <Content Include="images\car-icon.gif" />
     <Content Include="images\car-icon.png" />
     <Content Include="images\ferry-icon.png" />
@@ -33,8 +34,10 @@
     <Content Include="images\markers-shadow.png" />
     <Content Include="images\markers-soft%402x.png" />
     <Content Include="images\markers-soft.png" />
+    <Content Include="images\Rasteplass.png" />
     <Content Include="images\sprites.png" />
     <Content Include="images\tomarker.png" />
+    <Content Include="images\trafikkmelding.png" />
     <Content Include="images\Truck-icon.png" />
     <Content Include="images\viamarker.png" />
     <Content Include="js\helpers\OpenLayers.Awsome.Icon.js" />
@@ -319,6 +322,9 @@
     <Content Include="lib\bootstrap\ui-bootstrap-0.10.0.min.js" />
     <Content Include="lib\bootstrap\ui-bootstrap-tpls-0.10.0.js" />
     <Content Include="lib\bootstrap\ui-bootstrap-tpls-0.10.0.min.js" />
+    <Content Include="lib\fontawesome\css\font-awesome.css" />
+    <Content Include="lib\fontawesome\css\font-awesome.min.css" />
+    <Content Include="lib\fontawesome\fonts\fontawesome-webfont.svg" />
     <Content Include="lib\jasmine\jasmine-1.3.1\jasmine-html.js" />
     <Content Include="lib\jasmine\jasmine-1.3.1\jasmine.css" />
     <Content Include="lib\jasmine\jasmine-1.3.1\jasmine.js" />
@@ -403,6 +409,7 @@
     <Content Include="lib\openlayers\theme\default\style.tidy.css" />
     <Content Include="lib\proj4js\proj4js-compressed.js" />
     <Content Include="lib\xml2json\xml2json.min.js" />
+    <Content Include="server.js" />
     <Content Include="template\typeahead\typeahead-match.html" />
     <Content Include="template\typeahead\typeahead-popup.html" />
     <Content Include="tests\teamcity-runner\jasmine.teamcity_reporter.js" />
@@ -453,6 +460,10 @@
     <Content Include="lib\angular\angular-touch.min.js.map" />
     <Content Include="lib\angular\angular.min.js.map" />
     <Content Include="lib\jasmine\jasmine-1.3.1\MIT.LICENSE" />
+    <Content Include="lib\fontawesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="lib\fontawesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="lib\fontawesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="lib\fontawesome\fonts\FontAwesome.otf" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
