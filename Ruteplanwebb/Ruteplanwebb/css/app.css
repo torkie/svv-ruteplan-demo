@@ -270,3 +270,7 @@ span {
     visibility: hidden;
     display: none;
 }
+
+#settings-button:hover {
+    cursor: pointer;
+}
