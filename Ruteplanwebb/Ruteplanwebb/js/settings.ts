@@ -3,10 +3,23 @@
 angular.module("rpwSettings", ["ngCookies"])
     .controller("SettingsController", ["$scope", "$modal", "settings", function($scope, $modal, settings) {
 
+        var dialogController = function($scope, $modalInstance, data) {
+            $scope.data = data;
+
+            $scope.ok = function() {
+                $modalInstance.close($scope.data);
+            };
+
+            $scope.cancel = function() {
+                $modalInstance.dismiss("cancel");
+            };
+
+        };
+
         $scope.open = function(size) {
             var modalInstance = $modal.open({
-                templateUrl: 'settings.html',
-                controller: ModalInstanceCtrl,
+                templateUrl: "settings.html",
+                controller: dialogController,
                 size: size,
                 resolve: {
                     data: function() {
@@ -16,7 +29,6 @@ angular.module("rpwSettings", ["ngCookies"])
             });
 
             modalInstance.result.then(function(data) {
-                console.log("ok");
                 data.save();
             }, function() {
                 console.log("cancelled");
@@ -37,16 +49,3 @@ angular.module("rpwSettings", ["ngCookies"])
 
         return settings;
     });
-
-var ModalInstanceCtrl = function($scope, $modalInstance, data) {
-    $scope.data = data;
-
-    $scope.ok = function() {
-        $modalInstance.close($scope.data);
-    };
-
-    $scope.cancel = function() {
-        $modalInstance.dismiss("cancel");
-    };
-
-};
