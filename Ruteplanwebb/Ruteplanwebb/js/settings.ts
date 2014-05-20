@@ -1,35 +1,49 @@
 ///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 
-angular.module("rpwSettings", [])
-    .controller("SettingsController", ["$scope", "$modal", function($scope, $modal){
-        $scope.items = ['item1', 'item2', 'item3'];
+angular.module("rpwSettings", ["ngCookies"])
+    .controller("SettingsController", ["$scope", "$modal", "settings", function($scope, $modal, settings) {
 
-        $scope.open = function (size) {
+        var dialogController = function($scope, $modalInstance, data) {
+            $scope.data = data;
 
+            $scope.ok = function() {
+                $modalInstance.close($scope.data);
+            };
+
+            $scope.cancel = function() {
+                $modalInstance.dismiss("cancel");
+            };
+
+        };
+
+        $scope.open = function(size) {
             var modalInstance = $modal.open({
-                templateUrl: 'settings.html',
-                controller: ModalInstanceCtrl,
-                size: size
+                templateUrl: "settings.html",
+                controller: dialogController,
+                size: size,
+                resolve: {
+                    data: function() {
+                        return settings;
+                    }
+                }
             });
 
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-                console.log("ok");
-            }, function () {
-                console.log("cancelled");
+            modalInstance.result.then(function(data) {
+                data.save();
             });
         };
 
-    }]);
+    }])
+    .factory("settings", function($cookieStore) {
+        var settings = $cookieStore.get("settings") || {};
 
-var ModalInstanceCtrl = function ($scope, $modalInstance) {
+        if (settings.url === undefined) {
+            settings.url = "http://multirit.triona.se/routingService_v1_0/routingService";
+        }
 
-    $scope.ok = function () {
-        $modalInstance.close();
-    };
+        settings.save = function() {
+            $cookieStore.put("settings", settings);
+        };
 
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-
-};
+        return settings;
+    });

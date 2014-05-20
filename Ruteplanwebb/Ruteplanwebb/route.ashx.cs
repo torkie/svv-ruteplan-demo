@@ -8,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Ruteplanwebb
 {
@@ -18,46 +20,62 @@ namespace Ruteplanwebb
     {
         public void ProcessRequest(HttpContext context)
         {
-            string url = "http://multirit.triona.se/routingService_v1_0/routingService?";
-            foreach (var param in context.Request.QueryString.AllKeys)
+            var request = context.Request;
+
+            // kinda a hack to copy request.QueryString so we get a mutable instance
+            var queryString = HttpUtility.ParseQueryString(request.QueryString.ToString());
+
+            // get proxy parameters
+            var backend_url = queryString["backend_url"];
+            var backend_username = queryString["backend_username"];
+            var backend_password = queryString["backend_password"];
+
+            // remove parameters that shouldn't be passed to backend
+            queryString.Remove("backend_url");
+            queryString.Remove("backend_username");
+            queryString.Remove("backend_password");
+
+            string url;
+            if (String.IsNullOrEmpty(backend_url))
             {
-                url += param + "=" + context.Request.QueryString[param] + "&";
+                url = "http://multirit.triona.se/routingService_v1_0/routingService?" + queryString.ToString();
             }
-            var wq = WebRequest.Create(url);
-
-            using (var resp = wq.GetResponse())
+            else
             {
-                using (var respstream = resp.GetResponseStream())
+                var uri = new Uri(backend_url);
+                var hostname = uri.Host;
+                // "security check"
+                var regex = new Regex("(\\.vegvesen\\.no|\\.triona\\.se)$");
+                if (regex.IsMatch(hostname))
                 {
-                    if (respstream != null)
-                    {
-                        
-                        var buf = new List<byte>();
-                        while (respstream.CanRead)
-                        {
-                            var b = new byte[8192];
-                            int nr = respstream.Read(b, 0, b.Length);
-                            buf.AddRange(b.Take(nr));
-                            if (nr == 0)
-                                break;
-                        }
-
-                        //foreach (var h in resp.Headers.AllKeys)
-                        //{
-                        //    context.Response.Headers.Add(h, resp.Headers[h]);
-                       // }
-                        context.Response.OutputStream.Write(buf.ToArray(), 0, buf.Count);
-                    }
-
+                    url = backend_url + "?" + queryString.ToString();
+                }
+                else
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    context.Response.End();
+                    return;
                 }
             }
-        }
 
-        private class RouteResponse
-        {
-            public double TotalDistance;
-            public double TotalTravelTime;
-            public double[] RouteEnvelope;
+            var wq = WebRequest.Create(url);
+
+            // add basic auth header if we have username
+            if (!String.IsNullOrEmpty(backend_username))
+            {
+                var cred = Encoding.UTF8.GetBytes(backend_username + ":" + backend_password);
+                string header = "Basic " + Convert.ToBase64String(cred);
+                wq.Headers.Add("Authorization", header);
+            }
+
+            using (var resp = wq.GetResponse())
+            using (var respstream = resp.GetResponseStream())
+            {
+                if (respstream != null)
+                {
+                    respstream.CopyTo(context.Response.OutputStream);
+                }
+            }
         }
 
         public bool IsReusable
