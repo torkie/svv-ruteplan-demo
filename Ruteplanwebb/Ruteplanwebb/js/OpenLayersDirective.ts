@@ -63,7 +63,9 @@ class OpenLayersDirective {
 
             var markerLayer = new OpenLayers.Layer.Vector("Markers");
             var barrierLayer = new OpenLayers.Layer.Vector("Barriers");
-            var routeFeatureLayer = new OpenLayers.Layer.Vector("RouteFeatures");
+            var routeFeatureLayer = new OpenLayers.Layer.Vector("RouteFeatures", {
+                maxScale:  50
+            });
 
             var style = new OpenLayers.Style({
                 graphicZIndex: 0,
