@@ -6,21 +6,16 @@ angular.module("rpwWms", [])
 
         var dialogController = function($scope, $modalInstance, data) {
             $scope.data = data;
-
-            $scope.addone = function() {
-                data.addlayer("tellepunkt", "http://trip.triona.no:80/geoserver/wms", "NorTrafKommune:Tellepunkt");
-            };
-
-            $scope.addtwo = function() {
-                data.addlayer("aadt", "http://trip.triona.no:80/geoserver/wms", "NorTrafKommune:Aadt");
-            };
-
-            $scope.addthree = function() {
-                data.addlayer("ting", "http://arcus.nve.no/wmsconnector/com.esri.wms.Esrimap/wms_kraftanlegg", "Dam");
-            };
+            $scope.name = "tellepunkt";
+            $scope.url = "http://trip.triona.no:80/geoserver/wms";
+            $scope.layer = "NorTrafKommune:Tellepunkt";
 
             $scope.ok = function() {
-                $modalInstance.close($scope.data);
+                $modalInstance.close({
+                    name: $scope.name,
+                    url: $scope.url,
+                    layer: $scope.layer
+                });
             };
 
             $scope.cancel = function() {
@@ -42,6 +37,7 @@ angular.module("rpwWms", [])
             });
 
             modalInstance.result.then(function(data) {
+                wmsSettings.addlayer(data.name, data.url, data.layer);
                 wmsSettings.apply();
             });
         };

@@ -19,9 +19,14 @@
                 <h3 class="modal-title">WMS lag</h3>
             </div>
             <div class="modal-body">
-                <button ng-click="addone()">1</button>
-                <button ng-click="addtwo()">2</button>
-                <button ng-click="addthree()">3</button>
+                <form>
+                    <div>Navn:</div>
+                    <input style="width: 100%" type="text" name="name" ng-model="name">
+                    <div>URL:</div>
+                    <input style="width: 100%" type="text" name="url" ng-model="url">
+                    <div>Lag:</div>
+                    <input style="width: 100%" type="text" name="layer" ng-model="layer">
+                </form>
             </div>
             <div class="modal-footer">
                 <button ng-click="ok()">OK</button>
