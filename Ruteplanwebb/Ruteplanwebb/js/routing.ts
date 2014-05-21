@@ -10,17 +10,17 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
     constructor(private $http: ng.IHttpService, private settings: any) {
     }
 
-    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints? : OpenLayers.LonLat[], blockedAreas? : SVV.RoutePlanning.Polygon[]) => {
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[]) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
-            strings.push(stop.lon+","+stop.lat);
+            strings.push(stop.lon + "," + stop.lat);
         });
         var stopsParameter = strings.join(";");
 
         strings = [];
         if (blockedPoints != undefined) {
             angular.forEach(blockedPoints, (p) => {
-                strings.push(p.lon+","+p.lat);
+                strings.push(p.lon + "," + p.lat);
             });
         }
         var pointBarriersParameter = strings.join(";");
@@ -63,6 +63,8 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                     feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
                     feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
                     feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
+                    feature.turnIconClass = this.getTurnIconForEsriManeuvre(feature.attributes.maneuverType);
+
                 });
                 directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
                 directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
@@ -82,6 +84,35 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
         });
     };
 
+
+    getTurnIconForEsriManeuvre = (esriManeuvreType : string) => {
+        switch (esriManeuvreType) {
+        case "esriDMTStraight":
+            return "icon-straight";
+        case "esriDMTBearLeft":
+            return "icon-bearleft";
+        case "esriDMTBearRight":
+            return "icon-bearright";
+        case "esriDMTTurnLeft":
+        case "esriDMTSharpLeft":
+            return "icon-turnleft";
+        case "esriDMTTurnRight":
+        case "esriDMTSharpRight":
+            return "icon-turnright";
+        case "esriDMTUTurn":
+            return "icon-uturn";
+        case "esriDMTRoundabout":
+            return "icon-roundabout";
+        case "esriDMTDepart":
+            return "icon-start";
+        case "esriDMTStop":
+            return "icon-stop";
+
+        default:
+            return "";
+        }
+
+    };
 
 }
 

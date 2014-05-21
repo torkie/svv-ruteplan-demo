@@ -19,6 +19,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="css\app.css" />
+    <Content Include="css\directions-font.css" />
+    <Content Include="css\directions-font.svg" />
     <Content Include="debug.html" />
     <Content Include="images\ajax-loader.gif" />
     <Content Include="images\block-icon.png" />
@@ -464,6 +466,9 @@
     <Content Include="lib\fontawesome\fonts\fontawesome-webfont.ttf" />
     <Content Include="lib\fontawesome\fonts\fontawesome-webfont.woff" />
     <Content Include="lib\fontawesome\fonts\FontAwesome.otf" />
+    <Content Include="css\directions-font.eot" />
+    <Content Include="css\directions-font.ttf" />
+    <Content Include="css\directions-font.woff" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -36,6 +36,7 @@ module SVV.RoutePlanning {
     export class RouteResponseDirectionFeatureAttributes {
         text : string;
         roadFeatures : RouteResponseDirectionFeatureAttributesRoadFeatures[];
+        maneuverType : string;
     }
 
     export class RouteResponseDirectionFeatureAttributesRoadFeatures {
@@ -54,11 +55,13 @@ module SVV.RoutePlanning {
         TotalTollSmall: number;
         Bounds: OpenLayers.Bounds;
         routeId : number;
+        
     }
 
     export class ViewDirectionFeature extends RouteResponseDirectionFeature {
         roadCat: string;
         roadNumber: number;
+        turnIconClass: string;
     }
 
     export class RouteResponseRoute {

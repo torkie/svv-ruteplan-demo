@@ -73,7 +73,7 @@
 
                     <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
                         <li ng-repeat="feature in direction.features">
-                            <div><div class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}</div>
+                            <div><div class="{{feature.turnIconClass}}" ng-if="feature.turnIconClass != ''"></div><div class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}</div>
                         </li>
                     </ul>
                 </div>
