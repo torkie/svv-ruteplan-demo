@@ -7,6 +7,18 @@ angular.module("rpwWms", [])
         var dialogController = function($scope, $modalInstance, data) {
             $scope.data = data;
 
+            $scope.addone = function() {
+                data.addlayer("tellepunkt", "http://trip.triona.no:80/geoserver/wms", "NorTrafKommune:Tellepunkt");
+            };
+
+            $scope.addtwo = function() {
+                data.addlayer("aadt", "http://trip.triona.no:80/geoserver/wms", "NorTrafKommune:Aadt");
+            };
+
+            $scope.addthree = function() {
+                data.addlayer("ting", "http://arcus.nve.no/wmsconnector/com.esri.wms.Esrimap/wms_kraftanlegg", "Dam");
+            };
+
             $scope.ok = function() {
                 $modalInstance.close($scope.data);
             };
@@ -57,8 +69,6 @@ angular.module("rpwWms", [])
             wms["userAddedLayer"] = true;
             settings.layers.push(wms);
         };
-
-        settings.addlayer("tellepunkt", "http://trip.triona.no:80/geoserver/wms", "NorTrafKommune:Tellepunkt");
 
         return settings;
     });
