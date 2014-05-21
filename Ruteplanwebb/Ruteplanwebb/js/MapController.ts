@@ -9,7 +9,7 @@
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
 
-    constructor(private $scope: IMapControllerScope, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService) {
+    constructor(private $scope: IMapControllerScope, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService, wmsSettings: any) {
         Proj4js.defs["EPSG:25833"] = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs";
         Proj4js.defs["EPSG:32633"] = "+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
 
@@ -323,7 +323,12 @@ class MapController {
             var data = 'data:application/csv;charset=utf-8,' + encodeURIComponent(kml);
             elem.setAttribute("target", "_blank");
             elem.setAttribute("href", data);
-        }
+        };
+
+        $scope.$on("wmsSettingsUpdated", function() {
+            console.log("wmsSettingsUpdated");
+            $scope.map.addLayers(wmsSettings.layers);
+        });
 
     }
 
