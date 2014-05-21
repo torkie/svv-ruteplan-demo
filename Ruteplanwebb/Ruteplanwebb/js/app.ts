@@ -11,7 +11,8 @@ var rpwApp = angular.module("rpwApp", [
     'rpwControllers',
     "rpwFilters",
     "rpwDirectives",
-    "rpwSettings"
+    "rpwSettings",
+    "rpwWms"
 ]);
 
 rpwApp.config(['$stateProvider', '$urlRouterProvider',
