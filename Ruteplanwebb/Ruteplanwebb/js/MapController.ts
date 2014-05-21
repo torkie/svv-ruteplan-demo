@@ -326,7 +326,28 @@ class MapController {
         };
 
         $scope.$on("wmsSettingsUpdated", function() {
-            console.log("wmsSettingsUpdated");
+            console.log("wms settings updated");
+            // find all user added layers
+            var map = $scope.map;
+            var userAddedLayers = map.getLayersBy("userAddedLayer", true);
+
+            // remove layers that have been deleted
+            angular.forEach(userAddedLayers, function(layer) {
+                if (wmsSettings.layers.indexOf(layer) === -1) {
+                    map.removeLayer(layer);
+                    console.log("Removing layer " + layer.name);
+                } else {
+                    console.log("Keeping layer " + layer.name);
+                }
+            });
+            // add new layers
+            angular.forEach(wmsSettings.layers, function(layer) {
+                if (userAddedLayers.indexOf(layer) === -1) {
+                    map.addLayer(layer);
+                    console.log("Adding layer " + layer.name);
+                }
+            });
+
             $scope.map.addLayers(wmsSettings.layers);
         });
 
