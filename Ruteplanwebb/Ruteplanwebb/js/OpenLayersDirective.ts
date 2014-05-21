@@ -14,7 +14,7 @@ class OpenLayersDirective {
         this.restrict = "AE";
         this.replace = true;
 
-        OpenLayers.ImgPath = "/lib/openlayers/theme/default/img/";
+        OpenLayers.ImgPath = "/lib/openlayers/img/";
 
         this.link = (scope: IMapControllerScope, element: any, attrs: any) => {
             var mapResolutions = [
