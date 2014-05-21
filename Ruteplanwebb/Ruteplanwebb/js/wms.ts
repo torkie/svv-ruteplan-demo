@@ -38,21 +38,27 @@ angular.module("rpwWms", [])
     .factory("wmsSettings", function($rootScope) {
         var settings = settings || {};
 
-        var wms = new OpenLayers.Layer.WMS("test", "http://trip.triona.no:80/geoserver/wms", {
-                layers: 'NorTrafKommune:Tellepunkt',
-                transparent: "true"
-            },
-            {
-                isBaseLayer: false
-            }
-        );
-
-        settings.layers = [wms];
+        settings.layers = [];
 
         settings.apply = function() {
-            console.log("Apply wms settings");
+            console.log("apply wms settings");
             $rootScope.$broadcast("wmsSettingsUpdated");
         };
+
+        settings.addlayer = function(name, url, layers) {
+            var wms = new OpenLayers.Layer.WMS(name, url, {
+                    layers: layers,
+                    transparent: "true"
+                },
+                {
+                    isBaseLayer: false
+                }
+            );
+            wms["userAddedLayer"] = true;
+            settings.layers.push(wms);
+        };
+
+        settings.addlayer("tellepunkt", "http://trip.triona.no:80/geoserver/wms", "NorTrafKommune:Tellepunkt");
 
         return settings;
     });
