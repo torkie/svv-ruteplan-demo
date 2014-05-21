@@ -6,24 +6,21 @@ angular.module("rpwWms", [])
 
         var dialogController = function($scope, $modalInstance, data) {
             $scope.data = data;
-            $scope.name = "tellepunkt";
-            $scope.url = "http://trip.triona.no:80/geoserver/wms";
-            $scope.layer = "NorTrafKommune:Tellepunkt";
+            $scope.newlayer = {};
 
             $scope.ok = function() {
-                $modalInstance.close({
-                    name: $scope.name,
-                    url: $scope.url,
-                    layer: $scope.layer
-                });
+                $modalInstance.dismiss();
             };
 
-            $scope.cancel = function() {
-                $modalInstance.dismiss("cancel");
+            $scope.addLayer = function() {
+                data.addlayer($scope.newlayer.name, $scope.newlayer.url, $scope.newlayer.layer);
+                $scope.newlayer.name = "";
+                $scope.newlayer.url = "";
+                $scope.newlayer.layer = "";
+                data.apply();
             };
 
-            $scope.deleteLayer = function(layer) {
-                console.log(layer.name);
+            $scope.removeLayer = function(layer) {
                 data.removeLayer(layer);
                 data.apply();
             }
@@ -40,11 +37,6 @@ angular.module("rpwWms", [])
                         return wmsSettings;
                     }
                 }
-            });
-
-            modalInstance.result.then(function(data) {
-                wmsSettings.addlayer(data.name, data.url, data.layer);
-                wmsSettings.apply();
             });
         };
 

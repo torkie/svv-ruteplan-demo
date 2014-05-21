@@ -21,23 +21,24 @@
             <div class="modal-body">
                 <form>
                     <div>Navn:</div>
-                    <input style="width: 100%" type="text" name="name" ng-model="name">
+                    <input style="width: 100%" type="text" ng-model="newlayer.name">
                     <div>URL:</div>
-                    <input style="width: 100%" type="text" name="url" ng-model="url">
+                    <input style="width: 100%" type="text" ng-model="newlayer.url">
                     <div>Lag:</div>
-                    <input style="width: 100%" type="text" name="layer" ng-model="layer">
+                    <input style="width: 100%" type="text" ng-model="newlayer.layer">
+                    <button ng-click="addLayer()">Add</button>
                 </form>
 
+                <div>Lag:</div>
                 <ul ng-repeat="layer in data.layers">
                     <li style="list-style: none; padding: 0;">
                         {{ layer.name }}
-                        <button ng-click="deleteLayer(layer)">Delete</button>
+                        <button ng-click="removeLayer(layer)">Slett</button>
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
-                <button ng-click="ok()">OK</button>
-                <button ng-click="cancel()">Cancel</button>
+                <button ng-click="ok()">Close</button>
             </div>
         </script>
 
