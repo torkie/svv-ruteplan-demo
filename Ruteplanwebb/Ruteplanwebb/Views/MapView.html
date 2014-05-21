@@ -27,6 +27,13 @@
                     <div>Lag:</div>
                     <input style="width: 100%" type="text" name="layer" ng-model="layer">
                 </form>
+
+                <ul ng-repeat="layer in data.layers">
+                    <li style="list-style: none; padding: 0;">
+                        {{ layer.name }}
+                        <button ng-click="deleteLayer(layer)">Delete</button>
+                    </li>
+                </ul>
             </div>
             <div class="modal-footer">
                 <button ng-click="ok()">OK</button>

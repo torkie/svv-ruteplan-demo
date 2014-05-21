@@ -22,6 +22,12 @@ angular.module("rpwWms", [])
                 $modalInstance.dismiss("cancel");
             };
 
+            $scope.deleteLayer = function(layer) {
+                console.log(layer.name);
+                data.removeLayer(layer);
+                data.apply();
+            }
+
         };
 
         $scope.open = function(size) {
@@ -64,6 +70,14 @@ angular.module("rpwWms", [])
             );
             wms["userAddedLayer"] = true;
             settings.layers.push(wms);
+        };
+
+        settings.removeLayer = function(layer) {
+            var index = settings.layers.indexOf(layer);
+            if (index !== -1) {
+                console.log("remove " + index);
+                settings.layers.splice(index, 1);
+            }
         };
 
         return settings;
