@@ -27,8 +27,11 @@ angular.module("rpwWms", [])
             };
 
             $scope.getCapabilities = function() {
+                var url = $scope.newlayer.url;
+                if (url === undefined || url === null || url === "") {
+                    return;
+                }
                 console.log("getting layers");
-                console.log($scope.newlayer.url);
                 var wms = new OpenLayers.Format.WMSCapabilities();
                 $http.get("wmsCapabilities", {
                         params: { url: $scope.newlayer.url }
