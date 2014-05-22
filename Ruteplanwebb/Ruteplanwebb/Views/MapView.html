@@ -13,7 +13,7 @@
 </div>
 
 <div data-map data-context-menu="contextMenuOpened" id="map" data-target="mapMenu">
-    <div style="position: absolute; top: 0; right: 0; z-index: 9999; margin: 10px" ng-controller="WmsController">
+    <div id="map-settings-button" style="position: absolute; top: 0; right: 0; z-index: 9999; margin: 10px" ng-controller="WmsController">
         <script type="text/ng-template" id="wms.html">
             <div class="modal-header">
                 <h3 class="modal-title">WMS lag</h3>
@@ -26,23 +26,23 @@
                     <input style="width: 100%" type="text" ng-model="newlayer.url">
                     <div>Lag:</div>
                     <input style="width: 100%" type="text" ng-model="newlayer.layer">
-                    <button ng-click="addLayer()">Legg til</button>
+                    <button class="btn btn-default" style="margin-top: 10px" ng-click="addLayer()">Legg til</button>
                 </form>
 
-                <div>Lag:</div>
+                <div style="margin-top: 10px" ng-show="data.layers.length > 0">Lag</div>
                 <ul ng-repeat="layer in data.layers">
                     <li style="list-style: none; padding: 0;">
                         {{ layer.name }}
-                        <button ng-click="removeLayer(layer)">Slett</button>
+                        <button class="btn btn-default" ng-click="removeLayer(layer)">Slett</button>
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
-                <button ng-click="ok()">Lukk</button>
+                <button class="btn btn-default" ng-click="ok()">Lukk</button>
             </div>
         </script>
 
-        <i class="fa fa-cog fa-fw fa-2x" ng-click="open()"></i>
+        <i class="fa fa-sliders fa-fw fa-2x" ng-click="open()"></i>
     </div>
 </div>
 <div class="dropdown" style="position: absolute"  id="mapMenu">
@@ -126,8 +126,8 @@
             <input style="width: 100%" type="text" ng-model="data.password"/>
         </div>
         <div class="modal-footer">
-            <button ng-click="ok()">OK</button>
-            <button ng-click="cancel()">Cancel</button>
+            <button class="btn btn-default" ng-click="ok()">OK</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
         </div>
     </script>
 

@@ -278,3 +278,7 @@ span {
 #settings-button:hover {
     cursor: pointer;
 }
+
+#map-settings-button:hover {
+    cursor: pointer;
+}
