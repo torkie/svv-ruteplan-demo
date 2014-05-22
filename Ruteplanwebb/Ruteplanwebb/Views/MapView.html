@@ -20,12 +20,10 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div>Navn:</div>
-                    <input style="width: 100%" type="text" ng-model="newlayer.name">
-                    <div>URL:</div>
-                    <input style="width: 100%" type="text" ng-model="newlayer.url">
-                    <div>Lag:</div>
-                    <input style="width: 100%" type="text" ng-model="newlayer.layer">
+                    <legend>Legg til nytt WMS lag</legend>
+                    <label>Navn</label><input style="width: 100%" type="text" ng-model="newlayer.name"/>
+                    <label>URL</label><input style="width: 100%" type="text" ng-model="newlayer.url"/>
+                    <label>Lag</label><input style="width: 100%" type="text" ng-model="newlayer.layer"/>
                     <button class="btn btn-default" style="margin-top: 10px" ng-click="addLayer()">Legg til</button>
                 </form>
 
@@ -100,7 +98,7 @@
                 <div class="routestats">
                     <img src="/images/car-icon.png" height="20" /> {{direction.TotalTollSmall}}kr
                     <img src="/images/Truck-icon.png" height="20" /> {{direction.TotalTollLarge}}kr
-                    </div>
+                </div>
 
                     <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
                         <li ng-repeat="feature in direction.features">
@@ -118,12 +116,12 @@
             <h3 class="modal-title">Innstillinger</h3>
         </div>
         <div class="modal-body">
-            <div>URL til rutetjeneste:</div>
-            <input style="width: 100%" type="text" ng-model="data.url"/>
-            <div>Brukernavn:</div>
-            <input style="width: 100%" type="text" ng-model="data.username"/>
-            <div>Passord:</div>
-            <input style="width: 100%" type="text" ng-model="data.password"/>
+            <form>
+                <legend>Rutetjeneste</legend>
+                <label>URL</label><input style="width: 100%" type="text" ng-model="data.url"/>
+                <label>Brukernavn</label><input style="width: 100%" type="text" ng-model="data.username"/>
+                <label>Passord</label><input style="width: 100%" type="text" ng-model="data.password"/>
+            </form>
         </div>
         <div class="modal-footer">
             <button class="btn btn-default" ng-click="ok()">OK</button>
