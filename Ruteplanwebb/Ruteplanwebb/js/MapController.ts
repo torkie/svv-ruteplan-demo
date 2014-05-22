@@ -375,18 +375,21 @@ class MapController {
             angular.forEach(userAddedLayers, function(layer) {
                 if (wmsSettings.layers.indexOf(layer) === -1) {
                     map.removeLayer(layer);
-                    console.log("Removing layer " + layer.name);
-                } else {
-                    console.log("Keeping layer " + layer.name);
                 }
             });
             // add new layers
             angular.forEach(wmsSettings.layers, function(layer) {
                 if (userAddedLayers.indexOf(layer) === -1) {
                     map.addLayer(layer);
-                    console.log("Adding layer " + layer.name);
                 }
             });
+
+            // reorder route layers on top of wms layers
+            var numlayers = map.getNumLayers();
+            map.setLayerIndex($scope.routeLayer, numlayers);
+            map.setLayerIndex($scope.routeFeatureLayer, numlayers);
+            map.setLayerIndex($scope.markerLayer, numlayers);
+            map.setLayerIndex($scope.barrierLayer, numlayers);
 
             $scope.map.addLayers(wmsSettings.layers);
         });
