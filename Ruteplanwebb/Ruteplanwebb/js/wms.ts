@@ -13,6 +13,9 @@ angular.module("rpwWms", [])
             };
 
             $scope.addLayer = function() {
+                if (!$scope.newlayer.name) {
+                    $scope.newlayer.name = $scope.newlayer.layer;
+                }
                 data.addlayer($scope.newlayer.name, $scope.newlayer.url, $scope.newlayer.layer);
                 $scope.newlayer.name = null;
                 $scope.newlayer.url = null;
