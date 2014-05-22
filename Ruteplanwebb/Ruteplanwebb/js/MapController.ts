@@ -249,20 +249,47 @@ class MapController {
                 if (feature.attributes != undefined) {
 
                     if (feature.attributes.roadFeatures != undefined && feature.attributes.roadFeatures.length > 0) {
-                        angular.forEach(feature.attributes.roadFeatures, (feat) => {
+                        angular.forEach(feature.attributes.roadFeatures, (feat : SVV.RoutePlanning.RoadFeature) => {
                             var type = feat.attributeType;
+                            var subType = type.substr(type.indexOf(':')+1);
                             var imageName = null;
                             var geometry = null;
+                            var html = "";
+                            var hasLocation = feat.location != undefined && feat.location.length > 0;
+                            var values = feat.values;
+
+                            var isRelevant = (type.match("^nvdb") && ["Bomstasjon", "Rasteplass"].indexOf(subType)+1) || type.match("^vegloggen");
 
                             if (type.match("^nvdb") || type.match("^vegloggen")) {
-                                var sub = type.substr(type.indexOf(':')+1);
-                                if (type.match("^nvdb")) {
-                                    imageName = sub;
-                                } else if (type.match("^vegloggen")) {
-                                    imageName = "trafikkmelding";
+
+                                var name = $scope.getValue(values, "Navn");
+                                if (name == null) {
+                                    name = "Ukjent navn";
                                 }
 
-                                if (imageName != null && feat.location != undefined && feat.location.length > 0) {
+                                html += "<h3>"+name+"</h3>";
+
+                                if (type.match("^nvdb")) {
+                                    imageName = subType;
+
+                                    if (subType === "Rasteplass" || subType === "Bomstasjon") {
+
+
+                                    }
+                                } else if (type.match("^vegloggen")) {
+                                    imageName = "trafikkmelding";
+                                    html = "<b>Trafikkmelding</b>";
+                                }
+
+                                html += "<ul>";
+                                angular.forEach(values, (val : SVV.RoutePlanning.Value) => {
+                                    if (val.key != "Navn") {
+                                        html += "<li><span style='font-weight: bold; padding-right: 5px;'>"+val.key+":</span>"+val.value+"</li>";
+                                    }
+                                });
+                                html += "</ul>";
+
+                                if (hasLocation) {
                                     var loc = feat.location[0];
                                     geometry = new OpenLayers.Geometry.Point(loc.easting, loc.northing);
                                 } else {
@@ -270,11 +297,13 @@ class MapController {
                                 }
                             }
 
-                            if (imageName != null) {
-                                var graphic = "/images/"+sub+".png";
+                            if (isRelevant && hasLocation) {
+                                var graphic = "/images/"+imageName+".png";
 
                                 var f = new OpenLayers.Feature.Vector(geometry, null,
                                     { externalGraphic: graphic, graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
+                                f["html"] = html;
+
 
                                 $scope.routeFeatureLayer.addFeatures([f]);
                             }
@@ -282,6 +311,17 @@ class MapController {
                     }
                 }
             });
+        };
+
+        $scope.getValue = (values : SVV.RoutePlanning.Value[], key : string) : string => {
+            var ret = null;
+            angular.forEach(values, (val : SVV.RoutePlanning.Value) => {
+                if (val.key === key) {
+                    ret = val.value;
+                }
+            });
+
+            return ret;
         };
 
         $scope.showRoute = id => id === $scope.selectedRouteId;

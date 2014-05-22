@@ -35,13 +35,19 @@ module SVV.RoutePlanning {
 
     export class RouteResponseDirectionFeatureAttributes {
         text : string;
-        roadFeatures : RouteResponseDirectionFeatureAttributesRoadFeatures[];
+        roadFeatures : RoadFeature[];
         maneuverType : string;
     }
 
-    export class RouteResponseDirectionFeatureAttributesRoadFeatures {
+    export class RoadFeature {
         attributeType : string;
-        locations : Location;
+        location : Location[];
+        values : Value[];
+    }
+
+    export class Value {
+        key: string;
+        value: string;
     }
 
     export class Location {

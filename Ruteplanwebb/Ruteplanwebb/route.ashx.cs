@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.UI;
 using System.Globalization;
 using System.Net;
@@ -48,7 +49,7 @@ namespace Ruteplanwebb
                 var regex = new Regex("(\\.vegvesen\\.no|\\.triona\\.se)$");
                 if (regex.IsMatch(hostname))
                 {
-                    url = backend_url + "?" + queryString.ToString();
+                    url = backend_url + (!backend_url.EndsWith("?", StringComparison.Ordinal) ? "?" : "") + queryString;
                 }
                 else
                 {
@@ -58,22 +59,22 @@ namespace Ruteplanwebb
                 }
             }
 
-            var wq = WebRequest.Create(url);
-
+            var wq = WebRequest.Create(url) as HttpWebRequest;
             // add basic auth header if we have username
             if (!String.IsNullOrEmpty(backend_username))
             {
-                var cred = Encoding.UTF8.GetBytes(backend_username + ":" + backend_password);
-                string header = "Basic " + Convert.ToBase64String(cred);
-                wq.Headers.Add("Authorization", header);
+                wq.PreAuthenticate = true;
+                wq.Credentials = new NetworkCredential(backend_username, backend_password);
             }
 
             using (var resp = wq.GetResponse())
-            using (var respstream = resp.GetResponseStream())
             {
-                if (respstream != null)
+                using (var respstream = resp.GetResponseStream())
                 {
-                    respstream.CopyTo(context.Response.OutputStream);
+                    if (respstream != null)
+                    {
+                        respstream.CopyTo(context.Response.OutputStream);
+                    }
                 }
             }
         }

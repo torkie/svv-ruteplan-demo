@@ -14,7 +14,7 @@ class OpenLayersDirective {
         this.restrict = "AE";
         this.replace = true;
 
-        OpenLayers.ImgPath = "/lib/openlayers/theme/default/img/";
+        OpenLayers.ImgPath = "/lib/openlayers/img/";
 
         this.link = (scope: IMapControllerScope, element: any, attrs: any) => {
             var mapResolutions = [
@@ -127,6 +127,7 @@ class OpenLayersDirective {
                     (<any>feature).onfeaturedragged();
             };
             var dragFeatureControl = new SVV.RoutePlanning.ControlWrapper('dragfeature', dfControl);
+
             var controls = [polygonControl,dragFeatureControl];
             angular.forEach(controls, (ctrl) => {
                 map.addControl(ctrl.control, null);
@@ -145,6 +146,33 @@ class OpenLayersDirective {
                 }
             },false);
 
+            // Feature highlight
+
+            function onFeatureOver(evt : any) {
+                var feature = evt.feature;
+                console.log(feature);
+                var content = feature["html"];
+
+                var popup = new OpenLayers.Popup.FramedCloud("featurePopup",
+                    feature.geometry.getBounds().getCenterLonLat(),
+                    new OpenLayers.Size(100,100),
+                    content,
+                    null, true, null);
+                feature.popup = popup;
+                popup["feature"] = feature;
+                map.addPopup(popup, true);
+            }
+
+            function onFeatureOut (evt : any) {
+                var feature = evt.feature;
+
+                var popup = feature.popup;
+                popup.destroy();
+                feature.popup = null;
+            }
+
+            map.events.register("featureover", map, onFeatureOver);
+            //map.events.register("featureout", map, onFeatureOut);
 
             scope.map = map;
             scope.controls = controls;

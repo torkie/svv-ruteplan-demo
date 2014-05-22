@@ -3359,9 +3359,9 @@ declare module OpenLayers {
         }
 
         export class SelectFeature {
+            constructor(layer : OpenLayers.Layer, options : {});
 
-            // TODO
-
+            events : Events;
         }
 
         export class Snapping {
@@ -4949,7 +4949,7 @@ declare module OpenLayers {
             // TODO
         }
         export class FramedCloud {
-            // TODO
+            constructor(name : string, bounds : Bounds, size : OpenLayers.Size, contentHTML : string, anchor : any, closeBox : boolean, closeBoxCallback : (evt : any) => void);
         }
     }
 
