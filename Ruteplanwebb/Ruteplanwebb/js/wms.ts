@@ -13,6 +13,9 @@ angular.module("rpwWms", [])
             };
 
             $scope.addLayer = function() {
+                if (!$scope.newlayer.url || !$scope.newlayer.layer) {
+                    return;
+                }
                 if (!$scope.newlayer.name) {
                     $scope.newlayer.name = $scope.newlayer.layer;
                 }
