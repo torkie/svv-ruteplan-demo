@@ -69,8 +69,36 @@ app.get("/routingService", function(req, res) {
 
     // execute async backend request
     http.request(options, callback).end();
-})
-;
+});
+
+/*
+ GetCapabilities Proxy.
+ */
+app.get("/wmsCapabilities", function(req, res) {
+    // parse incoming request
+    var q = url.parse(req.url, true);
+    var wms = url.parse(q.query.url);
+
+    // use query parameters from request
+    var options = {
+        host: wms.hostname,
+        port: wms.port,
+        path: wms.pathname + "?REQUEST=GetCapabilities&SERVICE=WMS"
+    };
+
+    // callback for async backend request
+    var callback = function(response) {
+        response.on("data", function(chunk) {
+            res.write(chunk);
+        });
+        response.on("end", function() {
+            res.end();
+        });
+    };
+
+    // execute async backend request
+    http.request(options, callback).end();
+});
 
 app.listen(8080);
 console.log("Server listening on port 8080");
