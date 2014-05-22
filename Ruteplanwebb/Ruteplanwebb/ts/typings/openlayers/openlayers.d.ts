@@ -3630,7 +3630,7 @@ declare module OpenLayers {
             // TODO
         }
         export class WMSCapabilities {
-            // TODO
+            read(data: any): any;
         }
         export class WMSDescribeLayer {
             // TODO

@@ -23,7 +23,10 @@
                     <legend>Legg til nytt WMS lag</legend>
                     <label>Navn</label><input style="width: 100%" type="text" ng-model="newlayer.name"/>
                     <label>URL</label><input style="width: 100%" type="text" ng-model="newlayer.url"/>
-                    <label>Lag</label><input style="width: 100%" type="text" ng-model="newlayer.layer"/>
+                    <button ng-click="getCapabilities()">Hent lag</button>
+                    <div ng-show="newlayer.layers">
+                        <label>Lag</label><input style="width: 100%" type="text" ng-model="newlayer.layer"/>
+                    </div>
                     <button class="btn btn-default" style="margin-top: 10px" ng-click="addLayer()">Legg til</button>
                 </form>
 

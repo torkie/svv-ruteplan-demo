@@ -2,7 +2,7 @@
 ///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
 
 angular.module("rpwWms", [])
-    .controller("WmsController", ["$scope", "$modal", "wmsSettings", function($scope, $modal, wmsSettings) {
+    .controller("WmsController", ["$http", "$scope", "$modal", "wmsSettings", function($http, $scope, $modal, wmsSettings) {
 
         var dialogController = function($scope, $modalInstance, data) {
             $scope.data = data;
@@ -23,8 +23,25 @@ angular.module("rpwWms", [])
             $scope.removeLayer = function(layer) {
                 data.removeLayer(layer);
                 data.apply();
-            }
+            };
 
+            $scope.getCapabilities = function() {
+                console.log("getting layers");
+                console.log($scope.newlayer.url);
+                var wms = new OpenLayers.Format.WMSCapabilities();
+                $http.get("wmsCapabilities", {
+                        params: { url: $scope.newlayer.url }
+                    }
+                ).success(function(data) {
+                        var caps = wms.read(data);
+                        var layers = [];
+                        angular.forEach(caps.capability.layers, function(layer) {
+                            layers.push(layer.name);
+                        });
+                        $scope.newlayer.layers = layers;
+                    }
+                );
+            }
         };
 
         $scope.open = function(size) {
