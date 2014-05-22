@@ -24,9 +24,7 @@
                     <label>Navn</label><input style="width: 100%" type="text" ng-model="newlayer.name"/>
                     <label>URL</label><input style="width: 100%" type="text" ng-model="newlayer.url"/>
                     <button ng-click="getCapabilities()">Hent lag</button>
-                    <div ng-show="newlayer.layers">
-                        <label>Lag</label><input style="width: 100%" type="text" ng-model="newlayer.layer"/>
-                    </div>
+                    <select ng-model="newlayer.layer" ng-options="t for t in newlayer.availableLayers"></select>
                     <button class="btn btn-default" style="margin-top: 10px" ng-click="addLayer()">Legg til</button>
                 </form>
 

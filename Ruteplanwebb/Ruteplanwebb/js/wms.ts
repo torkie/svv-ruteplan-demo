@@ -14,9 +14,10 @@ angular.module("rpwWms", [])
 
             $scope.addLayer = function() {
                 data.addlayer($scope.newlayer.name, $scope.newlayer.url, $scope.newlayer.layer);
-                $scope.newlayer.name = "";
-                $scope.newlayer.url = "";
-                $scope.newlayer.layer = "";
+                $scope.newlayer.name = null;
+                $scope.newlayer.url = null;
+                $scope.newlayer.layer = null;
+                $scope.newlayer.availableLayers = null;
                 data.apply();
             };
 
@@ -38,7 +39,7 @@ angular.module("rpwWms", [])
                         angular.forEach(caps.capability.layers, function(layer) {
                             layers.push(layer.name);
                         });
-                        $scope.newlayer.layers = layers;
+                        $scope.newlayer.availableLayers = layers;
                     }
                 );
             }
