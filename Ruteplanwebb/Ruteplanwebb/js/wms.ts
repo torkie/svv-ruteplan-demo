@@ -43,6 +43,9 @@ angular.module("rpwWms", [])
                             layers.push(layer.name);
                         });
                         $scope.newlayer.availableLayers = layers;
+                        if (layers.length > 0) {
+                            $scope.newlayer.layer = layers[0];
+                        }
                     }
                 );
             }
