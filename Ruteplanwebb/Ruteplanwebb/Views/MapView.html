@@ -16,25 +16,51 @@
     <div id="map-settings-button" style="position: absolute; top: 0; right: 0; z-index: 9999; margin: 10px" ng-controller="WmsController">
         <script type="text/ng-template" id="wms.html">
             <div class="modal-header">
-                <h3 class="modal-title">WMS lag</h3>
+                <h3 class="modal-title">WMS innstillinger</h3>
             </div>
             <div class="modal-body">
-                <form>
-                    <legend>Legg til nytt WMS lag</legend>
-                    <label>Navn</label><input style="width: 100%" type="text" ng-model="newlayer.name"/>
-                    <label>URL</label><input style="width: 100%" type="text" ng-model="newlayer.url"/>
-                    <button ng-click="getCapabilities()">Hent lag</button>
-                    <select ng-model="newlayer.layer" ng-options="t for t in newlayer.availableLayers"></select>
-                    <button class="btn btn-default" style="margin-top: 10px" ng-click="addLayer()">Legg til</button>
+                <legend>Nytt WMS lag</legend>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Navn</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" style="width: 100%" type="text" ng-model="newlayer.name" placeholder="Navn"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">URL</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" style="width: 100%" type="text" ng-model="newlayer.url" placeholder="URL" ng-change="newlayer.availableLayers = null"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Lag</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" ng-show="newlayer.availableLayers" ng-model="newlayer.layer" ng-options="t for t in newlayer.availableLayers"></select>
+                            <button class="btn btn-default" ng-show="!newlayer.availableLayers" ng-click="getCapabilities()">Hent lag</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-default" style="margin-top: 10px" ng-click="addLayer()">Legg til</button>
+                        </div>
+                    </div>
                 </form>
 
-                <div style="margin-top: 10px" ng-show="data.layers.length > 0">Lag</div>
-                <ul ng-repeat="layer in data.layers">
-                    <li style="list-style: none; padding: 0;">
-                        {{ layer.name }}
-                        <button class="btn btn-default" ng-click="removeLayer(layer)">Slett</button>
-                    </li>
-                </ul>
+                <legend style="margin-top: 1em">WMS lag</legend>
+                <table style="border-collapse: separate; border-spacing: 0 0.5em">
+                        <tr ng-repeat="layer in data.layers">
+                            <td style="width: 100%; white-space: nowrap;">{{ layer.name }}</td>
+                            <td style="white-space: nowrap;">
+                                <button class="btn btn-default" ng-click="removeLayer(layer)">Slett</button>
+                            </td>
+                        </tr>
+                </table>
+
+                <div style="text-align: center; font-style: italic" ng-show="data.layers === null || data.layers.length === 0">Legg til WMS lag ovenfor</div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" ng-click="ok()">Lukk</button>
