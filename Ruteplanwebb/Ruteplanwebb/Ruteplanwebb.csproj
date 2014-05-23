@@ -425,6 +425,7 @@
     <TypeScriptCompile Include="js\scopes.ts" />
     <TypeScriptCompile Include="js\searching.ts" />
     <TypeScriptCompile Include="js\settings.ts" />
+    <TypeScriptCompile Include="js\wms.ts" />
     <TypeScriptCompile Include="tests\js\helpers\CompressedGeometryHelperTests.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="ts\typings\angularjs\angular-cookies.d.ts" />
