@@ -14,6 +14,7 @@
 
 <div data-map data-context-menu="contextMenuOpened" id="map" data-target="mapMenu">
 </div>
+<div id="mouseoverinfo" data-ng-class="mouseoverinfo ? 'mouseoverinfovisible' : 'mouseoverinfonotvisible'" data-ng-bind-html="mouseoverinfo | to_trusted"></div>
 <div class="dropdown" style="position: absolute"  id="mapMenu">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation">
