@@ -68,6 +68,7 @@
         <i class="fa fa-sliders fa-fw fa-2x" ng-click="open()"></i>
     </div>
 </div>
+<div id="mouseoverinfo" data-ng-class="mouseoverinfo ? 'mouseoverinfovisible' : 'mouseoverinfonotvisible'" data-ng-bind-html="mouseoverinfo | to_trusted"></div>
 <div class="dropdown" style="position: absolute"  id="mapMenu">
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li role="presentation">
@@ -95,14 +96,11 @@
     </h4>
 
     <ul id="route-header-list">
-        <li ng-show="fromAddress">
-            {{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }} <br/>
-        </li>
+        <li ng-show="fromAddress">{{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }}</li>
         <li class="intermediate" ng-repeat="addr in intermediateAddresses">
             {{ addr.name }}, {{ addr.location.lon | round }}, {{ addr.location.lat | round }}
             <span id="remove-intermediate-button" class="fa fa-times" ng-click="removeIntermediate(addr)"></span>
         </li>
-
         <li ng-show="toAddress">{{ toAddress.name }}, {{ toAddress.location.lon | round }}, {{ toAddress.location.lat | round }}</li>
     </ul>
 

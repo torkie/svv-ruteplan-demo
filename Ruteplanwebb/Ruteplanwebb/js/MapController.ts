@@ -254,10 +254,9 @@ class MapController {
                             var subType = type.substr(type.indexOf(':')+1);
                             var imageName = null;
                             var geometry = null;
-                            var html = "";
                             var hasLocation = feat.location != undefined && feat.location.length > 0;
                             var values = feat.values;
-
+                            var html = "<span class='mo_featureType'>" + type + "</span><br/>";
                             var isRelevant = (type.match("^nvdb") && ["Bomstasjon", "Rasteplass"].indexOf(subType)+1) || type.match("^vegloggen");
 
                             if (type.match("^nvdb") || type.match("^vegloggen")) {
@@ -266,12 +265,9 @@ class MapController {
                                 if (name == null) {
                                     name = "Ukjent navn";
                                 }
-
                                 html += "<h3>"+name+"</h3>";
-
                                 if (type.match("^nvdb")) {
                                     imageName = subType;
-
                                     if (subType === "Rasteplass" || subType === "Bomstasjon") {
 
 
@@ -281,19 +277,15 @@ class MapController {
                                     html = "<b>Trafikkmelding</b>";
                                 }
 
-                                html += "<ul>";
-                                angular.forEach(values, (val : SVV.RoutePlanning.Value) => {
-                                    if (val.key != "Navn") {
-                                        html += "<li><span style='font-weight: bold; padding-right: 5px;'>"+val.key+":</span>"+val.value+"</li>";
-                                    }
+                                angular.forEach(values, (val: SVV.RoutePlanning.Value) => {
+                                    html += "<b>" + val.key + "</b>: " + val.value + "<br/>";
                                 });
-                                html += "</ul>";
 
                                 if (hasLocation) {
                                     var loc = feat.location[0];
                                     geometry = new OpenLayers.Geometry.Point(loc.easting, loc.northing);
                                 } else {
-                                    console.log(feat);
+                                    //console.log(feat);
                                 }
                             }
 

@@ -149,30 +149,24 @@ class OpenLayersDirective {
             // Feature highlight
 
             function onFeatureOver(evt : any) {
+                
                 var feature = evt.feature;
-                console.log(feature);
-                var content = feature["html"];
+                if (feature["html"] != undefined && feature["html"].length > 0) {
+                    scope.mouseoverinfo = feature["html"];
+                    scope.$apply();
 
-                var popup = new OpenLayers.Popup.FramedCloud("featurePopup",
-                    feature.geometry.getBounds().getCenterLonLat(),
-                    new OpenLayers.Size(100,100),
-                    content,
-                    null, true, null);
-                feature.popup = popup;
-                popup["feature"] = feature;
-                map.addPopup(popup, true);
+                }
             }
 
             function onFeatureOut (evt : any) {
-                var feature = evt.feature;
-
-                var popup = feature.popup;
-                popup.destroy();
-                feature.popup = null;
+                if (evt.feature["html"] != undefined && evt.feature["html"].length > 0) {
+                    scope.mouseoverinfo = null;
+                    scope.$apply();
+                }
             }
 
             map.events.register("featureover", map, onFeatureOver);
-            //map.events.register("featureout", map, onFeatureOut);
+            map.events.register("featureout", map, onFeatureOut);
 
             scope.map = map;
             scope.controls = controls;

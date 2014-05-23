@@ -2,6 +2,7 @@
 {
     font-family: 'Segoe UI', sans-serif;
     padding: 0;
+    overflow: hidden;
        
 }
 
@@ -17,6 +18,35 @@ span {
     right: 400px;
     background: #000;
     z-index: 0;
+}
+
+.mo_featureType {
+    font-size: 14px; 
+    font-weight:bold;
+    font-style: normal;
+    text-transform: uppercase;
+}
+
+#mouseoverinfo {
+    position: absolute;
+    left: 0;
+    right: 400px;
+    -ms-opacity: 0.9;
+    opacity: 0.9;    
+    background-color: white;
+    padding: 3px 10px;
+    border-top: 1px solid gray;
+}
+
+.mouseoverinfonotvisible {
+    bottom: -200px; 
+    transition: bottom 0.1s;
+    height: 0;
+}
+.mouseoverinfovisible {
+    transition: bottom 0.1s;
+    bottom: 0;
+    height: 200px;
 }
 
 #route-header-list {
