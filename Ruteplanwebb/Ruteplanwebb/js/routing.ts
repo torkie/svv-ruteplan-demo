@@ -27,16 +27,27 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
 
         strings = [];
 
-        this.$http.get('routingService', {
-            params: {
-                stops: stopsParameter,
-                barriers: pointBarriersParameter,
-                format: "json",
-                lang: "nb-no",
-                backend_url: this.settings.url,
-                backend_username: this.settings.username,
-                backend_password: this.settings.password
-            }
+        var useProxy = this.settings.useproxy || this.settings.username;
+
+        var url = useProxy ? 'routingService' : this.settings.url;
+        var params = <any>{
+            stops: stopsParameter,
+            barriers: pointBarriersParameter,
+            format: "json",
+            lang: "nb-no",
+
+        };
+
+        if (useProxy) {
+            params.backend_url = this.settings.url;
+            params.backend_username = this.settings.username;
+            params.backend_password = this.settings.password;
+        }
+        if (this.settings.routetype && this.settings.routetype.length > 0)
+            params.route_type = this.settings.routetype;
+
+    this.$http.get(url, {
+            params: params
         }).success((data: SVV.RoutePlanning.RouteResponse) => {
             var forEach = angular.forEach;
 
@@ -60,9 +71,12 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
             var directions = <SVV.RoutePlanning.ViewDirection[]>data.directions;
             for (var i = 0; i < directions.length; i++) {
                 forEach(directions[i].features, (feature: SVV.RoutePlanning.ViewDirectionFeature) => {
-                    feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
-                    feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
-                    feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
+                    if (feature.attributes.text.match(/\{([ERFKPS])(\d+)\}.*/i)) {
+                        feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
+                        feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
+                        feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
+                    }
+                    
                     feature.turnIconClass = this.getTurnIconForEsriManeuvre(feature.attributes.maneuverType);
 
                 });
