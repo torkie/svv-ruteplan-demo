@@ -33,7 +33,7 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
         var addresses = new Array<SVV.RoutePlanning.AddressItem>();
 
         var add = (item: any) => {
-            var coord = new proj4.Point(parseFloat(item.LONGITUDE), parseFloat(item.LATITUDE));
+            var coord = proj4.toPoint([parseFloat(item.LONGITUDE), parseFloat(item.LATITUDE)]);
             var pcoord = proj4.transform(new proj4.Proj("EPSG:32632"), new proj4.Proj("EPSG:32633"), coord);
             var location = new OpenLayers.LonLat(pcoord.x, pcoord.y);
             var parts = [];

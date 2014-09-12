@@ -6,9 +6,10 @@
         constructor(defName : string);
     }
 
+    export function toPoint(arr : number[]) : Point;
+
     export class Point {
-        constructor(x : number, y : number);
         x : number;
-        y : number;
+        y: number;
     }
 } 
