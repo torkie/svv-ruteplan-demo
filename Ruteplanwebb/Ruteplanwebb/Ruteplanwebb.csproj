@@ -409,6 +409,7 @@
     <Content Include="lib\openlayers\theme\default\style.mobile.css" />
     <Content Include="lib\openlayers\theme\default\style.mobile.tidy.css" />
     <Content Include="lib\openlayers\theme\default\style.tidy.css" />
+    <Content Include="lib\proj4js\proj4.js" />
     <Content Include="lib\proj4js\proj4js-compressed.js" />
     <Content Include="lib\xml2json\xml2json.min.js" />
     <Content Include="server.js" />
