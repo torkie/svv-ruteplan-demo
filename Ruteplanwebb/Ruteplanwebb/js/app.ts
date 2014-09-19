@@ -12,20 +12,31 @@ var rpwApp = angular.module("rpwApp", [
     "rpwFilters",
     "rpwDirectives",
     "rpwSettings",
-    "rpwWms"
+    "rpwWms",
+    "vr.directives.slider"
 ]);
 
-rpwApp.config(['$stateProvider', '$urlRouterProvider',
-    ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider : ng.ui.IUrlRouterProvider) => {
+rpwApp.config([
+    '$stateProvider', '$urlRouterProvider',
+    ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) => {
         $urlRouterProvider.otherwise("/");
         $stateProvider.
             state('mappage', {
                 url: '/?from&to',
                 templateUrl: 'Views/MapView.html',
                 controller: 'MapController',
+                data: { title: 'SVV Ruteplan Demo' },
                 reloadOnSearch: false
-    });
-    }]);
+            }).state('bikepage', {
+                url: '/bike?from&to',
+                templateUrl: 'Views/BikeView.html',
+                controller: 'MapController',
+                data: { title: 'Sykkelruteplanlegger' },
+                reloadOnSearch: false
+            });
+
+    }
+]);
 
 angular.module('rpwApp')
     .filter('to_trusted', [

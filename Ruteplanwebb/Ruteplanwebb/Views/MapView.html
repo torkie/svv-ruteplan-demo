@@ -1,18 +1,19 @@
 ﻿﻿
 <div id="searchbar">
     <div><b>Ruteplan demo</b><br/>
-        Fra: <input type="text" id="searchFrom" ng-model="fromAddress"
+        Fra: <input type="text" id="searchFrom" ng-model="addresses.fromAddress"
        data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
        data-typeahead-editable="false"
        data-typeahead-on-select="updateMarkers()" />
-        Til: <input type="text" id="searchTo" ng-model="toAddress"
+        Til: <input type="text" id="searchTo" ng-model="addresses.toAddress"
        data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
        data-typeahead-editable="false"
        data-typeahead-on-select="updateMarkers()" />
-        <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()"/></div>
+        <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()"/>
+    </div>
 </div>
 
-<div data-map data-context-menu="contextMenuOpened" id="map" data-target="mapMenu">
+<div data-map data-context-menu="contextMenuOpened" id="map" class="map-container" data-target="mapMenu">
     <div id="map-settings-button" style="position: absolute; top: 0; right: 0; z-index: 9999; margin: 10px" ng-controller="WmsController">
         <script type="text/ng-template" id="wms.html">
             <div class="modal-header">
@@ -74,7 +75,7 @@
         <li role="presentation">
             <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetFrom(contextMenuLocation)"><i class="fa fa-play" style="color: green;margin-right: 5px"></i> Sett startpunkt</a>
         </li>
-        <li role="presentation" ng-show="fromAddress && toAddress">
+        <li role="presentation" ng-show="addresses.fromAddress && addresses.toAddress">
             <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuAddIntermediate(contextMenuLocation)"><i class="fa fa-pause" style="color: rgb(238,146,46); margin-right: 5px"></i> Legg til viapunkt</a>
         </li>
         <li role="presentation">
@@ -91,22 +92,22 @@
 <div id="routedesc">
     <h4>
         Rute
-        <span id="reverse-order-button" ng-show="fromAddress && toAddress" class="fa fa-random" style="padding-left: 20px; color: darkblue;" ng-click="reverseRoute()"></span>
+        <span id="reverse-order-button" ng-show="addresses.fromAddress && addresses.toAddress" class="fa fa-random" style="padding-left: 20px; color: darkblue;" ng-click="reverseRoute()"></span>
         <span id="remove-blocks-button" ng-show="hasBlocks()" class="fa fa-trash-o" style="padding-left: 20px; color: darkblue;" ng-click="removeBlocks()"></span>
     </h4>
 
     <ul id="route-header-list">
-        <li ng-show="fromAddress">{{ fromAddress.name }}, {{ fromAddress.location.lon | round }}, {{ fromAddress.location.lat | round }}</li>
+        <li ng-show="addresses.fromAddress">{{ addresses.fromAddress.name }}, {{ addresses.fromAddress.location.lon | round }}, {{ addresses.fromAddress.location.lat | round }}</li>
         <li class="intermediate" ng-repeat="addr in intermediateAddresses">
             {{ addr.name }}, {{ addr.location.lon | round }}, {{ addr.location.lat | round }}
             <span id="remove-intermediate-button" class="fa fa-times" ng-click="removeIntermediate(addr)"></span>
         </li>
-        <li ng-show="toAddress">{{ toAddress.name }}, {{ toAddress.location.lon | round }}, {{ toAddress.location.lat | round }}</li>
+        <li ng-show="addresses.toAddress">{{ addresses.toAddress.name }}, {{ addresses.toAddress.location.lon | round }}, {{ addresses.toAddress.location.lat | round }}</li>
     </ul>
 
     <br/>
 
-    <div id="calculation-in-progress-marker" ng-show="directions == null && fromAddress && toAddress">
+    <div id="calculation-in-progress-marker" ng-show="directions == null && addresses.fromAddress && addresses.toAddress">
         <img src="images/ajax-loader.gif" />
     </div>
 

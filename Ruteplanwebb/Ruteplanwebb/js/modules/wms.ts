@@ -1,5 +1,5 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
+///<reference path="../../ts/typings/angularjs/angular.d.ts"/>
+///<reference path="../../ts/typings/openlayers/openlayers.d.ts"/>
 
 angular.module("rpwWms", [])
     .controller("WmsController", ["$http", "$scope", "$modal", "wmsSettings", function($http, $scope, $modal, wmsSettings) {

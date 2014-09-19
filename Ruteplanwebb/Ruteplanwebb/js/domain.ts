@@ -83,6 +83,16 @@ module SVV.RoutePlanning {
 
     }
 
+    export class ReportMessage {
+        title: string;
+        description: string;
+        reporterName: string;
+        email: string;
+        easting: number;
+        northing: number;
+        coordinateSystem: string;
+        category: string;
+    }
 
     export class RouteResponseSummary {
         totalDistance: number;
@@ -110,5 +120,15 @@ module SVV.RoutePlanning {
 
     export interface IRouteCalculationCallback {
         (totalBounds : OpenLayers.Bounds, features : RouteResponseRouteFeature[], directions : ViewDirection[]) : void;
+    }
+
+    export interface IReportServiceResponse {
+        Status: string;
+        Message: string;
+        ReportID: string;
+    }
+
+    export interface IReportService {
+        submit(report: ReportMessage): ng.IPromise<IReportServiceResponse>;
     }
 }

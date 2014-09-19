@@ -1,4 +1,4 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
+///<reference path="../../ts/typings/angularjs/angular.d.ts"/>
 
 angular.module("rpwSettings", ["ngCookies"])
     .controller("SettingsController", ["$scope", "$modal", "settings", function($scope, $modal, settings) {

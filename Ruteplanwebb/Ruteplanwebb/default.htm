@@ -1,17 +1,19 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="rpwApp">
     <head>
         <meta name="viewport" content="user-scalable=no, width=device-width" />
-        <title>SVV Ruteplan Demo</title>
-        <link rel="stylesheet" href="css/app.css"/>
+        <title>{{title}}</title>
+        <link rel="stylesheet" ng-href="css/app.css" />
+        <link rel="stylesheet" ng-href="css/bikeapp.css" />
         <link rel="stylesheet" href="css/directions-font.css" />
         <link rel="stylesheet" href="lib/fontawesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="lib/openlayers/theme/default/style.css" />
         <link rel="stylesheet" href="lib/openlayers/theme/default/style.mobile.tidy.css" />
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" />
         <link rel="stylesheet" href="lib/leaflet/css/leaflet.awesome-markers.css" />
+        <!--<link rel="stylesheet" href="lib/angular/css/angular-slider.css" />-->
     </head>
-    <body data-ng-app="rpwApp">
+    <body>
         <div data-ui-view=""></div>
         <script src="lib/angular/angular.js"></script>
         <script src="lib/angular/angular-cookies.js"></script>
@@ -19,20 +21,25 @@
         <script src="lib/angular/i18n/angular-locale_no.js"></script>
         <script src="lib/angular/angular-ui-router.min.js"></script>
         <script src="lib/angular/angular-context-menu.js"></script>
+        <script src="lib/angular/angular-touch.js"></script>
+        <script src="lib/angular/angular-slider.js"></script>
         <script src="lib/bootstrap/ui-bootstrap-tpls-0.10.0.min.js"></script>
         <script src="lib/xml2json/xml2json.min.js"></script>
         <script src="lib/proj4js/proj4.js"></script>
         <script src="lib/openlayers/OpenLayers.js"></script>
+        <script src="lib/zeptojs/zeptojs.js"></script>
         <script src="js/helpers/OpenLayers.Awsome.Icon.js"></script>
         <script src="js/app.js"></script>
         <script src="js/domain.js"></script>
-        <script src="js/routing.js"></script>
-        <script src="js/searching.js"></script>
+        <script src="js/services/routing.js"></script>
+        <script src="js/services/searching.js"></script>
+        <script src="js/services/report.js"></script>
         <script src="js/filters.js"></script>
-        <script src="js/MapController.js"></script>
-        <script src="js/Controllers.js"></script>
+        <script src="js/controllers/MapController.js"></script>
+        <script src="js/controllers/Controllers.js"></script>
         <script src="js/OpenLayersDirective.js"></script>
-        <script src="js/settings.js"></script>
-        <script src="js/wms.js"></script>
+        <script src="js/modules/settings.js"></script>
+        <script src="js/modules/wms.js"></script>
+        <script src="js/modules/report.js"></script>
     </body>
 </html>

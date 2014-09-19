@@ -12,11 +12,9 @@ interface IMapControllerScope extends ng.IScope {
     updateMarkers();
     getValue(values : SVV.RoutePlanning.Value[], key : string) : string;
     map: OpenLayers.Map;
-    fromAddress: SVV.RoutePlanning.AddressItem;
     intermediateAddresses: SVV.RoutePlanning.AddressItem[];
     blockedPoints: OpenLayers.LonLat[];
     blockedAreas : SVV.RoutePlanning.Polygon[];
-    toAddress: SVV.RoutePlanning.AddressItem;
     markerLayer: OpenLayers.Layer.Vector;
     routeLayer: OpenLayers.Layer.Vector;
     routeFeatureLayer : OpenLayers.Layer.Vector;
@@ -35,5 +33,11 @@ interface IMapControllerScope extends ng.IScope {
     showRoute: any;
     selectedRouteId: number;
     downloadRouteAsKML (routeId : number,$event) : void;
-    mouseoverinfo : string;
+    mouseoverinfo: string;
+    title: string;
+    getContentHeight(idx: number);
+    accordionPanes: boolean[];
+    addresses: { fromAddress: SVV.RoutePlanning.AddressItem; toAddress: SVV.RoutePlanning.AddressItem };
+    routeSettings: { effort: number; cost: number; }
+    showReportDialog();
 }

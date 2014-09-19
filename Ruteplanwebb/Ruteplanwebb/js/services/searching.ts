@@ -1,7 +1,7 @@
-﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
-///<reference path="../ts/typings/xml2json/xml2json.d.ts"/>
-///<reference path="domain.ts"/>
+﻿///<reference path="../../ts/typings/angularjs/angular.d.ts"/>
+///<reference path="../../ts/typings/openlayers/openlayers.d.ts"/>
+///<reference path="../../ts/typings/xml2json/xml2json.d.ts"/>
+///<reference path="../domain.ts"/>
 
 angular.module("searching", [])
     .factory("geoCodeService", ($http, $q) => new KartVerketGeoCodeService($http, $q));
