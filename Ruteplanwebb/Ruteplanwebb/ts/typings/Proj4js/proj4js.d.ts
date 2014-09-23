@@ -13,3 +13,18 @@
         y: number;
     }
 } 
+
+declare module Proj4js {
+    export function defs(name: string, def: string);
+    export function transform(source: Proj, dest: Proj, coord: Point): Point;
+    export class Proj {
+        constructor(defName: string);
+    }
+
+    export function toPoint(arr: number[]): Point;
+
+    export class Point {
+        x: number;
+        y: number;
+    }
+} 
