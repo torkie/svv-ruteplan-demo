@@ -10,7 +10,9 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
     constructor(private $http: ng.IHttpService, private settings: any) {
     }
 
-    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[]) => {
+    private _routeType: string;
+
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[], powerEffort?: number, bikePathUsage?: number, routeType?: string) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
             strings.push(stop.lon + "," + stop.lat);
@@ -33,6 +35,8 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
         var params = <any>{
             stops: stopsParameter,
             barriers: pointBarriersParameter,
+            powerEffort: powerEffort, 
+            bikePathUsage: bikePathUsage,
             format: "json",
             lang: "nb-no",
 
@@ -43,8 +47,13 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
             params.backend_username = this.settings.username;
             params.backend_password = this.settings.password;
         }
-        if (this.settings.routetype && this.settings.routetype.length > 0)
+        if (this.settings.routetype && this.settings.routetype.length > 0) {
             params.route_type = this.settings.routetype;
+        }
+        if (routeType != undefined) {
+            params.route_type = routeType;
+        }
+        this._routeType = params.route_type;
 
         this.$http.get(url, {
             params: params
@@ -72,7 +81,9 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
             var totalBounds = null;
             var directions = <SVV.RoutePlanning.ViewDirection[]>data.directions;
             for (var i = 0; i < directions.length; i++) {
-                forEach(directions[i].features, (feature: SVV.RoutePlanning.ViewDirectionFeature) => {
+                var dir: SVV.RoutePlanning.ViewDirection = directions[i];
+
+                forEach(dir.features, (feature: SVV.RoutePlanning.ViewDirectionFeature) => {
                     if (feature.attributes.text.match(/\{([ERFKPS])(\d+)\}.*/i)) {
                         feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
                         feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
@@ -82,19 +93,23 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                     feature.turnIconClass = this.getTurnIconForEsriManeuvre(feature.attributes.maneuverType);
 
                 });
-                directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
-                directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
-                var bbox = directions[i].summary.envelope;
-                directions[i].Bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
+                dir.TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
+                dir.TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
+                var bbox = dir.summary.envelope;
+                dir.Bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
+
+                if (this._routeType == "bike") {
+                    this._setExtraProperties(dir);
+                }
 
                 if (totalBounds == null) {
-                    totalBounds = directions[i].Bounds;
+                    totalBounds = dir.Bounds;
                 }
                 else {
-                    totalBounds.extend(directions[i].Bounds);
+                    totalBounds.extend(dir.Bounds);
                 }
 
-                features[i].routeId = directions[i].routeId;
+                features[i].routeId = dir.routeId;
             }
 
             callback(totalBounds, features, directions);
@@ -130,6 +145,48 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
         }
 
     };
+
+    private _setExtraProperties(dir: SVV.RoutePlanning.ViewDirection): void {
+        dir.summary.statistics.forEach((stat: SVV.RoutePlanning.IKeyValuePair) => {
+            dir.summary[stat.key] = stat.value;
+        });
+
+        // Calculate co2 and cost for a car
+        var fuelPrice = 15;
+        var petrolCars = 58;
+        var dieselCars = 42;
+
+        var emissionParameters = {
+            petrolCars: petrolCars,
+            dieselCars: dieselCars,
+            petrolEmission: 206,
+            dieselEmission: 157
+        }
+
+        var fuelParameters = {
+            petrolCars: petrolCars,
+            dieselCars: dieselCars,
+            petrolConsumption: 1.17,
+            dieselConsumption: 0.75
+        }
+
+        var getAverageFuelConsumption = (params) => {
+            return ((params.petrolCars * params.petrolConsumption) + (params.dieselCars * params.dieselConsumption)) / 100;
+        }
+
+        var getAverageEmissionRate = (params) => {
+            return ((params.petrolCars * params.petrolEmission) + (params.dieselCars * params.dieselEmission)) / 100;
+        }
+
+        var avgFuelConsumption = getAverageFuelConsumption(fuelParameters);
+        var avgEmissionRate = getAverageEmissionRate(emissionParameters);
+
+        var co2 = avgEmissionRate + (avgEmissionRate * (dir.summary.totalLength / 1000));
+        var price = fuelPrice + (fuelPrice * avgFuelConsumption * (dir.summary.totalLength / 10000));
+
+        dir.summary.totalCo2 = co2;
+        dir.summary.totalCarCost = price;
+    }
 
 }
 

@@ -1,36 +1,66 @@
-﻿
-    <div class="modal-header">
-        <h3 class="modal-title">Send melding</h3>
+﻿<div class="modal-header">
+    <h3 class="modal-title">Send melding</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" role="form" name="reportForm">
+        <div ng-show="hasErrors" style="text-align: center;" class="form-group">
+            <span class="error">Noe gikk galt ved kontakt til server!</span>
+        </div>
+        <div ng-show="requestComplete && !hasErrors" style="text-align: center;" class="form-group">
+            <h3>Takk for meldingen!</h3>
+        </div>
+        <div ng-show="!requestComplete">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Titel</label>
+                <div class="col-sm-10">
+                    <input name="title" class="form-control" style="width: 100%" type="text" ng-model="data.title" required placeholder="Ange en titel" />
+                    <span class="error" ng-show="reportForm.title.$error.required">* Må fyldes i!</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Navn</label>
+                <div class="col-sm-10">
+                    <input name="reporterName" class="form-control" style="width: 100%" type="text" ng-model="data.reporterName" placeholder="Ditt navn" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">E-post</label>
+                <div class="col-sm-10">
+                    <input name="email" class="form-control" style="width: 100%" type="email" ng-model="data.email" placeholder="Din epost adresse" />
+                    <span class="error" ng-show="reportForm.email.$error.email">* Ikke en gyldig epost-adresse!</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Kategori</label>
+                <div class="col-sm-10">
+                    <select class="form-control" style="width: 100%" name="cat" ng-model="selectedItem.category" ng-options="cat for cat in categories" required>
+                        <option value="">-- Velg kategori --</option>
+                    </select>
+                    <span class="error" ng-show="reportForm.cat.$error.required">* Må fyldes i!</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Beskrivelse</label>
+                <div class="col-sm-10">
+                    <textarea name="description" rows="5" class="form-control" style="width: 100%" ng-model="data.description" required placeholder="En kort beskrivelse"></textarea>
+                    <span class="error" ng-show="reportForm.description.$error.required">* Må fyldes i!</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <span style="float: left" ng-show="requestIsPending">
+        <i class="fa fa-spin fa-circle-o-notch spinner"></i>
+    </span>
+    <div ng-show="!requestComplete">
+        <button class="btn btn-primary" ng-disabled="reportForm.$invalid" ng-click="ok()" ng-show="!requestComplete">Send</button>
+        <button class="btn btn-warning" ng-click="cancel()">Avbryt</button>
     </div>
-    <div class="modal-body">
-        <form class="form-horizontal" role="form">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Title</label>
-                <div class="col-sm-10">
-                    <input class="form-control" style="width: 100%" type="text" ng-model="data.title" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Name</label>
-                <div class="col-sm-10">
-                    <input class="form-control" style="width: 100%" type="text" ng-model="data.reporterName" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Email</label>
-                <div class="col-sm-10">
-                    <input class="form-control" style="width: 100%" type="email" ng-model="data.email" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Description</label>
-                <div class="col-sm-10">
-                    <input class="form-control" style="width: 100%" type="text" ng-model="data.description" />
-                </div>
-            </div>
-        </form>
+    <div ng-show="requestComplete">
+        <button class="btn btn-primary" ng-click="cancel()">Lukk</button>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
+    
+</div>

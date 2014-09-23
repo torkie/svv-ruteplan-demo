@@ -20,6 +20,7 @@ interface IMapControllerScope extends ng.IScope {
     routeFeatureLayer : OpenLayers.Layer.Vector;
     barrierLayer : OpenLayers.Layer.Vector;
     directions: SVV.RoutePlanning.ViewDirection[];
+    selectedDirection: SVV.RoutePlanning.ViewDirection;
     contextMenuHandleWindowClicked : any;
     controls : SVV.RoutePlanning.ControlWrapper[];
     contextMenuSetFrom(windowLocation:any);
@@ -38,6 +39,9 @@ interface IMapControllerScope extends ng.IScope {
     getContentHeight(idx: number);
     accordionPanes: boolean[];
     addresses: { fromAddress: SVV.RoutePlanning.AddressItem; toAddress: SVV.RoutePlanning.AddressItem };
-    routeSettings: { effort: number; cost: number; }
+    routeSettings: { powerEffort: number; bikePathUsage: number; powerEffortMin: string; powerEffortMax: string; bikePathUsageMin: string; bikePathUsageMax: string;}
     showReportDialog();
+    showAboutDialog();
+    getPowerEffortValues(val: string);
+    getBikePathUsageValues(val: string);
 }

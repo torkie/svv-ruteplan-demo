@@ -1,0 +1,49 @@
+﻿<div class="modal-header">
+    <div class="modal-title">
+        <div class="slider-prev-btn"><span class="fa fa-arrow-circle-o-left fa-2x" ng-click="prevPage()" ng-disabled="{{prevIsDisabled}}"></span></div>
+        <div class="text-center"><h3>{{currentPageTitle}}</h3></div>
+        <div class="slider-next-btn"><span class="fa fa-arrow-circle-o-right fa-2x" ng-click="nextPage()" ng-disabled="nextIsDisabled"></span></div>
+    </div>
+</div>
+<div class="modal-body">
+    <div ng-show="currentPageId == 0">
+        <p>
+            Statens vegvesen har brukt store ressurser på etablering av gang- og sykkelvegdata i NVDB. Formålet med dataetableringen har primært vært bedre drift og vedlikehold av gang- og sykkelvegnettet, og gjennom dette prosjektet ønsker vi å synliggjøre at sykkelvegdataene i NVDB har stor verdi også innen andre bruksområder.
+        </p>
+        <p>
+            Det finnes ikke noe offisielt nasjonalt datasett som enkelt gir mulighet for digital sykkelruteplanlegging, men NVDB-data i kombinasjon med andre datakilder vil kunne danne grunnlaget for et slikt datasett. I prosjektet er data fra NVDB supplert med blant annet stier, traktorveger og småstubber fra andre kartdatabaser.
+        </p>
+        <p>
+            Webapplikasjonen og rutetjensten er utviklet av <a href="http://triona.se">Triona AB</a>.
+        </p>
+    </div>
+    <div ng-show="currentPageId == 1">
+        <p>
+            Kostnaden er estimert basert på følgende faktorer ( verdier for utslipp og drivstofforbruk er spesifisert basert på en Volvo V70 ):
+        </p>
+        <ul>
+            <li>Drivstoffpris på 15 kr/l</li>
+            <li>Bensinforbruk på 1,17 l/mil i bykjøring</li>
+            <li>Dieselforbruk på 0,75 l/mil i bykjøring</li>
+            <li>Utslipp for bensin og dieselbiler er antatt å være 206 g/km hhv. 157 g/km</li>
+            <li>Andelen av bensin og dieselbiler i landet er iht. SSB (2012) 58% og 42% <a href="http://www.ssb.no/natur-og-miljo/artikler-og-publikasjoner/okning-i-transportens-energibruk-og-klimagassutslipp">SSB</a></li>
+        </ul>
+        <p>
+            Dette gir et gjennomsnittlig forbruk på ca 1,1 l/mil og et CO<sup>2</sup>-utslipp på rundt 197 g/km.
+            For å beregne kostnadene og miljøpåvirkningen av kaldstart og korte avstander er lagt en kilometer drivstofforbruk og utslipp til den totale verdien av beregningen.
+            Dette er et anslag over de faktiske kostnadene og miljøpåvirkningen, beregningen tar ikke hensyn til eierkostnader.
+            Beregningen forutsetter at bilen kjører den samme ruten som planlagt sykkeltur.
+        </p>
+    </div>
+    <div class="slider-dot-pages-wrapper">
+        <div class="slider-dot-pages-container">
+            <div class="dot-page" ng-repeat="page in pages" ng-click="changePage(page.id)" ng-class="currentPageId == page.id ? 'dot-page-active' : 'dot-page-inactive'"></div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <div>
+        <button class="btn btn-primary" ng-click="ok()">Lukk</button>
+    </div>
+</div>

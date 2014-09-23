@@ -10,7 +10,7 @@
 }
 
 [class^="icon-"], [class*=" icon-"] {
-    font-family: 'directions-font';
+    /*font-family: 'directions-font';
     -webkit-speak: none;
     -moz-speak: none;
     -ms-speak: none;
@@ -38,6 +38,43 @@
     border-radius: 15px;
     width: 25px;
     height: 20px;
+    line-height: 15px;
+    text-align: center;
+    vertical-align: middle;
+
+
+	/* Better Font Rendering =========== */
+	/*-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;*/
+
+    font-family: 'directions-font';
+    -webkit-speak: none;
+    -moz-speak: none;
+    -ms-speak: none;
+    -o-speak: none;
+    speak: none;
+	font-style: normal;
+	font-weight: normal;
+    -webkit-font-variant: normal;
+    -moz-font-variant: normal;
+    -ms-font-variant: normal;
+    -o-font-variant: normal;
+    font-variant: normal;
+	text-transform: none;
+    margin-right: 5px;
+    margin-top: 6px;
+    background-color: #ea7206;
+    display: inline-block;
+    color: white;
+    padding: 3px;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    font-size: 12px;
+    -ms-border-radius: 6px;
+    border-radius: 6px;
+    width: 25px;
+    height: 22px;
     line-height: 15px;
     text-align: center;
     vertical-align: middle;

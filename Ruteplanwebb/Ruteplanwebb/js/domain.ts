@@ -60,8 +60,11 @@ module SVV.RoutePlanning {
         TotalTollLarge: number;
         TotalTollSmall: number;
         Bounds: OpenLayers.Bounds;
-        routeId : number;
-        
+        routeId: number;
+        //meterBikeRoad: number;
+        //usedKcal: number;
+        //totalCo2: number;
+        //totalCarCost: number;
     }
 
     export class ViewDirectionFeature extends RouteResponseDirectionFeature {
@@ -83,6 +86,11 @@ module SVV.RoutePlanning {
 
     }
 
+    export interface IKeyValuePair {
+        key: string;
+        value: number;
+    }
+
     export class ReportMessage {
         title: string;
         description: string;
@@ -95,9 +103,14 @@ module SVV.RoutePlanning {
     }
 
     export class RouteResponseSummary {
-        totalDistance: number;
-        totalTravelTime: number;
+        totalTime: number;
+        totalLength: number;
+        statistics: IKeyValuePair[];
         envelope: Envelope;
+        meterBikeRoad: number;
+        usedKcal: number;
+        totalCo2: number;
+        totalCarCost: number;
     }
 
     export class Envelope {
@@ -109,9 +122,13 @@ module SVV.RoutePlanning {
 
     export interface IRoutingService {
         calculateRoute(stops: OpenLayers.LonLat[],
-                       callback: SVV.RoutePlanning.IRouteCalculationCallback,
-                       blockedPoints? : OpenLayers.LonLat[],
-                       blockedAreas? : SVV.RoutePlanning.Polygon[]);
+            callback: SVV.RoutePlanning.IRouteCalculationCallback,
+            blockedPoints? : OpenLayers.LonLat[],
+            blockedAreas?: SVV.RoutePlanning.Polygon[],
+            powerEffort?: number,
+            bikePathUsage?: number, 
+            routeType?: string
+            );
     }
 
     export interface IGeoCodeService {
@@ -123,6 +140,12 @@ module SVV.RoutePlanning {
     }
 
     export interface IReportServiceResponse {
+        status: number;
+        statusText: string;
+        data: IReportServiceResponseData;
+    }
+
+    export interface IReportServiceResponseData {
         Status: string;
         Message: string;
         ReportID: string;

@@ -1,8 +1,8 @@
 ///<reference path="../ts/typings/angularjs/angular.d.ts"/>
 
 angular.module("rpwFilters", [])
-    .filter("time", function() {
-        return function(input) {
+    .filter("time", () => {
+        return (input) => {
             var output = "";
 
             var secs = Math.round(input * 60);
@@ -32,8 +32,8 @@ angular.module("rpwFilters", [])
             return output;
         }
     })
-    .filter("distance", function() {
-        return function(input) {
+    .filter("distance", () => {
+        return (input) => {
             if (input < 1000) {
                 return Math.round(input) + " meter";
             } else {
@@ -41,8 +41,45 @@ angular.module("rpwFilters", [])
             }
         }
     })
-    .filter("direction", function() {
-        return function(input : string) {
+    .filter("distanceAbbr", () => {
+        return (input) => {
+            if (input < 1000) {
+                return Math.round(input) + " m";
+            } else {
+                return Math.round(input / 100) / 10 + " km";
+            }
+        }
+    })
+    .filter("bikedistance", () => {
+        return (input) => {
+            if (input < 1000) {
+                return Math.round(input) + " meter";
+            } else {
+                return Math.round(input / 100) / 10 + " kilometer";
+            }
+        }
+    })
+    .filter("kcal", () => {
+        return (input) => {
+            return Math.round(input) + " kcal";
+        }
+    })
+    .filter("co2", () => {
+        return (input)  => {
+            if (input < 1000) {
+                return Math.round(input) + " g";
+            } else {
+                return Math.round(input / 100) / 10 + " kg";
+            }
+        }
+    })
+    .filter("cost", () => {
+        return (input) => {
+            return Math.round(input * 10) / 10 + " kr";
+        }
+    })
+    .filter("direction", () => {
+        return (input : string) => {
             var i = input.indexOf("}");
             if (i > 0) {
                 return input.substr(i + 2);
@@ -51,8 +88,8 @@ angular.module("rpwFilters", [])
             }
         }
     })
-    .filter("signpost", function () {
-        return function (input: string) {
+    .filter("signpost", () => {
+        return (input: string) => {
             var i = input.indexOf("}");
             if (i > 0) {
                 return input.replace(/\{([ERFKPS])(\d+)\}.*/i, "<div class='road-sign-$1'>$1v $2</div>");
@@ -61,8 +98,8 @@ angular.module("rpwFilters", [])
             }
         }
     })
-    .filter("round", function() {
-        return function(input) {
+    .filter("round", () => {
+        return (input) => {
             return Math.round(input);
         }
     });

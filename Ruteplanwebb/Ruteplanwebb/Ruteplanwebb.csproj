@@ -51,6 +51,7 @@
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
     <TypeScriptCompile Include="js\domain.ts" />
+    <TypeScriptCompile Include="js\modules\about.ts" />
     <TypeScriptCompile Include="js\modules\report.ts" />
     <TypeScriptCompile Include="js\services\report.ts" />
     <TypeScriptCompile Include="js\filters.ts" />
@@ -415,6 +416,7 @@
     <Content Include="lib\openlayers\theme\default\style.mobile.tidy.css" />
     <Content Include="lib\openlayers\theme\default\style.tidy.css" />
     <Content Include="lib\proj4js\proj4.js" />
+    <Content Include="lib\proj4js\proj4js-combined.js" />
     <Content Include="lib\proj4js\proj4js-compressed.js" />
     <Content Include="lib\xml2json\xml2json.min.js" />
     <Content Include="lib\zeptojs\zeptojs.js" />
@@ -427,6 +429,7 @@
     <Content Include="tests\teamcity-runner\phantom.run.js" />
     <Content Include="tests\teamcity-runner\phantomjs.exe" />
     <Content Include="tests\teamcity-runner\run-for-teamcity.html" />
+    <Content Include="Views\AboutView.html" />
     <Content Include="Views\BikeView.html" />
     <Content Include="Views\CreateReport.html" />
     <Content Include="Views\MapView.html" />
@@ -495,6 +498,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />

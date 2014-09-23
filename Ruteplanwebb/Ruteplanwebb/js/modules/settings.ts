@@ -38,8 +38,8 @@ angular.module("rpwSettings", ["ngCookies"])
         var settings = $cookieStore.get("settings") || {};
 
         if (settings.url === undefined) {
-            settings.url = "http://multirit.triona.se/routingService_v1_0/routingService";
-            settings.useproxy = true;
+            settings.url = "http://localhost:2062/RoutingService/RoutingService";
+            settings.useproxy = false;
         }
 
         settings.save = function() {

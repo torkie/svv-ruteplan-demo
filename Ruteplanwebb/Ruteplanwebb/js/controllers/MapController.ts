@@ -9,10 +9,15 @@
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 class MapController {
 
-    constructor(private $scope: IMapControllerScope, routingService: SVV.RoutePlanning.IRoutingService, geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location: ng.ILocationService, wmsSettings: any, $state: ng.ui.IStateService, private  reportGuiService : ReportGuiService) {
-        proj4.defs("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs");
-        proj4.defs("EPSG:32633", "+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
-        proj4.defs("EPSG:32632", "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
+    constructor(private $scope: IMapControllerScope, routingService: SVV.RoutePlanning.IRoutingService, geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location: ng.ILocationService, wmsSettings: any, $state: ng.ui.IStateService, private reportGuiService: ReportGuiService, private aboutGuiService: AboutGuiService) {
+        //proj4.defs("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs");
+        //proj4.defs("EPSG:32633", "+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
+        //proj4.defs("EPSG:32632", "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
+
+        Proj4js.defs["EPSG:25833"] = "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs";
+        Proj4js.defs["EPSG:32633"] = "+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+        Proj4js.defs["EPSG:32632"] = "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+
 
         var routeStyle = {
             graphicZIndex: 2,
@@ -33,14 +38,48 @@ class MapController {
         $scope.addresses = { fromAddress: null, toAddress: null };
 
         $scope.routeSettings = {
-            effort: 50,
-            cost: 5
+            powerEffort: 0,
+            bikePathUsage: 50, 
+            powerEffortMin: "-100",
+            powerEffortMax: "100",
+            bikePathUsageMin: "-100",
+            bikePathUsageMax: "100"
+        };
+
+        $scope.getPowerEffortValues = (value) => {
+            if (value === $scope.routeSettings.powerEffortMin) {
+                return "Langsam";
+            }
+            else if (value === $scope.routeSettings.powerEffortMax) {
+                return "Hurtig";
+            }
+
+            return "";
+        };
+
+        $scope.getBikePathUsageValues = (value) => {
+            if (value === $scope.routeSettings.bikePathUsageMin) {
+                return "Minimal";
+            }
+            else if (value === $scope.routeSettings.bikePathUsageMax) {
+                return "Maksimal";
+            }
+
+            return "";
         };
 
         $scope.showReportDialog = () => {
-            //ReportController.showDialog($modal);
-            this.reportGuiService.showDialog();
-        }
+            var mapCoordinate = this.$scope.map.getCenter();
+            var proj = this.$scope.map.getProjectionObject();
+            var wgsProj = new OpenLayers.Projection("EPSG:4326");
+            var wgsCoordinate = mapCoordinate.transform(proj, wgsProj);
+
+            this.reportGuiService.showDialog(wgsCoordinate.lon, wgsCoordinate.lat, "WGS84");
+        };
+
+        $scope.showAboutDialog = () => {
+            this.aboutGuiService.showDialog();
+        };
 
         $scope.getLocations = (val) => {
             return geoCodeService.getLocations(val);
@@ -49,6 +88,7 @@ class MapController {
         $scope.doRouteCalculation = () => {
             $scope.routeLayer.removeAllFeatures();
             $scope.directions = null;
+            $scope.selectedDirection = null;
 
             var locations = [];
             var idx = 0;
@@ -62,19 +102,19 @@ class MapController {
             locations[idx] = $scope.addresses.toAddress.location;
 
             routingService.calculateRoute(locations,
-                (bounds, features : SVV.RoutePlanning.RouteResponseRouteFeature[], directions : SVV.RoutePlanning.ViewDirection[]) => {
-                    $scope.directions = directions;
+            (bounds, features: SVV.RoutePlanning.RouteResponseRouteFeature[], directions: SVV.RoutePlanning.ViewDirection[]) => {
+                $scope.directions = directions;
 
-                    $scope.map.zoomToExtent(bounds, false);
+                $scope.map.zoomToExtent(bounds, false);
 
-                    // add features to map
-                    $scope.routeLayer.addFeatures(features);
-                    if (directions != null && directions.length > 0) {
-                        $scope.selectRoute(directions[0].routeId);
-                    }
-
+                // add features to map
+                $scope.routeLayer.addFeatures(features);
+                if (directions != null && directions.length > 0) {
+                    $scope.selectRoute(directions[0].routeId);
                 }
-            , $scope.blockedPoints, $scope.blockedAreas);
+
+                $scope.accordionPanes = [false, true, false];
+            }, $scope.blockedPoints, $scope.blockedAreas, $scope.routeSettings.powerEffort, $scope.routeSettings.bikePathUsage, $state.current.data.routeType);
         };
 
         $scope.reverseRoute = () => {
@@ -85,7 +125,6 @@ class MapController {
             if ($scope.intermediateAddresses != undefined) {
                 $scope.intermediateAddresses.reverse();
             }
-
 
             $scope.updateMarkers();
         };
@@ -210,7 +249,8 @@ class MapController {
 
             var latlon = $scope.map.getLonLatFromPixel(loc);
             var pt = new OpenLayers.Geometry.Point(latlon.lon, latlon.lat);
-            //Check if there is a route-feature in the map "close" and snap to that one..
+           
+            // Check if there is a route-feature in the map "close" and snap to that one..
             angular.forEach($scope.routeLayer.features, (feature: OpenLayers.Feature.Vector) => {
                 var details = <any>feature.geometry.distanceTo(pt, { details: true });
                 var px1 = $scope.map.getPixelFromLonLat(new OpenLayers.LonLat(details.x0, details.y0));
@@ -241,15 +281,26 @@ class MapController {
         };
 
         $scope.selectedRouteId = null;
+        $scope.selectedDirection = null;
 
         $scope.selectRoute = routeId => {
             $scope.selectedRouteId = routeId;
+
+            var dir: SVV.RoutePlanning.ViewDirection;
+            for (var i = 0; i < $scope.directions.length; i++) {
+                dir = $scope.directions[i];
+                if (dir.routeId === routeId) {
+                    $scope.selectedDirection = dir;
+                    break;
+                }
+            }
 
             // Draw routes
             angular.forEach($scope.routeLayer.features, feature => {
                 if (feature.routeId === routeId) {
                     feature.style = routeStyle;
-                } else {
+                }
+                else {
                     feature.style = alternativeRouteStyle;
                 }
                 $scope.routeLayer.drawFeature(feature);
@@ -371,20 +422,21 @@ class MapController {
             elem.setAttribute("href", data);
         };
 
-        $scope.$on("wmsSettingsUpdated", function() {
+        $scope.$on("wmsSettingsUpdated", () => {
             console.log("wms settings updated");
             // find all user added layers
             var map = $scope.map;
             var userAddedLayers = map.getLayersBy("userAddedLayer", true);
 
             // remove layers that have been deleted
-            angular.forEach(userAddedLayers, function(layer) {
+            angular.forEach(userAddedLayers, (layer) => {
                 if (wmsSettings.layers.indexOf(layer) === -1) {
                     map.removeLayer(layer);
                 }
             });
+
             // add new layers
-            angular.forEach(wmsSettings.layers, function(layer) {
+            angular.forEach(wmsSettings.layers, (layer) => {
                 if (userAddedLayers.indexOf(layer) === -1) {
                     map.addLayer(layer);
                 }
@@ -401,14 +453,14 @@ class MapController {
         });
 
         $scope.getContentHeight = (idx: number) => {
-            var idxFactor = 0; //idx * 100;
             var wrapHeight = $('.bike-accordion').innerHeight();
             var groupHeight = $('.panel-heading').first().outerHeight();
             var cnt = $('.panel-heading').length;
-            var freeSpace = wrapHeight - cnt * (groupHeight + 30) - idxFactor;
+            var freeSpace = wrapHeight - cnt * (groupHeight + 30);
 
             return freeSpace + 'px';
         }
+
     }
 
 }
