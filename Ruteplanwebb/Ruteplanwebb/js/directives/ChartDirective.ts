@@ -12,11 +12,13 @@ class ChartDirective {
     private _scope: any;
     private _directions: SVV.RoutePlanning.ViewDirection[];
     private _geometryHelper: SVV.RoutePlanning.Helpers.CompressedGeometryHelper;
+    private _firstCall = true;
+
 
     constructor() {
         this.restrict = "AE";
         this.replace = true;
-
+        
         this.link = (scope: any, element: any, attrs: any) => {
             this._scope = scope;
             this._geometryHelper = new SVV.RoutePlanning.Helpers.CompressedGeometryHelper();
@@ -30,7 +32,17 @@ class ChartDirective {
             scope.$watch(attrs.route, (value: SVV.RoutePlanning.ViewDirection[]) => {
                 if (value != null) {
                     this._directions = value;
-                    if (scope.chartIsVisible == true) {
+                    if (this._firstCall && SVV.RoutePlanning.AppConfig.showChartOnFirsRoute) {
+                        this._firstCall = false;
+                        setTimeout(() => {
+                            this._scope.$apply(() => {
+                                this._scope.chartIsVisible = true;
+                            });
+                            
+                        }, 500);
+                        
+                    }
+                    else if (scope.chartIsVisible == true) {
                         this._updateChart();
                     }
                 }
@@ -93,16 +105,16 @@ class ChartDirective {
                 x: {
                     key: 'x', type: 'linear',
                     labelFunction: (value) => {
-                        return value + " m"; 
+                        return value + " m";
                     }, min: 0, max: totalLength
                 },
-                y: { type: 'linear', min: minZ, max: maxZ } 
+                y: { type: 'linear', min: minZ, max: maxZ }
             },
             series: [
                 { y: 'value', color: 'lightsteelblue', thickness: '2px', type: 'line', striped: true, drawDots: false, label: 'meter over havet' }
             ],
             tooltip: {
-                mode: "scrubber", 
+                mode: "scrubber",
                 interpolate: false,
                 formatter: (x, y) => {
                     return y + " m.o.h.";

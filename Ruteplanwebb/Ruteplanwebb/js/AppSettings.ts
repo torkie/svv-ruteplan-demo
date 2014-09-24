@@ -6,5 +6,6 @@
         public static sKWSServiceUrl: string = "https://ws.geonorge.no/SKWS3Index/ssr/sok";
         public static norgesKartServiceUrl: string = "http://beta.norgeskart.no/ws/adr.py?";
         public static useproxy: boolean = false;
+        public static showChartOnFirsRoute: boolean = true;
     }
 }
