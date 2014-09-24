@@ -52,6 +52,7 @@
     <Content Include="lib\angular\line-chart.min.js" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
+    <TypeScriptCompile Include="js\AppSettings.ts" />
     <TypeScriptCompile Include="js\directives\ChartDirective.ts" />
     <TypeScriptCompile Include="js\domain.ts" />
     <TypeScriptCompile Include="js\modules\about.ts" />

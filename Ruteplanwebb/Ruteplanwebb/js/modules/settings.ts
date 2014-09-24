@@ -1,48 +1,50 @@
 ///<reference path="../../ts/typings/angularjs/angular.d.ts"/>
 
 angular.module("rpwSettings", ["ngCookies"])
-    .controller("SettingsController", ["$scope", "$modal", "settings", function($scope, $modal, settings) {
+    .controller("SettingsController", [
+        "$scope", "$modal", "settings", ($scope, $modal, settings) => {
 
-        var dialogController = function($scope, $modalInstance, data) {
-            $scope.data = data;
+            var dialogController = ($scope, $modalInstance, data) => {
+                $scope.data = data;
 
-            $scope.ok = function() {
-                $modalInstance.close($scope.data);
+                $scope.ok = () => {
+                    $modalInstance.close($scope.data);
+                };
+
+                $scope.cancel = () => {
+                    $modalInstance.dismiss("cancel");
+                };
+
             };
 
-            $scope.cancel = function() {
-                $modalInstance.dismiss("cancel");
-            };
-
-        };
-
-        $scope.open = function(size) {
-            var modalInstance = $modal.open({
-                templateUrl: "settings.html",
-                controller: dialogController,
-                size: size,
-                resolve: {
-                    data: function() {
-                        return settings;
+            $scope.open = (size) => {
+                var modalInstance = $modal.open({
+                    templateUrl: "settings.html",
+                    controller: dialogController,
+                    size: size,
+                    resolve: {
+                        data: () => {
+                            return settings;
+                        }
                     }
-                }
-            });
+                });
 
-            modalInstance.result.then(function(data) {
-                data.save();
-            });
-        };
+                modalInstance.result.then((data) => {
+                    data.save();
+                });
+            };
 
-    }])
-    .factory("settings", function($cookieStore) {
+        }
+    ])
+    .factory("settings", ($cookieStore) => {
         var settings = $cookieStore.get("settings") || {};
 
         if (settings.url === undefined) {
-            settings.url = "http://localhost:2062/RoutingService/RoutingService";
-            settings.useproxy = false;
+            settings.url = SVV.RoutePlanning.AppConfig.routeServiceUrl;
+            settings.useproxy = SVV.RoutePlanning.AppConfig.useproxy;
         }
 
-        settings.save = function() {
+        settings.save = () => {
             $cookieStore.put("settings", settings);
         };
 

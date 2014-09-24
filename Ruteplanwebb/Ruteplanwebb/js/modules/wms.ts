@@ -2,85 +2,91 @@
 ///<reference path="../../ts/typings/openlayers/openlayers.d.ts"/>
 
 angular.module("rpwWms", [])
-    .controller("WmsController", ["$http", "$scope", "$modal", "wmsSettings", function($http, $scope, $modal, wmsSettings) {
+    .controller("WmsController", [
+        "$http", "$scope", "$modal", "wmsSettings", ($http, $scope, $modal, wmsSettings) => {
 
-        var dialogController = function($scope, $modalInstance, data) {
-            $scope.data = data;
-            $scope.newlayer = {};
+            var dialogController = ($scope, $modalInstance, data) => {
+                $scope.data = data;
+                $scope.newlayer = {};
 
-            $scope.ok = function() {
-                $modalInstance.dismiss();
-            };
+                $scope.ok = () => {
+                    $modalInstance.dismiss();
+                };
 
-            $scope.addLayer = function() {
-                if (!$scope.newlayer.url || !$scope.newlayer.layer) {
-                    return;
-                }
-                if (!$scope.newlayer.name) {
-                    $scope.newlayer.name = $scope.newlayer.layer;
-                }
-                data.addlayer($scope.newlayer.name, $scope.newlayer.url, $scope.newlayer.layer);
-                $scope.newlayer.name = null;
-                $scope.newlayer.url = null;
-                $scope.newlayer.layer = null;
-                $scope.newlayer.availableLayers = null;
-                data.apply();
-            };
-
-            $scope.removeLayer = function(layer) {
-                data.removeLayer(layer);
-                data.apply();
-            };
-
-            $scope.getCapabilities = function() {
-                var url = $scope.newlayer.url;
-                if (!url) {
-                    return;
-                }
-                var wms = new OpenLayers.Format.WMSCapabilities();
-                $http.get("wmsCapabilities", {
-                        params: { url: $scope.newlayer.url }
+                $scope.addLayer = () => {
+                    if (!$scope.newlayer.url || !$scope.newlayer.layer) {
+                        return;
                     }
-                ).success(function(data) {
-                        var caps = wms.read(data);
-                        var layers = [];
-                        angular.forEach(caps.capability.layers, function(layer) {
-                            layers.push(layer.name);
-                        });
-                        $scope.newlayer.availableLayers = layers;
-                        if (layers.length > 0) {
-                            $scope.newlayer.layer = layers[0];
+
+                    if (!$scope.newlayer.name) {
+                        $scope.newlayer.name = $scope.newlayer.layer;
+                    }
+
+                    data.addlayer($scope.newlayer.name, $scope.newlayer.url, $scope.newlayer.layer);
+                    $scope.newlayer.name = null;
+                    $scope.newlayer.url = null;
+                    $scope.newlayer.layer = null;
+                    $scope.newlayer.availableLayers = null;
+                    data.apply();
+                };
+
+                $scope.removeLayer = (layer) => {
+                    data.removeLayer(layer);
+                    data.apply();
+                };
+
+                $scope.getCapabilities = () => {
+                    var url = $scope.newlayer.url;
+                    if (!url) {
+                        return;
+                    }
+
+                    var wms = new OpenLayers.Format.WMSCapabilities();
+                    $http.get("wmsCapabilities", {
+                            params: { url: $scope.newlayer.url }
+                        }
+                    ).success((data) => {
+                            var caps = wms.read(data);
+                            var layers = [];
+                            angular.forEach(caps.capability.layers, (layer) => {
+                                layers.push(layer.name);
+                            });
+
+                            $scope.newlayer.availableLayers = layers;
+                            if (layers.length > 0) {
+                                $scope.newlayer.layer = layers[0];
+                            }
+                        }
+                    );
+                }
+            };
+
+            $scope.open = (size) => {
+                var modalInstance = $modal.open({
+                    templateUrl: "wms.html",
+                    controller: dialogController,
+                    size: size,
+                    resolve: {
+                        data: () => {
+                            return wmsSettings;
                         }
                     }
-                );
-            }
-        };
+                });
+            };
 
-        $scope.open = function(size) {
-            var modalInstance = $modal.open({
-                templateUrl: "wms.html",
-                controller: dialogController,
-                size: size,
-                resolve: {
-                    data: function() {
-                        return wmsSettings;
-                    }
-                }
-            });
-        };
-
-    }])
-    .factory("wmsSettings", function($rootScope) {
+        }
+    ])
+    .factory("wmsSettings", ($rootScope) => {
         var settings = settings || {};
 
         settings.layers = [];
 
-        settings.apply = function() {
+        settings.apply = () => {
             console.log("apply wms settings");
             $rootScope.$broadcast("wmsSettingsUpdated");
         };
 
-        settings.addlayer = function(name, url, layers) {
+        settings.addlayer = (name, url, layers) => {
             var wms = new OpenLayers.Layer.WMS(name, url, {
                     layers: layers,
                     transparent: "true"
@@ -93,7 +99,7 @@ angular.module("rpwWms", [])
             settings.layers.push(wms);
         };
 
-        settings.removeLayer = function(layer) {
+        settings.removeLayer = (layer) => {
             var index = settings.layers.indexOf(layer);
             if (index !== -1) {
                 console.log("remove " + index);

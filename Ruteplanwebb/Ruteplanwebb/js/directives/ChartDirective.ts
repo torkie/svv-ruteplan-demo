@@ -104,7 +104,7 @@ class ChartDirective {
             tooltip: {
                 mode: "scrubber", 
                 interpolate: false,
-                formatter: (x, y, series) => {
+                formatter: (x, y) => {
                     return y + " m.o.h.";
                 }
             },

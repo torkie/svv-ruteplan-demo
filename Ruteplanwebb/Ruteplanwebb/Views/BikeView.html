@@ -56,8 +56,10 @@
                     </div>
                     
                     <div class="route-settings">
+                        <div class="left-to-right"></div>
+                        
                         <div class="input-row">
-                            <span>Energi innstillinger</span>
+                            <span class="route-settings-label">Energi innstillinger</span>
                             <br />
                             <div class="slider" slider ng-model="routeSettings.powerEffort"
                                  floor="-100"
@@ -69,7 +71,7 @@
                             </div>
                         </div>
                         <div class="input-row">
-                            <span>Vekting av andel sykkelveg</span>
+                            <span class="route-settings-label">Vekting av andel sykkelveg</span>
                             <br />
                             <div class="slider" slider ng-model="routeSettings.bikePathUsage"
                                  floor="-100"
@@ -191,9 +193,6 @@
     <div class="btn btn-xs chart-close-btn" tooltip="Lukk" tooltip-placement="top">
         <i id="feedback-button" class="fa fa-times" ng-click="closeChart()"></i>
     </div>
-    <linechart data="chartData" options="chartConfig" id='chart' class='chart-content' mode="line">
-
-    </linechart>
-    <!--<div ac-chart="chartType" ac-data="chartData" ac-config="chartConfig" id='chart' class='chart-content'></div>-->
+    <linechart data="chartData" options="chartConfig" id='chart' class='chart-content' mode="line"></linechart>
 </div>
 

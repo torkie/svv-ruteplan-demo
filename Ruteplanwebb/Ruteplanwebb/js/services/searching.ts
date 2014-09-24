@@ -7,8 +7,9 @@ angular.module("searching", [])
     .factory("geoCodeService", ($http, $q) => new KartVerketGeoCodeService($http, $q));
 
 class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
-    constructor(private $http: ng.IHttpService, private $q : ng.IQService) {   
-        
+
+    constructor(private $http: ng.IHttpService, private $q: ng.IQService) {   
+
     }
 
     getLocations = (val: string) => {
@@ -29,7 +30,7 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
         
         return defer.promise;
     }
-    getLocationsNorgesKart = (val : string) => this.$http.get("http://beta.norgeskart.no/ws/adr.py?" + val).then(res => {
+    getLocationsNorgesKart = (val: string) => this.$http.get(SVV.RoutePlanning.AppConfig.norgesKartServiceUrl + val).then(res => {
         var addresses = new Array<SVV.RoutePlanning.AddressItem>();
 
         var add = (item: any) => {
@@ -56,7 +57,7 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
     });
 
     //Get from SKWS
-    getLocationsSKWS = val => this.$http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
+    getLocationsSKWS = val => this.$http.get(SVV.RoutePlanning.AppConfig.sKWSServiceUrl, {
         params: {
             navn: val + "*",
             maxAnt: 20,

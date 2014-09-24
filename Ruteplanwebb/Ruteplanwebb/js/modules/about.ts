@@ -6,10 +6,7 @@ class AboutController {
     constructor(private $scope, private $modalInstance) {
 
         $scope.numPages = 2;
-
         $scope.pages = [{ id: 0, title: 'Om Cykelreseplaneraren' }, { id: 1, title: 'Beregningsprinsipp for kostnader og utslipp' }];
-
-        // $scope.pages = { 0: 'Om Cykelreseplaneraren', 1: 'Beregningsprinsipp for kostnader og utslipp' };
 
         $scope.currentPageId = 0;
         $scope.currentPageTitle = $scope.pages[0].title;

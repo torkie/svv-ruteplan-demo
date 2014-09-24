@@ -62,7 +62,7 @@ class ReportGuiService {
                 coordinate: () => {
                     return {
                         easting: easting,
-                        northing: northing, 
+                        northing: northing,
                         proj: proj
                     };
                 }

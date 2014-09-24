@@ -14,6 +14,9 @@ class MapController {
         Proj4js.defs["EPSG:32633"] = "+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
         Proj4js.defs["EPSG:32632"] = "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
 
+        proj4.defs("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs");
+        proj4.defs("EPSG:32633", "+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
+        proj4.defs("EPSG:32632", "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
 
         var routeStyle = {
             graphicZIndex: 2,
@@ -397,6 +400,7 @@ class MapController {
         if ($location.search().from != null) {
             $scope.addresses.fromAddress = JSON.parse($location.search().from);
         }
+
         if ($location.search().to != null) {
             $scope.addresses.toAddress = JSON.parse($location.search().to);
         }
@@ -431,6 +435,7 @@ class MapController {
 
         $scope.$on("wmsSettingsUpdated", () => {
             console.log("wms settings updated");
+            
             // find all user added layers
             var map = $scope.map;
             var userAddedLayers = map.getLayersBy("userAddedLayer", true);

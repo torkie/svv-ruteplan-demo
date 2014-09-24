@@ -22,20 +22,19 @@ rpwApp.config([
     ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) => {
         $urlRouterProvider.otherwise("/");
         $stateProvider.
-            state('mappage', {
-                url: '/?from&to',
-                templateUrl: 'Views/MapView.html',
-                controller: 'MapController',
-                data: { title: 'SVV Ruteplan Demo', routeType: null },
-                reloadOnSearch: false
-            }).state('bikepage', {
+            state('bikepage', {
                 url: '/bike?from&to',
                 templateUrl: 'Views/BikeView.html',
                 controller: 'MapController',
                 data: { title: 'Sykkelruteplanlegger', routeType: 'bike' },
                 reloadOnSearch: false
+            }).state('mappage', {
+                url: '/?from&to',
+                templateUrl: 'Views/MapView.html',
+                controller: 'MapController',
+                data: { title: 'SVV Ruteplan Demo', routeType: null },
+                reloadOnSearch: false
             });
-
     }
 ]);
 

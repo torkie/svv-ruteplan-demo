@@ -21,63 +21,65 @@
      -o-border-image: -o-linear-gradient(black, rgba(0, 0, 0, 0)) 1 100%; 
      border-image: linear-gradient(to bottom, #444F55 0%, #808080 18%, #FF8811 49%, #808080 77%, #444F55 100%)  1 60%;
      border-left: none;
-     /*border-width: 3px; 
-     border-style: solid; 
-     -webkit-border-image: -webkit-gradient(linear, 0 0, 0 100%, from(black), to(rgba(0, 0, 0, 0))) 1 100%; 
-     -webkit-border-image: -webkit-linear-gradient(black, rgba(0, 0, 0, 0)) 1 100%; 
-     -moz-border-image: -moz-linear-gradient(black, rgba(0, 0, 0, 0)) 1 100%; 
-     -o-border-image: -o-linear-gradient(black, rgba(0, 0, 0, 0)) 1 100%; 
-     border-image: linear-gradient(to bottom, black, rgba(0, 0, 0, 0)) 1 100%;*/
 }
 
-    .left-container.hidden {
-        display: none;
-    }
+.left-to-right {
+    background: linear-gradient(to right, #FFFFFF 5%, #F5F5F5 25%, #FF8811 50%, #F5F5F5 75%, #FFFFFF 95%) repeat scroll 0 0 rgba(255, 255, 255, 0);
+    border-radius: 1em;
+    height: 2px;
+    width: 100%;
+}
 
-    .searchbar input {
-         background-color: #f5f5f5;
-         cursor: text;
-         min-height: 35px;
-         overflow: auto;
-         padding: 2px 26px 2px 2px;
-         border: 1px solid #cccccc;
-         margin: 10px;
-         width: 305px;
-         font-size: 14px;
-         font-weight: bold;
-         color: #444f55;
-         border-radius: 4px;
-         -moz-border-radius: 4px;
-    }
+.left-container.hidden {
+    display: none;
+}
 
-    .searchbar-input:focus {
-        border-color: rgba(255, 150, 0, 0.8);
-        outline: 0;
-        outline: thin dotted \9;
-        /* IE6-9 */
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 150, 0,.6);
-        -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 150, 0,.6);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 150, 0,.6);
-    }
+.searchbar input {
+    background-color: #f5f5f5;
+    cursor: text;
+    min-height: 35px;
+    overflow: auto;
+    padding: 6px 12px;
+    border: 1px solid #cccccc;
+    margin: 10px;
+    width: 305px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444f55;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+}
 
-    .searchbar .input-row {
-        clear: both;
-    }
-    .input-row #searchbutton {
-        float: right;
-    }
+.searchbar-input:focus {
+    /*border-color: rgba(255, 150, 0, 0.8);
+    outline: 0;
+    outline: thin dotted \9;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 150, 0,.6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 150, 0,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 150, 0,.6);*/
+    border-color: #66AFE9;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+    outline: 0 none;
+}
 
-    .searchbar .input-header {
-        clear: none;
-        float: left;
-        padding-right: 5px;
-        padding-top: 18px;
-        width: 30px;
-    }
-    .searchbar .input-field {
-        clear: none;
-        float: left;
-    }
+.searchbar .input-row {
+    clear: both;
+}
+.input-row #searchbutton {
+    float: right;
+}
+
+.searchbar .input-header {
+    clear: none;
+    float: left;
+    padding-right: 5px;
+    padding-top: 18px;
+    width: 30px;
+}
+.searchbar .input-field {
+    clear: none;
+    float: left;
+}
 
 .bike-map-container {
     position: absolute;
@@ -119,8 +121,12 @@
         }
 
         .bike-header span {
-             color: #ffffff;
-        }
+            color: #FFFFFF;
+            font-family: arial;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: bold;
+        }route-settings
 
         .bike-header h2 {
             color: #ffffff;
@@ -214,9 +220,14 @@
 }
 
 .route-settings {
-    
+    clear: both;
 }
-
+.route-settings-label {
+    font-family: arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+}
 
 /*Slider*/
 .slider {
@@ -415,12 +426,14 @@ span.error {
         cursor: pointer;
     }
 .dot-page-active {
-    background: none repeat scroll 0 0 #2E7BCC;
+    background: none repeat scroll 0 0 #FF9600;
+    /*background: none repeat scroll 0 0 #2E7BCC;*/
     
 }
 
 .dot-page-inactive {
-    background: none repeat scroll 0 0 #00346A;
+    background: none repeat scroll 0 0 #FFEEBB;
+    /*background: none repeat scroll 0 0 #00346A;*/
 }
 
 /*CHART*/
