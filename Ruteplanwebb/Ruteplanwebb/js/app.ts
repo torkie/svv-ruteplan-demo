@@ -23,13 +23,13 @@ rpwApp.config([
         $urlRouterProvider.otherwise("/");
         $stateProvider.
             state('bikepage', {
-                url: '/bike?from&to',
+                url: '/?from&to',
                 templateUrl: 'Views/BikeView.html',
                 controller: 'MapController',
                 data: { title: 'Sykkelruteplanlegger', routeType: 'bike' },
                 reloadOnSearch: false
             }).state('mappage', {
-                url: '/?from&to',
+                url: '/mappage?from&to',
                 templateUrl: 'Views/MapView.html',
                 controller: 'MapController',
                 data: { title: 'SVV Ruteplan Demo', routeType: null },
