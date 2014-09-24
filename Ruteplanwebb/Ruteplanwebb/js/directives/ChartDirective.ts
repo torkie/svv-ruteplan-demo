@@ -99,7 +99,7 @@ class ChartDirective {
                 y: { type: 'linear', min: minZ, max: maxZ } 
             },
             series: [
-                { y: 'value', color: 'lightsteelblue', thickness: '2px', type: 'line', striped: true, drawDots: false, label: 'm.o.h.' }
+                { y: 'value', color: 'lightsteelblue', thickness: '2px', type: 'line', striped: true, drawDots: false, label: 'meter over havet' }
             ],
             tooltip: {
                 mode: "scrubber", 

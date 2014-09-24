@@ -59,7 +59,7 @@
                         <div class="left-to-right"></div>
                         
                         <div class="input-row">
-                            <span class="route-settings-label">Energi innstillinger</span>
+                            <span class="bike-label">Energi innstillinger</span>
                             <br />
                             <div class="slider" slider ng-model="routeSettings.powerEffort"
                                  floor="-100"
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="input-row">
-                            <span class="route-settings-label">Vekting av andel sykkelveg</span>
+                            <span class="bike-label">Vekting av andel sykkelveg</span>
                             <br />
                             <div class="slider" slider ng-model="routeSettings.bikePathUsage"
                                  floor="-100"
@@ -190,9 +190,11 @@
 </div>
 
 <div data-chart data-route="directions" data-show="chartVisible" id="chart" class="chart-wrapper" ng-show="chartIsVisible">
+    <div class="chart-border"></div>
     <div class="btn btn-xs chart-close-btn" tooltip="Lukk" tooltip-placement="top">
         <i id="feedback-button" class="fa fa-times" ng-click="closeChart()"></i>
     </div>
+    <span class="bike-label">Høydeprofil:</span>
     <linechart data="chartData" options="chartConfig" id='chart' class='chart-content' mode="line"></linechart>
 </div>
 

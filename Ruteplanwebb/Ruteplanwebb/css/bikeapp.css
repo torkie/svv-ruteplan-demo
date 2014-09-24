@@ -222,7 +222,7 @@
 .route-settings {
     clear: both;
 }
-.route-settings-label {
+.bike-label {
     font-family: arial;
     font-size: 12px;
     font-style: normal;
@@ -446,11 +446,19 @@ span.error {
     opacity: 0.9;
     background-color: white;
     padding: 3px 10px;
-    border-top: 1px solid #444F55;
+    z-index: 1000;
+    box-shadow: 3px -1px 5px rgba(100, 100, 100, 0.9);
 }
-.chart-close-btn-wrapper {
-    
+
+.chart-border {
+    background: linear-gradient(to right, #FFFFFF 0%, #F5F5F5 5%, #FF8811 50%, #F5F5F5 95%, #FFFFFF 100%) repeat scroll 0 0 rgba(255, 255, 255, 0);
+    border-radius: 1em;
+    height: 2px;
+    position: absolute;
+    top: 0;
+    width: 100%;
 }
+
 .chart-close-btn {
     position: absolute;
     top: 5px;
