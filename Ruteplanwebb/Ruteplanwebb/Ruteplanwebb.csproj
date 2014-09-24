@@ -48,8 +48,11 @@
     <Content Include="lib\angular\angular-slider.js" />
     <Content Include="lib\angular\angular-slider.min.js" />
     <Content Include="lib\angular\angular-ui-router.min.js" />
+    <Content Include="lib\angular\line-chart.js" />
+    <Content Include="lib\angular\line-chart.min.js" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="default.htm" />
+    <TypeScriptCompile Include="js\directives\ChartDirective.ts" />
     <TypeScriptCompile Include="js\domain.ts" />
     <TypeScriptCompile Include="js\modules\about.ts" />
     <TypeScriptCompile Include="js\modules\report.ts" />
@@ -59,7 +62,7 @@
     <TypeScriptCompile Include="js\helpers\CompressedGeometryHelper.ts" />
     <TypeScriptCompile Include="js\controllers\MapController.ts" />
     <TypeScriptCompile Include="js\controllers\Controllers.ts" />
-    <TypeScriptCompile Include="js\OpenLayersDirective.ts" />
+    <TypeScriptCompile Include="js\directives\OpenLayersDirective.ts" />
     <Content Include="lib\angular\angular-animate.js" />
     <Content Include="lib\angular\angular-animate.min.js" />
     <Content Include="lib\angular\angular-cookies.js" />
@@ -330,6 +333,8 @@
     <Content Include="lib\bootstrap\ui-bootstrap-0.10.0.min.js" />
     <Content Include="lib\bootstrap\ui-bootstrap-tpls-0.10.0.js" />
     <Content Include="lib\bootstrap\ui-bootstrap-tpls-0.10.0.min.js" />
+    <Content Include="lib\d3\d3.js" />
+    <Content Include="lib\d3\d3.min.js" />
     <Content Include="lib\fontawesome\css\font-awesome.css" />
     <Content Include="lib\fontawesome\css\font-awesome.min.css" />
     <Content Include="lib\fontawesome\fonts\fontawesome-webfont.svg" />
@@ -431,6 +436,7 @@
     <Content Include="tests\teamcity-runner\run-for-teamcity.html" />
     <Content Include="Views\AboutView.html" />
     <Content Include="Views\BikeView.html" />
+    <Content Include="Views\ChartView.html" />
     <Content Include="Views\CreateReport.html" />
     <Content Include="Views\MapView.html" />
     <Content Include="web.config" />

@@ -37,6 +37,7 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
             barriers: pointBarriersParameter,
             powerEffort: powerEffort, 
             bikePathUsage: bikePathUsage,
+            geometryformat: "compressedz", 
             format: "json",
             lang: "nb-no",
 

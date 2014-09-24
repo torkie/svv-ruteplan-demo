@@ -30,13 +30,15 @@ module SVV.RoutePlanning {
     }
 
     export class RouteResponseDirectionFeature {
-        attributes : RouteResponseDirectionFeatureAttributes;
+        attributes: RouteResponseDirectionFeatureAttributes;
+        compressedGeometry: string;
     }
 
     export class RouteResponseDirectionFeatureAttributes {
         text : string;
         roadFeatures : RoadFeature[];
-        maneuverType : string;
+        maneuverType: string;
+        length: number;
     }
 
     export class RoadFeature {
@@ -61,10 +63,6 @@ module SVV.RoutePlanning {
         TotalTollSmall: number;
         Bounds: OpenLayers.Bounds;
         routeId: number;
-        //meterBikeRoad: number;
-        //usedKcal: number;
-        //totalCo2: number;
-        //totalCarCost: number;
     }
 
     export class ViewDirectionFeature extends RouteResponseDirectionFeature {

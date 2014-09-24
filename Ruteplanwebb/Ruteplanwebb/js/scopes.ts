@@ -20,6 +20,7 @@ interface IMapControllerScope extends ng.IScope {
     routeFeatureLayer : OpenLayers.Layer.Vector;
     barrierLayer : OpenLayers.Layer.Vector;
     directions: SVV.RoutePlanning.ViewDirection[];
+    features: SVV.RoutePlanning.RouteResponseRouteFeature[];
     selectedDirection: SVV.RoutePlanning.ViewDirection;
     contextMenuHandleWindowClicked : any;
     controls : SVV.RoutePlanning.ControlWrapper[];
@@ -42,6 +43,8 @@ interface IMapControllerScope extends ng.IScope {
     routeSettings: { powerEffort: number; bikePathUsage: number; powerEffortMin: string; powerEffortMax: string; bikePathUsageMin: string; bikePathUsageMax: string;}
     showReportDialog();
     showAboutDialog();
+    showChart();
     getPowerEffortValues(val: string);
     getBikePathUsageValues(val: string);
+    chartIsVisible: boolean;
 }

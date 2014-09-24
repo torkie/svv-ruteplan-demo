@@ -13,7 +13,8 @@ var rpwApp = angular.module("rpwApp", [
     "rpwDirectives",
     "rpwSettings",
     "rpwWms",
-    "vr.directives.slider"
+    "vr.directives.slider",
+    "n3-line-chart"
 ]);
 
 rpwApp.config([

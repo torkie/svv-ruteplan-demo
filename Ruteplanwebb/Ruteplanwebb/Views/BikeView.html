@@ -1,0 +1,199 @@
+﻿﻿
+<!--Left Container-->
+<div class="left-container top-to-bottom">
+    <!--HEADER-->
+    <div class="bike-header">
+        <a tabindex="7" href="#" title="Til forsiden">Til forsiden</a>
+        <span>{{title}}</span>
+    </div>
+    
+    <!--TOOLBAR-->
+    <div class="toolbar">
+        <div class="btn btn-toolbar btn-xs" tooltip="Send melding" tooltip-placement="right">
+            <i id="feedback-button" class="fa fa-pencil-square-o fa-2x fa-inverse" ng-click="showReportDialog()"></i>
+        </div>
+        <div class="btn btn-toolbar btn-xs" tooltip="Om tjenesten" tooltip-placement="right">
+            <i id="about-button" class="fa fa-question fa-2x fa-inverse" ng-click="showAboutDialog()"></i>
+        </div>
+    </div>
+    
+    <!--ACCORDION-->
+    <div class="bike-accordion">
+        <div data-accordion data-close-others="true">
+            <div data-accordion-group is-open="accordionPanes[0]">
+                <div data-accordion-heading>
+                    <div>
+                        Planlegg reise
+                        <i class="pull-right fa header-icon" ng-class="{'fa-angle-down': accordionPanes[0], 'fa-angle-right': !accordionPanes[0]}"></i>
+                    </div>
+                </div>
+                <div id="accordion_pane_0" data-ng-style="{ height: accordionPanes[0] ? getContentHeight(0) : ''}" class="accordion-content searchbar">
+                    <div class="input-row">
+                        <div class="input-header">
+                            Fra:
+                        </div>
+                        <div class="input-field">
+                            <input type="text" id="searchFrom" class="searchbar-input" ng-model="addresses.fromAddress"
+                                   data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
+                                   data-typeahead-editable="false"
+                                   data-typeahead-on-select="updateMarkers()" />
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-header">
+                            Til:
+                        </div>
+                        <div class="input-field">
+                            <input type="text" id="searchTo" class="searchbar-input" ng-model="addresses.toAddress"
+                                   data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
+                                   data-typeahead-editable="false"
+                                   data-typeahead-on-select="updateMarkers()" />
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()" />
+                    </div>
+                    
+                    <div class="route-settings">
+                        <div class="input-row">
+                            <span>Energi innstillinger</span>
+                            <br />
+                            <div class="slider" slider ng-model="routeSettings.powerEffort"
+                                 floor="-100"
+                                 ceiling="100"
+                                 step="1"
+                                 stretch="1"
+                                 precision="0"
+                                 translate-fn="getPowerEffortValues">
+                            </div>
+                        </div>
+                        <div class="input-row">
+                            <span>Vekting av andel sykkelveg</span>
+                            <br />
+                            <div class="slider" slider ng-model="routeSettings.bikePathUsage"
+                                 floor="-100"
+                                 ceiling="100"
+                                 step="1"
+                                 stretch="1"
+                                 precision="0"
+                                 translate-fn="getBikePathUsageValues ">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-accordion-group is-open="accordionPanes[1]">
+                <div data-accordion-heading>
+                    <div>
+                        Ruteinformasjon
+                        <i class="pull-right fa header-icon" ng-class="{'fa-angle-down': accordionPanes[1], 'fa-angle-right': !accordionPanes[1]}"></i>
+                    </div>
+                </div>
+                <div id="accordion_pane_1" data-ng-style="{ height: accordionPanes[1] ? getContentHeight(1) : ''}" class="accordion-content">
+                    <div>
+                        <h4>
+                            <span id="chart-button" ng-show="addresses.fromAddress && addresses.toAddress" class="fa fa-bar-chart-o" style="padding-left: 5px; color: darkblue;" ng-click="showChart()" tooltip="Vis høydeprofil" tooltip-placement="right"></span>
+                            <span id="reverse-order-button" ng-show="addresses.fromAddress && addresses.toAddress" class="fa fa-random" style="padding-left: 5px; color: darkblue;" ng-click="reverseRoute()" tooltip="Snu ruten" tooltip-placement="right"></span>
+                            <span id="remove-blocks-button" ng-show="hasBlocks()" class="fa fa-trash-o" style="padding-left: 20px; color: darkblue;" ng-click="removeBlocks()" tooltip="Fjern blokkinger" tooltip-placement="right"></span>
+                        </h4>
+                        <ul id="route-header-list">
+                            <li ng-show="addresses.fromAddress">{{ addresses.fromAddress.name }}, {{ addresses.fromAddress.location.lon | round }}, {{ addresses.fromAddress.location.lat | round }}</li>
+                            <li class="intermediate" ng-repeat="addr in intermediateAddresses">
+                                {{ addr.name }}, {{ addr.location.lon | round }}, {{ addr.location.lat | round }}
+                                <span id="remove-intermediate-button" class="fa fa-times" ng-click="removeIntermediate(addr)"></span>
+                            </li>
+                            <li ng-show="addresses.toAddress">{{ addresses.toAddress.name }}, {{ addresses.toAddress.location.lon | round }}, {{ addresses.toAddress.location.lat | round }}</li>
+                        </ul>
+                        <div id="calculation-in-progress-marker" ng-show="directions == null && addresses.fromAddress && addresses.toAddress">
+                            <i class="fa fa-spin fa-circle-o-notch spinner"></i>
+                        </div>
+                        <div class="route-summary" ng-show="selectedDirection != null">
+                            <div class="route-result-left">
+                                <ul>
+                                    <li id="routeEnergy" class="summary-energy"><span class="summary-title">Energiforbruk:</span><br /><span class="summary-info">{{selectedDirection.summary.usedKcal | kcal}}</span></li>
+                                    <li id="routeco2" class="summary-co2"><span class="summary-title">CO<sup>2</sup> som spares:</span><br /><span class="summary-info"></span>{{selectedDirection.summary.totalCo2 | co2}}</li>
+                                </ul>
+                            </div>
+                            <div class="route-result-right">
+                                <ul>
+                                    <li id="routeRide" class="summary-ride"><span class="summary-title">Strekning sykkelveg:</span><br /><span class="summary-info">{{selectedDirection.summary.meterBikeRoad | bikedistance}}</span></li>
+                                    <li id="routeprice" class="summary-price"><span class="summary-title">Kostnad for bil:</span><br /><span class="summary-info"></span>{{selectedDirection.summary.totalCarCost | cost}}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <ul id="route-list" ng-show="directions != null" class="clear">
+                            <li ng-repeat="direction in directions" ng-click="selectRoute(direction.routeId)">
+                                <div class="routedesc" ng-class="{active:showRoute(direction.routeId)}">
+                                    <div class="routeheader" style="position: relative">
+                                        <div style="position: absolute; right: 0">
+                                            <a download="route.kml" ng-click="downloadRouteAsKML(direction.routeId,$event)" class="fa fa-cloud-download tool" tooltip="Last ned" tooltip-placement="top"></a>
+                                            <i class="fa fa-search tool" ng-click="zoomToDirection(direction.routeId);" tooltip="Zoom til" tooltip-placement="top"></i>
+                                        </div>
+                                        <div class="route-item-name">{{ direction.routeName }}</div>
+                                        <span class="route-item-info">{{ direction.summary.totalTime | time }}, {{ direction.summary.totalLength | distance }}</span>
+                                    </div>
+                                    <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
+                                        <li ng-repeat="feature in direction.features">
+                                            <div>
+                                                <div class="{{feature.turnIconClass}}" ng-if="feature.turnIconClass != ''"></div><div data-ng-show="feature.roadCat" class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}
+                                            </div>
+                                            <div class="step-dist"><span>{{feature.attributes.length * 1000 | distanceAbbr}}</span></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div data-accordion-group is-open="accordionPanes[2]">
+                <div data-accordion-heading>
+                    <div>
+                        Mina ruter
+                        <i class="pull-right fa header-icon" ng-class="{'fa-angle-down': accordionPanes[2], 'fa-angle-right': !accordionPanes[2]}"></i>
+                    </div>
+                </div>
+                <div id="accordion_pane_2" data-ng-style="{ height: accordionPanes[2] ? getContentHeight(2) : ''}" class="accordion-content">
+                    <div>content here</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Map Container-->
+<div data-map data-context-menu="contextMenuOpened" data-display-source="myDataArray" id="map" class="bike-map-container" data-target="mapMenu">
+</div>
+
+<div id="bike-mouseoverinfo" data-ng-class="mouseoverinfo ? 'mouseoverinfovisible' : 'mouseoverinfonotvisible'" data-ng-bind-html="mouseoverinfo | to_trusted"></div>
+<div class="dropdown" style="position: absolute" id="mapMenu">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li role="presentation">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetFrom(contextMenuLocation)"><i class="fa fa-play" style="color: green;margin-right: 5px"></i> Sett startpunkt</a>
+        </li>
+        <li role="presentation" ng-show="addresses.fromAddress && addresses.toAddress">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuAddIntermediate(contextMenuLocation)"><i class="fa fa-pause" style="color: rgb(238,146,46); margin-right: 5px"></i> Legg til viapunkt</a>
+        </li>
+        <li role="presentation">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuBlockPoint(contextMenuLocation)"><i style="color: rgb(238,146,46); margin-right: 5px"></i> Blokker punkt</a>
+        </li>
+        <li role="presentation">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="toggleMapControl('polygon')"><i style="color: rgb(238,146,46); margin-right: 5px"></i> Blokker område</a>
+        </li>
+        <li role="presentation">
+            <a style="cursor: pointer" role="menuitem" tabindex="-1" ng-click="contextMenuSetTo(contextMenuLocation)"><i class="fa fa-stop" style="color: red;margin-right: 5px"></i> Sett Sluttpunkt</a>
+        </li>
+    </ul>
+</div>
+
+<div data-chart data-route="directions" data-show="chartVisible" id="chart" class="chart-wrapper" ng-show="chartIsVisible">
+    <div class="btn btn-xs chart-close-btn" tooltip="Lukk" tooltip-placement="top">
+        <i id="feedback-button" class="fa fa-times" ng-click="closeChart()"></i>
+    </div>
+    <linechart data="chartData" options="chartConfig" id='chart' class='chart-content' mode="line">
+
+    </linechart>
+    <!--<div ac-chart="chartType" ac-data="chartData" ac-config="chartConfig" id='chart' class='chart-content'></div>-->
+</div>
+

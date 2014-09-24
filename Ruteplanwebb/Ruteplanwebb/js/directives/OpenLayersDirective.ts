@@ -1,8 +1,8 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
-///<reference path="app.ts"/>
-///<reference path="domain.ts"/>
-///<reference path="scopes.ts"/>
+///<reference path="../../ts/typings/angularjs/angular.d.ts"/>
+///<reference path="../../ts/typings/openlayers/openlayers.d.ts"/>
+///<reference path="../app.ts"/>
+///<reference path="../domain.ts"/>
+///<reference path="../scopes.ts"/>
 
 class OpenLayersDirective {
     restrict: string;
@@ -179,5 +179,14 @@ class OpenLayersDirective {
 
 }
 
-angular.module("rpwDirectives", [])
-    .directive("map", () => new OpenLayersDirective());
+
+var rpwDirectives = rpwDirectives || {};
+
+var mod: ng.IModule;
+if (rpwDirectives.hasOwnProperty("module")) {
+    mod = rpwDirectives["module"];
+} else {
+    mod = angular.module("rpwDirectives", []);
+    rpwDirectives["module"] = mod;
+}
+mod.directive("map", () => new OpenLayersDirective());

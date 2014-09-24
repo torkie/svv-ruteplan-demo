@@ -422,3 +422,39 @@ span.error {
 .dot-page-inactive {
     background: none repeat scroll 0 0 #00346A;
 }
+
+/*CHART*/
+.chart-wrapper {
+    position: absolute;
+    left: 400px;
+    right: 0;
+    bottom: 0;
+    -ms-opacity: 0.9;
+    opacity: 0.9;
+    background-color: white;
+    padding: 3px 10px;
+    border-top: 1px solid #444F55;
+}
+.chart-close-btn-wrapper {
+    
+}
+.chart-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 50;
+}
+.chart-content {
+    height: 200px;
+    width: 100%;
+}
+    .chart-content svg {
+        bottom: 0;
+        position: absolute;
+    }
+#chart-button:hover {
+    text-shadow: 0.1em 0.1em 0.05em #333;
+    transition: text-shadow 1s;
+    cursor: pointer;
+}
+

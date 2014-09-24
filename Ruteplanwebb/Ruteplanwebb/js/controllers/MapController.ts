@@ -32,6 +32,7 @@ class MapController {
         (<any>$scope.$parent).title = $state.current.data.title;
         $scope.accordionPanes = [true, false, false];
         $scope.addresses = { fromAddress: null, toAddress: null };
+        $scope.chartIsVisible = false;
 
         $scope.routeSettings = {
             powerEffort: 0,
@@ -75,6 +76,10 @@ class MapController {
 
         $scope.showAboutDialog = () => {
             this.aboutGuiService.showDialog();
+        };
+
+        $scope.showChart = () => {
+            $scope.chartIsVisible = true;
         };
 
         $scope.getLocations = (val) => {
@@ -139,6 +144,12 @@ class MapController {
         };
 
         $scope.updateMarkers = () => {
+
+            if ($scope.markerLayer == undefined || $scope.barrierLayer == undefined)
+            {
+                return;
+            }
+
             $scope.markerLayer.destroyFeatures();
             $scope.barrierLayer.destroyFeatures();
 

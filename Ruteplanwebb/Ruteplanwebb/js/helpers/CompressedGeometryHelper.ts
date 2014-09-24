@@ -1,5 +1,6 @@
 ﻿module SVV.RoutePlanning.Helpers {
-   export class Xy {
+
+    export class Xy {
         x: number;
         y: number;
     }
@@ -86,8 +87,8 @@
             return points;
         }
 
-// Read one integer from compressed geometry string by using passed position
-// Returns extracted integer, and re-writes nStartPos for the next integer
+        // Read one integer from compressed geometry string by using passed position
+        // Returns extracted integer, and re-writes nStartPos for the next integer
         public static extractInt = (src: string, nStartPos: number[]) => {
             var bStop = false;
             var result = "";
