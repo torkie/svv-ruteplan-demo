@@ -442,7 +442,6 @@
     <Content Include="tests\teamcity-runner\run-for-teamcity.html" />
     <Content Include="Views\AboutView.html" />
     <Content Include="Views\BikeView.html" />
-    <Content Include="Views\ChartView.html" />
     <Content Include="Views\CreateReport.html" />
     <Content Include="Views\MapView.html" />
     <Content Include="web.config" />
