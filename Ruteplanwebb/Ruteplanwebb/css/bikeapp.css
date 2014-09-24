@@ -479,3 +479,12 @@ span.error {
     cursor: pointer;
 }
 
+.legendText {
+    font-family: arial;
+}
+.tick {
+    font-family: arial;
+}
+.domain {
+    stroke: #FF9600 !important;
+}
