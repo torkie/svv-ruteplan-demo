@@ -28,6 +28,8 @@
     <Content Include="images\Bomstasjon.png" />
     <Content Include="images\car-icon.gif" />
     <Content Include="images\car-icon.png" />
+    <Content Include="images\co2.png" />
+    <Content Include="images\energy.png" />
     <Content Include="images\ferry-icon.png" />
     <Content Include="images\frommarker.png" />
     <Content Include="images\markers-matte%402x.png" />
@@ -37,8 +39,11 @@
     <Content Include="images\markers-shadow.png" />
     <Content Include="images\markers-soft%402x.png" />
     <Content Include="images\markers-soft.png" />
+    <Content Include="images\price.png" />
     <Content Include="images\Rasteplass.png" />
+    <Content Include="images\ride.png" />
     <Content Include="images\sprites.png" />
+    <Content Include="images\textured_paper.jpg" />
     <Content Include="images\tomarker.png" />
     <Content Include="images\trafikkmelding.png" />
     <Content Include="images\Truck-icon.png" />
