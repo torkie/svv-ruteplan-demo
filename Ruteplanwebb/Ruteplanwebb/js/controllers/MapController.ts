@@ -481,9 +481,10 @@ class MapController {
         setTimeout(() => {
             this.$scope.$apply(() => {
                 this.$scope.accordionPanes = [true, false, false];
+                $scope.$broadcast('refreshSlider');
             });
             
-        }, 500);
+        }, 100);
     }
 
 }
