@@ -94,11 +94,11 @@
                 </div>
                 <div id="accordion_pane_1" data-ng-style="{ height: accordionPanes[1] ? getContentHeight(1) : ''}" class="accordion-content">
                     <div>
-                        <h4>
+                        <div>
                             <span id="chart-button" ng-show="addresses.fromAddress && addresses.toAddress" class="fa fa-bar-chart-o" style="padding-left: 5px; color: darkblue;" ng-click="showChart()" tooltip="Vis høydeprofil" tooltip-placement="right"></span>
                             <span id="reverse-order-button" ng-show="addresses.fromAddress && addresses.toAddress" class="fa fa-random" style="padding-left: 5px; color: darkblue;" ng-click="reverseRoute()" tooltip="Snu ruten" tooltip-placement="right"></span>
                             <span id="remove-blocks-button" ng-show="hasBlocks()" class="fa fa-trash-o" style="padding-left: 20px; color: darkblue;" ng-click="removeBlocks()" tooltip="Fjern blokkinger" tooltip-placement="right"></span>
-                        </h4>
+                        </div>
                         <ul id="route-header-list">
                             <li ng-show="addresses.fromAddress">{{ addresses.fromAddress.name }}, {{ addresses.fromAddress.location.lon | round }}, {{ addresses.fromAddress.location.lat | round }}</li>
                             <li class="intermediate" ng-repeat="addr in intermediateAddresses">

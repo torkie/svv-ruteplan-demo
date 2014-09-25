@@ -33,7 +33,7 @@ class MapController {
         };
 
         (<any>$scope.$parent).title = $state.current.data.title;
-        $scope.accordionPanes = [true, false, false];
+        $scope.accordionPanes = [false, false, false];
         $scope.addresses = { fromAddress: null, toAddress: null };
         $scope.chartIsVisible = false;
 
@@ -45,6 +45,10 @@ class MapController {
             bikePathUsageMin: "-100",
             bikePathUsageMax: "100"
         };
+
+
+        // recalibrate map
+        // $scope.map.updateSize();
 
         $scope.getPowerEffortValues = (value) => {
             if (value === $scope.routeSettings.powerEffortMin) {
@@ -473,6 +477,13 @@ class MapController {
             return freeSpace + 'px';
         }
 
+        // Waiting untill the page has loaded before we set the active accordion page
+        setTimeout(() => {
+            this.$scope.$apply(() => {
+                this.$scope.accordionPanes = [true, false, false];
+            });
+            
+        }, 500);
     }
 
 }

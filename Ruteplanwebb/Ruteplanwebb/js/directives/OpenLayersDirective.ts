@@ -3,7 +3,7 @@
 ///<reference path="../app.ts"/>
 ///<reference path="../domain.ts"/>
 ///<reference path="../scopes.ts"/>
-
+var olMap;
 class OpenLayersDirective {
     restrict: string;
     replace: boolean;
@@ -100,7 +100,7 @@ class OpenLayersDirective {
 
             var map = new OpenLayers.Map("map", mapOptions);
             map.addLayers([background, routeLayer, routeFeatureLayer, markerLayer, barrierLayer]);
-            map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
+            
 
             function onPolygonAdded(evt : any) {
                 if (scope.blockedAreas === undefined) {
@@ -147,7 +147,6 @@ class OpenLayersDirective {
             },false);
 
             // Feature highlight
-
             function onFeatureOver(evt : any) {
                 
                 var feature = evt.feature;
@@ -174,6 +173,13 @@ class OpenLayersDirective {
             scope.routeLayer = routeLayer;
             scope.routeFeatureLayer = routeFeatureLayer;
             scope.barrierLayer = barrierLayer;
+
+            // Waiting to set the extent and recalibration of the map-div just a litte while
+            setTimeout(() => {
+                map.updateSize();
+                map.zoomToExtent(new OpenLayers.Bounds(-241000, 6437500, 1283000, 7961500));
+            }, 500);
+            
         };
     }
 

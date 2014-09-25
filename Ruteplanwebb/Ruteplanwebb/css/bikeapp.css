@@ -37,12 +37,12 @@
 .searchbar input {
     background-color: #f5f5f5;
     cursor: text;
-    min-height: 35px;
+    height: 34px;
     overflow: auto;
     padding: 6px 12px;
     border: 1px solid #cccccc;
     margin: 10px;
-    width: 305px;
+    width: 100%;
     font-size: 14px;
     font-weight: bold;
     color: #444f55;
@@ -79,6 +79,7 @@
 .searchbar .input-field {
     clear: none;
     float: left;
+    width: 305px;
 }
 
 .bike-map-container {
@@ -181,6 +182,10 @@
     .panel-title a:hover {
         text-decoration: none;
     }
+
+.panel-default {
+    border: none !important;
+}
 
 .active .routeheader {
     background-color: #444F55 !important;
