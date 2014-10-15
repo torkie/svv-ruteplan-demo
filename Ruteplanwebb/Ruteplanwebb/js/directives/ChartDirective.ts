@@ -13,7 +13,7 @@ class ChartDirective {
     private _directions: SVV.RoutePlanning.ViewDirection[];
     private _geometryHelper: SVV.RoutePlanning.Helpers.CompressedGeometryHelper;
     private _firstCall = true;
-
+    private _deltaZ = 50;
 
     constructor() {
         this.restrict = "AE";
@@ -99,6 +99,11 @@ class ChartDirective {
                 totalLength += feature.attributes.length * 1000;
             });
         });
+
+        if (maxZ - minZ < this._deltaZ) {
+            maxZ = minZ + this._deltaZ;
+            minZ = Math.max(minZ - this._deltaZ / 2, 0);
+        }
 
         this._scope.chartConfig = {
             axes: {
