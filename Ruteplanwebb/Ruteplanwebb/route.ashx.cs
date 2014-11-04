@@ -86,10 +86,20 @@ namespace Ruteplanwebb
                 throw new NotSupportedException("No URL Given");
             }
 
-
-            url = backendUrl + (!backendUrl.EndsWith("?", StringComparison.Ordinal) ? "?" : "") + "REQUEST=GetCapabilities&SERVICE=WMS";
-
-            ProxyRequest(context, url, backendUsername, backendPassword);
+            var uri = new Uri(backendUrl);
+            var hostname = uri.Host;
+            // "security check"
+            var regex = new Regex("(\\.vegvesen\\.no)$");
+            if (regex.IsMatch(hostname))
+            {
+                url = backendUrl + (!backendUrl.EndsWith("?", StringComparison.Ordinal) ? "?" : "") + "REQUEST=GetCapabilities&SERVICE=WMS";
+                ProxyRequest(context, url, backendUsername, backendPassword);
+            }
+            else
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.End();
+            }
         }
 
         public bool IsReusable
