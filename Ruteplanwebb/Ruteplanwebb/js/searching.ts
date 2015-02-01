@@ -63,9 +63,8 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
             antPerSide: 20,
             eksakteForst: true
         }
-    }).then(xmlRes => {
-        var x2Js = new X2JS();
-        var res = x2Js.xml_str2json(xmlRes.data);
+    }).then(jsonRes => {
+        var res = jsonRes.data;
         var addresses = new Array<SVV.RoutePlanning.AddressItem>();
 
         var add = (item: any) => {
@@ -75,12 +74,12 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
             addresses.push(address);
         };
 
-        if (angular.isArray(res.sokRes.stedsnavn)) {
-            angular.forEach(res.sokRes.stedsnavn, item => {
+        if (angular.isArray(res.stedsnavn)) {
+            angular.forEach(res.stedsnavn, item => {
                 add(item);
             });
-        } else if (res.sokRes.stedsnavn != null) {
-            add(res.sokRes.stedsnavn);
+        } else if (res.stedsnavn != null) {
+            add(res.stedsnavn);
         }
 
         return addresses;
