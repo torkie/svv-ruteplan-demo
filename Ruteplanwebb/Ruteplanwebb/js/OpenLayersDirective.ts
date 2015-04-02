@@ -43,7 +43,7 @@ class OpenLayersDirective {
                 resolutions: mapResolutions,
                 maxExtent: mapExt,
                 tileOrigin: new OpenLayers.LonLat(-2500000, 9045984),
-                attribution: '© NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)'
+                attribution: '&copy; NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)'
             };
 
             var background = new OpenLayers.Layer.ArcGISCache("GeocacheTrafikk",
