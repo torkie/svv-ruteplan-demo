@@ -43,7 +43,7 @@ class OpenLayersDirective {
                 resolutions: mapResolutions,
                 maxExtent: mapExt,
                 tileOrigin: new OpenLayers.LonLat(-2500000, 9045984),
-                attribution: 'Kartdata <a href="http://vegvesen.no">Statens Vegvesen</a>, <a href="http://statkart.no">Statens Kartverk</a> og Kommuner'
+                attribution: '© NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)'
             };
 
             var background = new OpenLayers.Layer.ArcGISCache("GeocacheTrafikk",
