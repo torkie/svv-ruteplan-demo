@@ -134,7 +134,7 @@ span {
     right: 0;
     left: 0;
     top: 0;
-    height: 100px;
+    min-height: 100px;
     width: 100%;
     border-bottom: 3px solid #ff9600;
 }

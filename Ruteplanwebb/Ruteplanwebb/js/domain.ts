@@ -101,7 +101,10 @@ module SVV.RoutePlanning {
         calculateRoute(stops: OpenLayers.LonLat[],
                        callback: SVV.RoutePlanning.IRouteCalculationCallback,
                        blockedPoints? : OpenLayers.LonLat[],
-                       blockedAreas? : SVV.RoutePlanning.Polygon[]);
+                       blockedAreas? : SVV.RoutePlanning.Polygon[],
+        width? : number,
+        height? : number
+            );
     }
 
     export interface IGeoCodeService {

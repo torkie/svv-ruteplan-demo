@@ -10,7 +10,7 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
     constructor(private $http: ng.IHttpService, private settings: any) {
     }
 
-    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[]) => {
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[], weight? : number, height? : number) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
             strings.push(stop.lon + "," + stop.lat);
@@ -45,6 +45,10 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
         }
         if (this.settings.routetype && this.settings.routetype.length > 0)
             params.route_type = this.settings.routetype;
+        if (weight)
+            params.weight = weight;
+        if (height)
+            params.height = height;
 
     this.$http.get(url, {
             params: params

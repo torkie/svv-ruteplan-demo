@@ -48,22 +48,21 @@ class MapController {
             locations[idx] = $scope.toAddress.location;
 
             routingService.calculateRoute(locations,
-                (bounds, features : SVV.RoutePlanning.RouteResponseRouteFeature[], directions : SVV.RoutePlanning.ViewDirection[]) => {
-                    $scope.directions = directions;
+            (bounds, features: SVV.RoutePlanning.RouteResponseRouteFeature[], directions: SVV.RoutePlanning.ViewDirection[]) => {
+                $scope.directions = directions;
 
-                    // zoom map if current bounds does not contain route
-                    //if (!$scope.map.getExtent().containsBounds(bounds)) {
-                        $scope.map.zoomToExtent(bounds);
-                    //}
+                // zoom map if current bounds does not contain route
+                //if (!$scope.map.getExtent().containsBounds(bounds)) {
+                $scope.map.zoomToExtent(bounds);
+                //}
 
-                    // add features to map
-                    $scope.routeLayer.addFeatures(features);
-                    if (directions != null && directions.length > 0) {
-                        $scope.selectRoute(directions[0].routeId);
-                    }
-
+                // add features to map
+                $scope.routeLayer.addFeatures(features);
+                if (directions != null && directions.length > 0) {
+                    $scope.selectRoute(directions[0].routeId);
                 }
-            , $scope.blockedPoints, $scope.blockedAreas);
+
+            }, $scope.blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height);
         };
 
         $scope.reverseRoute = () => {
@@ -150,6 +149,13 @@ class MapController {
                     $scope.barrierLayer.addFeatures([featureBlockedArea]);
                 });
                 $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
+            }
+
+            if ($scope.height != undefined) {
+                $location.search('height', JSON.stringify($scope.height));
+            }
+            if ($scope.weight != undefined) {
+                $location.search('weight', JSON.stringify($scope.weight));
             }
 
             //If both from and to are set, do route calculation automatically
@@ -340,6 +346,14 @@ class MapController {
 
         if ($location.search().blockedAreas != null) {
             $scope.blockedAreas = JSON.parse($location.search().blockedAreas);
+        }
+
+        if ($location.search().weight != null) {
+            $scope.weight = JSON.parse($location.search().weight);
+        }
+
+        if ($location.search().height != null) {
+            $scope.height = JSON.parse($location.search().height);
         }
 
         $scope.$watch('markerLayer', () => {
