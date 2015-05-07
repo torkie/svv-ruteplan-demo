@@ -152,9 +152,17 @@ class MapController {
             }
 
             if ($scope.height != undefined) {
+                if (typeof $scope.height == "string")
+                    $scope.height = +(<any>$scope.height).replace(",", ".");
+                if ($scope.height > 4.5)
+                    $scope.height = 4.5;
                 $location.search('height', JSON.stringify($scope.height));
             }
             if ($scope.weight != undefined) {
+                if (typeof $scope.weight == "string")
+                    $scope.weight = +(<any>$scope.weight).replace(",", ".");
+                if ($scope.weight > 50)
+                    $scope.weight = 50;
                 $location.search('weight', JSON.stringify($scope.weight));
             }
 
