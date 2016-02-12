@@ -133,4 +133,7 @@
             return result;
         }
     }
+
+    export class RangeException extends Error {
+    }
 }

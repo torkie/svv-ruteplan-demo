@@ -19,7 +19,7 @@ rpwApp.config(['$stateProvider', '$urlRouterProvider',
     ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider : ng.ui.IUrlRouterProvider) => {
         $urlRouterProvider.otherwise("/");
         $stateProvider.
-            state('mappage', {
+            state('mappage', <ng.ui.IState>{
                 url: '/?from&to',
                 templateUrl: 'Views/MapView.html',
                 controller: 'MapController',

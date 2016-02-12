@@ -29,7 +29,7 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
         
         return defer.promise;
     }
-    getLocationsNorgesKart = (val : string) => this.$http.get("http://beta.norgeskart.no/ws/adr.py?" + val).then(res => {
+    getLocationsNorgesKart = (val : string) => this.$http.get("http://www.norgeskart.no/ws/adr.py?" + val).then(res => {
         var addresses = new Array<SVV.RoutePlanning.AddressItem>();
 
         var add = (item: any) => {
