@@ -124,16 +124,13 @@
                     result = (result << 5) + cur.charCodeAt(0) - '0'.charCodeAt(0);
                 else if (cur >= 'a' && cur <= 'v')
                     result = (result << 5) + cur.charCodeAt(0) - 'a'.charCodeAt(0) + 10;
-                else throw new RangeException(); // exception
+                else throw new RangeError(); // exception
             }
             if (s[0] == '-')
                 result = -result;
             else if (s[0] != '+')
-                throw new RangeException();
+                throw new RangeError();
             return result;
         }
-    }
-
-    export class RangeException extends Error {
     }
 }
