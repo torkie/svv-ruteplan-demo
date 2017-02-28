@@ -14,6 +14,37 @@ angular.module("rpwSettings", ["ngCookies"])
                 $modalInstance.dismiss("cancel");
             };
 
+            $scope.setSetting = function(setting: String) {
+                if (setting === "vegvesenProd") {
+                    data.url = "https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?";
+                    data.useproxy = false;
+                    data.routetype = "alternative";
+                    data.username = "";
+                    data.password = "";
+                }
+                else if (setting === "vegvesenTest") {
+                    data.url = "https://www.test.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?";
+                    data.useproxy = false;
+                    data.routetype = "alternative";
+                    data.username = "";
+                    data.password = "";
+                }
+                if (setting === "vegvesenUtv") {
+                    data.url = "https://www.utv.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?";
+                    data.useproxy = false;
+                    data.routetype = "alternative";
+                    data.username = "";
+                    data.password = "";
+                }
+                if (setting === "Triona") {
+                    data.url = "http://multirit.triona.se/routingService_v1_0/routingService?";
+                    data.useproxy = false;
+                    data.routetype = "";
+                    data.username = "";
+                    data.password = "";
+                }
+            };
+
         };
 
         $scope.open = function(size) {

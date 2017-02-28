@@ -38,6 +38,7 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
             var location = new OpenLayers.LonLat(pcoord.x, pcoord.y);
             var parts = [];
             angular.forEach(item.TITTEL, part => parts.push(part));
+            parts.push(item.FYLKESNAVN);
             var name = parts.join(", ");
             var address = new SVV.RoutePlanning.AddressItem(name, location);
             addresses.push(address);
@@ -69,7 +70,7 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
 
         var add = (item: any) => {
             var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
-            var name = item.stedsnavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
+            var name = item.stedsnavn + ", " + item.kommunenavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
             var address = new SVV.RoutePlanning.AddressItem(name, location);
             addresses.push(address);
         };
