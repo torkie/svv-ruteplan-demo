@@ -165,6 +165,11 @@ class MapController {
                     $scope.weight = 50;
                 $location.search('weight', JSON.stringify($scope.weight));
             }
+            if ($scope.length != undefined) {
+                if (typeof $scope.length == "string")
+                    $scope.length = +(<any>$scope.length).replace(",", ".");
+                $location.search('length', JSON.stringify($scope.length));
+            }
 
             //If both from and to are set, do route calculation automatically
             if ($scope.fromAddress != null && $scope.toAddress != null) {
@@ -362,6 +367,10 @@ class MapController {
 
         if ($location.search().height != null) {
             $scope.height = JSON.parse($location.search().height);
+        }
+
+        if ($location.search().length != null) {
+            $scope.length = JSON.parse($location.search().length);
         }
 
         $scope.$watch('markerLayer', () => {
