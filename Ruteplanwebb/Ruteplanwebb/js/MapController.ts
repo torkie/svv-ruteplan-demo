@@ -62,7 +62,7 @@ class MapController {
                     $scope.selectRoute(directions[0].routeId);
                 }
 
-            }, $scope.blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height);
+                }, $scope.blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length);
         };
 
         $scope.reverseRoute = () => {

@@ -37,5 +37,6 @@ interface IMapControllerScope extends ng.IScope {
     downloadRouteAsKML (routeId : number,$event) : void;
     mouseoverinfo : string;
     weight:  number;
-    height : number;
+    height: number;
+    length: number;
 }

@@ -103,7 +103,8 @@ module SVV.RoutePlanning {
                        blockedPoints? : OpenLayers.LonLat[],
                        blockedAreas? : SVV.RoutePlanning.Polygon[],
         width? : number,
-        height? : number
+        height?: number,
+        length?: number
             );
     }
 
