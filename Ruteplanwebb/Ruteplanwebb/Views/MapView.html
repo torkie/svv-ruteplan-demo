@@ -8,7 +8,7 @@
         Til: <input type="text" id="searchTo" ng-model="toAddress"
                     data-typeahead="address as address.name for address in getLocations($viewValue) | filter:$viewValue"
                     data-typeahead-editable="false"
-                    data-typeahead-on-select="updateMarkers()" />
+                    data-typeahead-on-select="updateMarkers()" /><br/>
         Vekt: <input type="text" style="width: 60px" ng-model="weight" data-ng-blur="updateMarkers()" /> tonn,
         Høyde: <input type="text" style="width: 60px" ng-model="height" data-ng-blur="updateMarkers()" /> meter,
         Lengde: <input type="text" style="width: 60px" ng-model="length" data-ng-blur="updateMarkers()" /> meter
