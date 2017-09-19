@@ -11,7 +11,8 @@
                     data-typeahead-on-select="updateMarkers()" /><br/>
         Vekt: <input type="text" style="width: 60px" ng-model="weight" data-ng-blur="updateMarkers()" /> tonn,
         Høyde: <input type="text" style="width: 60px" ng-model="height" data-ng-blur="updateMarkers()" /> meter,
-        Lengde: <input type="text" style="width: 60px" ng-model="length" data-ng-blur="updateMarkers()" /> meter
+        Lengde: <input type="text" style="width: 60px" ng-model="length" data-ng-blur="updateMarkers()" /> meter,
+        Tillat kjøring i nullutslippsone: <input type="checkbox" style="width: 20px; cursor: pointer; margin: 0; vertical-align: middle; padding: 0;min-height: 0" ng-model="allowTravelInZeroEmissionZone" data-ng-blur="updateMarkers()" />
 
         <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()" />
     </div>
@@ -126,6 +127,7 @@
                 <div class="routestats">
                     <img src="/images/car-icon.png" height="20" /> {{direction.TotalTollSmall}}kr
                     <img src="/images/Truck-icon.png" height="20" /> {{direction.TotalTollLarge}}kr
+                    <div data-ng-if="direction.summary.statistics.DistanceInZeroEmissionZone > 0" style="background-color: lightpink; margin-top: 10px; padding: 3px; border-radius: 5px;font-weight: bold">Lengde i nullutslippsone: {{direction.summary.statistics.DistanceInZeroEmissionZone | distance}}</div>
                 </div>
 
                     <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">

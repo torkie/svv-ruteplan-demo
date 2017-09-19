@@ -10,7 +10,7 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
     constructor(private $http: ng.IHttpService, private settings: any) {
     }
 
-    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[], weight? : number, height? : number, length? : number) => {
+    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[], weight? : number, height? : number, length? : number, allowTravelInZeroEmissionZone? : boolean) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
             strings.push(stop.lon + "," + stop.lat);
@@ -51,6 +51,8 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
         if (length)
             params.length = length;
 
+        params.allowTravelInZeroEmissionZone = allowTravelInZeroEmissionZone;
+
     this.$http.get(url, {
             params: params
         }).success((data: SVV.RoutePlanning.RouteResponse) => {
@@ -87,6 +89,13 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                 });
                 directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
                 directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
+                //Unpack additional attributes
+                if ((<any>data.routes.features[i].attributes).attributes) {
+                    forEach((<any>data.routes.features[i].attributes).attributes,
+                        (kvp) => {
+                            (<any>directions[i].summary).statistics[kvp.key] = kvp.value;
+                        });
+                }
                 var bbox = directions[i].summary.envelope;
                 directions[i].Bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
 

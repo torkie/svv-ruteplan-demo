@@ -104,7 +104,8 @@ module SVV.RoutePlanning {
                        blockedAreas? : SVV.RoutePlanning.Polygon[],
         width? : number,
         height?: number,
-        length?: number
+        length?: number,
+        allowTravelInZeroEmissionZone? : boolean
             );
     }
 

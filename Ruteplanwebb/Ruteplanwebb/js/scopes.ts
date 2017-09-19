@@ -39,4 +39,5 @@ interface IMapControllerScope extends ng.IScope {
     weight:  number;
     height: number;
     length: number;
+    allowTravelInZeroEmissionZone : boolean;
 }

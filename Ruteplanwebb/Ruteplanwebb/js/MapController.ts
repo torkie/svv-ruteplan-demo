@@ -62,7 +62,7 @@ class MapController {
                     $scope.selectRoute(directions[0].routeId);
                 }
 
-                }, $scope.blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length);
+                }, $scope.blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length, $scope.allowTravelInZeroEmissionZone);
         };
 
         $scope.reverseRoute = () => {
@@ -170,6 +170,10 @@ class MapController {
                     $scope.length = +(<any>$scope.length).replace(",", ".");
                 $location.search('length', JSON.stringify($scope.length));
             }
+
+            //if ($scope.allowTravelInZeroEmissionZone !== undefined) {
+                $location.search('allowTravelInZeroEmissionZone', JSON.stringify($scope.allowTravelInZeroEmissionZone));
+            //}
 
             //If both from and to are set, do route calculation automatically
             if ($scope.fromAddress != null && $scope.toAddress != null) {
@@ -371,6 +375,12 @@ class MapController {
 
         if ($location.search().length != null) {
             $scope.length = JSON.parse($location.search().length);
+        }
+
+        if ($location.search().allowTravelInZeroEmissionZone != null) {
+            $scope.allowTravelInZeroEmissionZone = JSON.parse($location.search().allowTravelInZeroEmissionZone);
+        } else {
+            $scope.allowTravelInZeroEmissionZone = true;
         }
 
         $scope.$watch('markerLayer', () => {
