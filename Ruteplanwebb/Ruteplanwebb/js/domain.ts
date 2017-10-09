@@ -59,6 +59,8 @@ module SVV.RoutePlanning {
     export class ViewDirection extends RouteResponseDirection {
         TotalTollLarge: number;
         TotalTollSmall: number;
+        TotalTollLargeWithoutDiscount: number;
+        TotalTollSmallWithoutDiscount: number;
         Bounds: OpenLayers.Bounds;
         routeId : number;
         

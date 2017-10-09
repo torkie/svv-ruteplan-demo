@@ -128,13 +128,14 @@
                     <img src="/images/car-icon.png" height="20" /> {{direction.TotalTollSmall}}kr
                     <img src="/images/Truck-icon.png" height="20" /> {{direction.TotalTollLarge}}kr
                     <div data-ng-if="direction.summary.statistics.DistanceInZeroEmissionZone > 0" style="background-color: lightpink; margin-top: 10px; padding: 3px; border-radius: 5px;font-weight: bold">Lengde i nullutslippsone: {{direction.summary.statistics.DistanceInZeroEmissionZone | distance}}</div>
+                    <div data-ng-if="direction.TotalTollSmall < direction.TotalTollSmallWithoutDiscount" style="background-color: lightpink; margin-top: 10px; padding: 3px; border-radius: 5px;font-weight: bold">Bomstasjonskostnad uten timesregel: <br/><img src="/images/car-icon.png" height="20" /> {{direction.TotalTollSmallWithoutDiscount}}kr
+                        <img src="/images/Truck-icon.png" height="20" /> {{direction.TotalTollLargeWithoutDiscount}}kr</div>
                 </div>
-
-                    <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
-                        <li ng-repeat="feature in direction.features">
-                            <div><div class="{{feature.turnIconClass}}" ng-if="feature.turnIconClass != ''"></div><div data-ng-show="feature.roadCat" class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}</div>
-                        </li>
-                    </ul>
+                <ul id="route-desc-list" ng-show="showRoute(direction.routeId)">
+                    <li ng-repeat="feature in direction.features">
+                        <div><div class="{{feature.turnIconClass}}" ng-if="feature.turnIconClass != ''"></div><div data-ng-show="feature.roadCat" class="signpost signpost-{{feature.roadCat}}">{{feature.roadCat}}{{feature.roadNumber}}</div> {{feature.attributes.text}}</div>
+                    </li>
+                </ul>
                 </div>
         </li>
     </ul>

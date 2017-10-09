@@ -89,6 +89,8 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                 });
                 directions[i].TotalTollLarge = data.routes.features[i].attributes["Total_Toll large"];
                 directions[i].TotalTollSmall = data.routes.features[i].attributes["Total_Toll small"];
+                directions[i].TotalTollLargeWithoutDiscount = data.routes.features[i].attributes["Total_Toll_Without_Discount large"];
+                directions[i].TotalTollSmallWithoutDiscount = data.routes.features[i].attributes["Total_Toll_Without_Discount small"];
                 //Unpack additional attributes
                 if ((<any>data.routes.features[i].attributes).attributes) {
                     forEach((<any>data.routes.features[i].attributes).attributes,
