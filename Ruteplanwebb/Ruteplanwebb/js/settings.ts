@@ -66,15 +66,17 @@ angular.module("rpwSettings", ["ngCookies"])
 
     }])
     .factory("settings", function($cookieStore) {
-        var settings = $cookieStore.get("settings") || {};
+        var settings = $cookieStore.get("settingsv2") || {};
 
         if (settings.url === undefined) {
-            settings.url = "http://multirit.triona.se/routingService_v1_0/routingService";
+            settings.url = "https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?";
             settings.useproxy = false;
+            settings.routetype = "alternative";
+
         }
 
         settings.save = function() {
-            $cookieStore.put("settings", settings);
+            $cookieStore.put("settingsv2", settings);
         };
 
         return settings;
