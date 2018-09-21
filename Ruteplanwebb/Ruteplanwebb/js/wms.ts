@@ -1,15 +1,27 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
+import * as angular from 'angular';
+import * as L from 'leaflet';
 
-angular.module("rpwWms", [])
-    .controller("WmsController", ["$http", "$scope", "$modal", "wmsSettings", function($http, $scope, $modal, wmsSettings) {
+interface IWmsScope  extends angular.IScope {
+        data : any;
+        newlayer : any;
+        ok: () => void;
+        addLayer: () => void;
+        removeLayer: (layer: L.Layer) => void;
+        getCapabilities: () => void;
+}
 
-        var dialogController = function($scope, $modalInstance, data) {
+angular.module("rpwWms", ['ui.bootstrap'])
+    .controller("WmsController", ["$http", "$scope", "$uibModal","$uibModalStack", "wmsSettings", function($http, $scope, $uibModal,$uibModalStack, wmsSettings) {
+
+        var dialogController = function($scope : IWmsScope, $uibModal, data : any) {
             $scope.data = data;
             $scope.newlayer = {};
 
             $scope.ok = function() {
-                $modalInstance.dismiss();
+                var top = $uibModalStack.getTop();
+                if (top) {
+                    $uibModalStack.close(top.key);
+                }
             };
 
             $scope.addLayer = function() {
@@ -37,16 +49,16 @@ angular.module("rpwWms", [])
                 if (!url) {
                     return;
                 }
-                var wms = new OpenLayers.Format.WMSCapabilities();
                 $http.get("wmsCapabilities", {
                         params: { url: $scope.newlayer.url }
                     }
                 ).success(function(data) {
-                        var caps = wms.read(data);
-                        var layers = [];
+                    var layers = [];    
+                    /*var caps = wms.read(data);
+                        
                         angular.forEach(caps.capability.layers, function(layer) {
                             layers.push(layer.name);
-                        });
+                        });*/
                         $scope.newlayer.availableLayers = layers;
                         if (layers.length > 0) {
                             $scope.newlayer.layer = layers[0];
@@ -56,11 +68,13 @@ angular.module("rpwWms", [])
             }
         };
 
-        $scope.open = function(size) {
-            var modalInstance = $modal.open({
+        $scope.open = (size) => {
+            var modalInstance = $uibModal.open({
                 templateUrl: "wms.html",
                 controller: dialogController,
-                size: size,
+                backdropClass: "show",
+                windowClass: "show",
+                size: size, backdrop: false, 
                 resolve: {
                     data: function() {
                         return wmsSettings;
@@ -81,14 +95,7 @@ angular.module("rpwWms", [])
         };
 
         settings.addlayer = function(name, url, layers) {
-            var wms = new OpenLayers.Layer.WMS(name, url, {
-                    layers: layers,
-                    transparent: "true"
-                },
-                {
-                    isBaseLayer: false
-                }
-            );
+            var wms = L.tileLayer.wms('url',{layers: layers, transparent: true});
             wms["userAddedLayer"] = true;
             settings.layers.push(wms);
         };

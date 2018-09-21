@@ -1,26 +1,33 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
-///<reference path="../ts/typings/xml2json/xml2json.d.ts"/>
-///<reference path="domain.ts"/>
+import * as angular from 'angular';
+import {ViewDirection,IRoutingService,IRouteCalculationCallback, Polygon,ViewDirectionFeature, RouteResponse, RouteResponseRouteFeature} from './domain';
+import * as L from 'leaflet';
+import 'proj4leaflet';
+import { geom } from '../node_modules/@types/openlayers/index';
+
 
 angular.module("routing", ["rpwSettings"])
-    .factory("routingService", ($http, settings) => new RoutingService($http, settings));
+    .factory("routingService", ($http : angular.IHttpService, settings) => new RoutingService($http, settings));
 
-class RoutingService implements SVV.RoutePlanning.IRoutingService {
+class RoutingService implements IRoutingService {
+
+    private projection : L.Projection;
+
     constructor(private $http: ng.IHttpService, private settings: any) {
+        this.projection =  new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
+
     }
 
-    calculateRoute = (stops: OpenLayers.LonLat[], callback: SVV.RoutePlanning.IRouteCalculationCallback, blockedPoints?: OpenLayers.LonLat[], blockedAreas?: SVV.RoutePlanning.Polygon[], weight? : number, height? : number, length? : number, allowTravelInZeroEmissionZone? : boolean) => {
+    calculateRoute = (stops: L.Point[], callback: IRouteCalculationCallback, blockedPoints?: L.Point[], blockedAreas?: Polygon[], weight? : number, height? : number, length? : number, allowTravelInZeroEmissionZone? : boolean) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
-            strings.push(stop.lon + "," + stop.lat);
+            strings.push(stop.x + "," + stop.y);
         });
         var stopsParameter = strings.join(";");
 
         strings = [];
         if (blockedPoints != undefined) {
             angular.forEach(blockedPoints, (p) => {
-                strings.push(p.lon + "," + p.lat);
+                strings.push(p.x + "," + p.y);
             });
         }
         var pointBarriersParameter = strings.join(";");
@@ -55,9 +62,9 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
 
     this.$http.get(url, {
             params: params
-        }).success((data: SVV.RoutePlanning.RouteResponse) => {
+        }).then((resp: angular.IHttpResponse<RouteResponse>) => {
             var forEach = angular.forEach;
-
+            var data = resp.data;
             // create geometry features from routes
             var features = [];
             forEach(data.routes.features, route => {
@@ -65,19 +72,19 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                 forEach(route.geometry.paths, path => {
                     var points = [];
                     forEach(path, point => {
-                        points.push(new OpenLayers.Geometry.Point(<number>point[0], <number>point[1]));
+                        points.push(this.projection.unproject(new L.Point(<number>point[0], <number>point[1])));
                     });
-                    components.push(new OpenLayers.Geometry.LineString(points));
+                    components.push(points);
                 });
-                var geometry = new OpenLayers.Geometry.MultiLineString(components);
-                features.push(new OpenLayers.Feature.Vector(geometry));
+                var geometry = new L.Polyline(components);
+                features.push({geometry: geometry});
             });
 
             // calculate bounding box for all routes
             var totalBounds = null;
-            var directions = <SVV.RoutePlanning.ViewDirection[]>data.directions;
+            var directions = <ViewDirection[]>data.directions;
             for (var i = 0; i < directions.length; i++) {
-                forEach(directions[i].features, (feature: SVV.RoutePlanning.ViewDirectionFeature) => {
+                forEach(directions[i].features, (feature: ViewDirectionFeature) => {
                     if (feature.attributes.text.match(/\{([ERFKPS])(\d+)\}.*/i)) {
                         feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
                         feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
@@ -99,7 +106,7 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                         });
                 }
                 var bbox = directions[i].summary.envelope;
-                directions[i].Bounds = new OpenLayers.Bounds(<number[]>[bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax]);
+                directions[i].Bounds = new L.LatLngBounds(this.projection.unproject(new L.Point(bbox.xmin, bbox.ymin)), this.projection.unproject(new L.Point(bbox.xmax,bbox.ymax)));
 
                 if (totalBounds == null) {
                     totalBounds = directions[i].Bounds;
@@ -107,7 +114,7 @@ class RoutingService implements SVV.RoutePlanning.IRoutingService {
                     totalBounds.extend(directions[i].Bounds);
                 }
 
-                features[i].routeId = directions[i].routeId;
+                features[i].geometry.options.routeId = directions[i].routeId;
             }
 
             callback(totalBounds, features, directions);

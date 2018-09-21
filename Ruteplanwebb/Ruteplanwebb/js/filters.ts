@@ -1,4 +1,4 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
+import * as angular from 'angular';
 
 angular.module("rpwFilters", [])
     .filter("time", function() {

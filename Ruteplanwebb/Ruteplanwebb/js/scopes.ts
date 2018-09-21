@@ -1,39 +1,38 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
-///<reference path="domain.ts"/>
+import * as L from 'leaflet';
+import {AddressItem, Polygon,Value,ViewDirection,ControlWrapper } from './domain';
 
 /* $scope for MapController with extra methods and properties*/
-interface IMapControllerScope extends ng.IScope {
+export interface IMapControllerScope extends ng.IScope {
     getLocations(adress: string);
     doRouteCalculation();
     reverseRoute();
     hasBlocks();
     removeBlocks();
     updateMarkers();
-    getValue(values : SVV.RoutePlanning.Value[], key : string) : string;
-    map: OpenLayers.Map;
-    fromAddress: SVV.RoutePlanning.AddressItem;
-    intermediateAddresses: SVV.RoutePlanning.AddressItem[];
-    blockedPoints: OpenLayers.LonLat[];
-    blockedAreas : SVV.RoutePlanning.Polygon[];
-    toAddress: SVV.RoutePlanning.AddressItem;
-    markerLayer: OpenLayers.Layer.Vector;
-    routeLayer: OpenLayers.Layer.Vector;
-    routeFeatureLayer : OpenLayers.Layer.Vector;
-    barrierLayer : OpenLayers.Layer.Vector;
-    directions: SVV.RoutePlanning.ViewDirection[];
+    getValue(values : Value[], key : string) : string;
+    map: L.Map;
+    fromAddress: AddressItem;
+    intermediateAddresses: AddressItem[];
+    blockedPoints: L.LatLng[];
+    blockedAreas : Polygon[];
+    toAddress: AddressItem;
+    markerLayer: L.LayerGroup;
+    routeLayer: L.LayerGroup;
+    routeFeatureLayer : L.LayerGroup;
+    barrierLayer : L.LayerGroup;
+    directions: ViewDirection[];
     contextMenuHandleWindowClicked : any;
-    controls : SVV.RoutePlanning.ControlWrapper[];
+    controls : ControlWrapper[];
     contextMenuSetFrom(windowLocation:any);
     contextMenuAddIntermediate(windowLocation:any);
     contextMenuSetTo(windowLocation: any);
     toggleMapControl(ctrl : string);
     contextMenuBlockPoint(windowLocation: any);
     zoomToDirection(routeId :number);
-    removeIntermediate(item : SVV.RoutePlanning.AddressItem);
-    selectRoute(routeId: number);
+    removeIntermediate(item : AddressItem);
+    selectRoute(routeId: string);
     showRoute: any;
-    selectedRouteId: number;
+    selectedRouteId: string;
     downloadRouteAsKML (routeId : number,$event) : void;
     mouseoverinfo : string;
     weight:  number;

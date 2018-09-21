@@ -1,22 +1,24 @@
-///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
+import { LatLngBounds, LatLng, Point } from 'leaflet';
 
-module SVV.RoutePlanning {
+
+    export class Geometry {
+        paths: number[][][];
+    }
 
     /* Holder for addresses returned from autocomplete*/
     export class AddressItem {
-        constructor(public name: string, public location: OpenLayers.LonLat) {
+        constructor(public name: string, public location: LatLng) {
         }
     }
 
     export class ControlWrapper {
-        constructor(public name: string, public control: OpenLayers.Control) {
+        constructor(public name: string, public control: any) {
 
         }
     }
 
     export class Polygon {
-        constructor(public points : OpenLayers.LonLat[]) {}
+        constructor(public points : LatLng[]) {}
     }
 
     export class RouteResponse {
@@ -61,8 +63,8 @@ module SVV.RoutePlanning {
         TotalTollSmall: number;
         TotalTollLargeWithoutDiscount: number;
         TotalTollSmallWithoutDiscount: number;
-        Bounds: OpenLayers.Bounds;
-        routeId : number;
+        Bounds: LatLngBounds;
+        routeId : string;
         
     }
 
@@ -78,7 +80,7 @@ module SVV.RoutePlanning {
 
     export class RouteResponseRouteFeature {
         attributes: Attributes[];
-        geometry: OpenLayers.Geometry;
+        geometry: Geometry;
     }
 
     export class Attributes {
@@ -100,10 +102,10 @@ module SVV.RoutePlanning {
     }
 
     export interface IRoutingService {
-        calculateRoute(stops: OpenLayers.LonLat[],
-                       callback: SVV.RoutePlanning.IRouteCalculationCallback,
-                       blockedPoints? : OpenLayers.LonLat[],
-                       blockedAreas? : SVV.RoutePlanning.Polygon[],
+        calculateRoute(stops: Point[],
+                       callback: IRouteCalculationCallback,
+                       blockedPoints? : Point[],
+                       blockedAreas? : Polygon[],
         width? : number,
         height?: number,
         length?: number,
@@ -112,10 +114,9 @@ module SVV.RoutePlanning {
     }
 
     export interface IGeoCodeService {
-        getLocations(val:string) : ng.IPromise<SVV.RoutePlanning.AddressItem[]>;
+        getLocations(val:string) : ng.IPromise<AddressItem[]>;
     }
 
     export interface IRouteCalculationCallback {
-        (totalBounds : OpenLayers.Bounds, features : RouteResponseRouteFeature[], directions : ViewDirection[]) : void;
+        (totalBounds : LatLngBounds, features : {geometry: L.Polyline}[], directions : ViewDirection[]) : void;
     }
-}

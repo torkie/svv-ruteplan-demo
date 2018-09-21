@@ -1,37 +1,53 @@
-/// <reference path="../ts/typings/angularjs/angular.d.ts"/>
-/// <reference path="../ts/typings/angularjs/angular-route.d.ts"/>
-/// <reference path="../ts/typings/angularjs/angular-ui-router.d.ts"/>
+import ng = require("angular");
+import settings = require("./settings");
+import {MapController} from './MapController';
 
-var rpwApp = angular.module("rpwApp", [
-    'ui.router',
-    "ng-context-menu",
-    "ui.bootstrap",
-    'ngSanitize',
-    "ngCookies",
-    'rpwControllers',
-    "rpwFilters",
-    "rpwDirectives",
-    "rpwSettings",
-    "rpwWms"
-]);
+var rpwApp : ng.IModule;
 
-rpwApp.config(['$stateProvider', '$urlRouterProvider',
-    ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider : ng.ui.IUrlRouterProvider) => {
-        $urlRouterProvider.otherwise("/");
-        $stateProvider.
-            state('mappage', <ng.ui.IState>{
-                url: '/?from&to',
-                templateUrl: 'Views/MapView.html',
-                controller: 'MapController',
-                reloadOnSearch: false
-    });
-    }]);
+export class App {
 
-angular.module('rpwApp')
-    .filter('to_trusted', [
-        '$sce', function($sce) {
-            return function(text) {
-                return $sce.trustAsHtml(text);
-            };
+    constructor()
+    {
+    }
+    /**
+     * init
+     */
+    public init() {    
+        rpwApp = ng.module("rpwApp", [
+            'ui.router',
+            "ui.bootstrap",
+            'ngSanitize',
+            "ngCookies",
+            "rpwFilters",
+            "rpwDirectives",
+            "rpwSettings",
+            "rpwWms",
+            "routing",
+            "searching"
+        ]);
+
+        rpwApp.config(['$stateProvider', '$urlRouterProvider',
+            ($stateProvider: ng.ui.IStateProvider, $urlRouterProvider : ng.ui.IUrlRouterProvider) => {
+                $urlRouterProvider.otherwise("/");
+                $stateProvider.
+                    state('mappage', <ng.ui.IState>{
+                        url: '/?from&to',
+                        templateUrl: 'Views/MapView.html',
+                        controller: 'MapController',
+                        reloadOnSearch: false
+            });
+            }]);
+
+        rpwApp.filter('to_trusted', [
+                '$sce', function($sce) {
+                    return function(text : string) {
+                        return $sce.trustAsHtml(text);
+                    };
+                }
+            ]);
+
+            rpwApp.controller("MapController", MapController);
+
+           ng.bootstrap(document,['rpwApp']);
         }
-    ]);
+}

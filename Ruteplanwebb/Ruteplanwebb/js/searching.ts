@@ -1,18 +1,23 @@
-﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
-///<reference path="../ts/typings/xml2json/xml2json.d.ts"/>
-///<reference path="domain.ts"/>
+﻿import * as angular from 'angular';
+import * as L from 'leaflet';
+import 'proj4leaflet';
+import {IGeoCodeService, AddressItem} from './domain';
 
 angular.module("searching", [])
-    .factory("geoCodeService", ($http, $q) => new KartVerketGeoCodeService($http, $q));
+    .factory("geoCodeService", ($http : angular.IHttpService, $q : angular.IQService) => new KartVerketGeoCodeService($http, $q));
 
-class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
+class KartVerketGeoCodeService implements IGeoCodeService {
+
+    private projectionUTM33 : L.Projection;
+    private projectionUTM32 : L.Projection;
+
     constructor(private $http: ng.IHttpService, private $q : ng.IQService) {   
-        
+        this.projectionUTM33 =  new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
+        this.projectionUTM32 =  new L.Proj.CRS("EPSG:32632", "+proj=utm +zone=32 +ellps=WGS84 +units=m +no_defs").projection;
     }
 
     getLocations = (val: string) => {
-        var defer = this.$q.defer<SVV.RoutePlanning.AddressItem[]>();
+        var defer = this.$q.defer<AddressItem[]>();
         var promises = [
             this.getLocationsSKWS(val),
             this.getLocationsNorgesKart(val)
@@ -29,18 +34,17 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
         
         return defer.promise;
     }
-    getLocationsNorgesKart = (val : string) => this.$http.get("http://www.norgeskart.no/ws/adr.py?" + val).then(res => {
-        var addresses = new Array<SVV.RoutePlanning.AddressItem>();
+    getLocationsNorgesKart = (val : string) => this.$http.get("https://www.norgeskart.no/ws/adr.py?" + val).then(res => {
+        var addresses = new Array<AddressItem>();
 
         var add = (item: any) => {
-            var coord = proj4.toPoint([parseFloat(item.LONGITUDE), parseFloat(item.LATITUDE)]);
-            var pcoord = proj4.transform(new proj4.Proj("EPSG:32632"), new proj4.Proj("EPSG:32633"), coord);
-            var location = new OpenLayers.LonLat(pcoord.x, pcoord.y);
+
+            var coordWgs = this.projectionUTM32.unproject(new L.Point(parseFloat(item.LONGITUDE), parseFloat(item.LATITUDE)));
             var parts = [];
             angular.forEach(item.TITTEL, part => parts.push(part));
             parts.push(item.FYLKESNAVN);
             var name = parts.join(", ");
-            var address = new SVV.RoutePlanning.AddressItem(name, location);
+            var address = new AddressItem(name, coordWgs);
             addresses.push(address);
         };
 
@@ -57,7 +61,7 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
     });
 
     //Get from SKWS
-    getLocationsSKWS = val => this.$http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
+    getLocationsSKWS = (val : string) => this.$http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
         params: {
             navn: val + "*",
             maxAnt: 20,
@@ -65,13 +69,13 @@ class KartVerketGeoCodeService implements SVV.RoutePlanning.IGeoCodeService {
             eksakteForst: true
         }
     }).then(jsonRes => {
-        var res = jsonRes.data;
-        var addresses = new Array<SVV.RoutePlanning.AddressItem>();
+        var res = <{stedsnavn: any}>jsonRes.data;
+        var addresses = new Array<AddressItem>();
 
         var add = (item: any) => {
-            var location = new OpenLayers.LonLat([parseFloat(item.aust), parseFloat(item.nord)]);
+            var location = this.projectionUTM33.unproject(new L.Point(parseFloat(item.aust),parseFloat(item.nord)));
             var name = item.stedsnavn + ", " + item.kommunenavn + ", " + item.fylkesnavn + " (" + item.navnetype + ")";
-            var address = new SVV.RoutePlanning.AddressItem(name, location);
+            var address = new AddressItem(name, location);
             addresses.push(address);
         };
 

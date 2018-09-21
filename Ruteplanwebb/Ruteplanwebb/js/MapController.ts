@@ -1,31 +1,33 @@
-﻿///<reference path="../ts/typings/angularjs/angular.d.ts"/>
-///<reference path="../ts/typings/openlayers/openlayers.d.ts"/>
-///<reference path="../ts/typings/Proj4js/proj4js.d.ts"/>
-///<reference path="helpers/OpenLayers.Awsome.Icon.d.ts"/>
-///<reference path="app.ts"/>
-///<reference path="domain.ts"/>
-///<reference path="scopes.ts"/>
+﻿import * as angular from 'angular';
+import {IMapControllerScope} from './scopes';
+import {IGeoCodeService,IRoutingService, ViewDirectionFeature, Value, RoadFeature, AddressItem,ViewDirection} from './domain';
+
+import * as L from 'leaflet';
+
+var tokml = require('tokml');
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
-class MapController {
+export class MapController implements angular.IController {
 
-    constructor(private $scope: IMapControllerScope, routingService: SVV.RoutePlanning.IRoutingService,  geoCodeService: SVV.RoutePlanning.IGeoCodeService, $location : ng.ILocationService, wmsSettings: any) {
-        proj4.defs("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs");
-        proj4.defs("EPSG:32633", "+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
-        proj4.defs("EPSG:32632", "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
+    private projectionUTM33 : L.Projection;
 
+    static $inject = ["$scope", "routingService", "geoCodeService", "$location", "wmsSettings"];
+    constructor(private $scope: IMapControllerScope, routingService: IRoutingService,  
+        geoCodeService: IGeoCodeService, $location : ng.ILocationService, wmsSettings: { layers : L.Layer[]}) {
+            
+        this.projectionUTM33 =  new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
         var routeStyle = {
-            graphicZIndex: 2,
-            strokeOpacity: 1,
-            strokeColor: "#008CFF",
-            strokeWidth: 5
+            //graphicZIndex: 2,
+            opacity: 0.9,
+            color: "#008CFF",
+            weight: 5
         };
 
         var alternativeRouteStyle = {
-            graphicZIndex: 1,
-            strokeOpacity: 1,
-            strokeColor: "#858585",
-            strokeWidth: 5
+            //graphicZIndex: 1,
+            opacity: 0.9,
+            color: "#858585",
+            weight: 5
         };
 
         $scope.getLocations = (val) => {
@@ -33,36 +35,57 @@ class MapController {
         };
 
         $scope.doRouteCalculation = () => {
-            $scope.routeLayer.removeAllFeatures();
+            $scope.routeLayer.clearLayers();
             $scope.directions = null;
 
             var locations = [];
+            
+
             var idx = 0;
-            locations[idx++] = $scope.fromAddress.location;
+            locations[idx++] = (<any>$scope.map.options.crs).projection.project($scope.fromAddress.location);
 
             if ($scope.intermediateAddresses != null) {
                 angular.forEach($scope.intermediateAddresses, (med) => {
-                    locations[idx++] = med.location;
+                    locations[idx++] = (<any>$scope.map.options.crs).projection.project(med.location);
                 });
             }
-            locations[idx] = $scope.toAddress.location;
+            locations[idx] = (<any>$scope.map.options.crs).projection.project($scope.toAddress.location);
+
+            idx = 0;
+            var blockedPoints = [];
+            if ($scope.blockedPoints != null && $scope.blockedPoints.length > 0)
+            {
+                angular.forEach($scope.blockedPoints, (blockedpoint) => {
+                    blockedPoints[idx++] = (<any>$scope.map.options.crs).projection.project(blockedpoint);
+                });
+            }
+
 
             routingService.calculateRoute(locations,
-            (bounds, features: SVV.RoutePlanning.RouteResponseRouteFeature[], directions: SVV.RoutePlanning.ViewDirection[]) => {
+            (bounds, features: {geometry: L.Polyline} [], directions: ViewDirection[]) => {
                 $scope.directions = directions;
 
                 // zoom map if current bounds does not contain route
                 //if (!$scope.map.getExtent().containsBounds(bounds)) {
-                $scope.map.zoomToExtent(bounds);
+                $scope.map.fitBounds(bounds);
                 //}
 
                 // add features to map
-                $scope.routeLayer.addFeatures(features);
+                var first = true;
+                angular.forEach(features, (feature) => {
+                    feature.geometry.setStyle(first ? routeStyle : alternativeRouteStyle).addTo($scope.routeLayer);
+                    first = false;
+                });
+
+                
+                
+                
+                
                 if (directions != null && directions.length > 0) {
                     $scope.selectRoute(directions[0].routeId);
                 }
 
-                }, $scope.blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length, $scope.allowTravelInZeroEmissionZone);
+                }, blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length, $scope.allowTravelInZeroEmissionZone);
         };
 
         $scope.reverseRoute = () => {
@@ -91,65 +114,113 @@ class MapController {
             return points || areas;
         };
 
-        $scope.updateMarkers = () => {
-            $scope.markerLayer.destroyFeatures();
-            $scope.barrierLayer.destroyFeatures();
+        $scope.updateMarkers = () => {            
+            if ($scope.markerLayer != null)
+            {
+                $scope.markerLayer.clearLayers();
+            }
+
+            if ($scope.barrierLayer != null)
+            {
+                $scope.barrierLayer.clearLayers();
+            }
 
             if ($scope.fromAddress != null) {
-                var featureFrom = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.fromAddress.location.lon, $scope.fromAddress.location.lat),null,
-                 {externalGraphic: '/images/frommarker.png', graphicHeight: 46, graphicWidth: 35,      graphicXOffset:-17, graphicYOffset:-46  });
-                (<any>featureFrom).draggable = true;
-                (<any>featureFrom).onfeaturedragged = () => {  $scope.fromAddress = new SVV.RoutePlanning.AddressItem("Punkt i kartet", 
-                    new OpenLayers.LonLat((<OpenLayers.Geometry.Point>featureFrom.geometry).x,(<OpenLayers.Geometry.Point>featureFrom.geometry).y));
+                var featureFrom = new L.Marker($scope.fromAddress.location, {
+                    icon: new L.Icon({
+                        iconUrl:  '/images/frommarker.png',
+                        iconSize: [35,46],
+                        iconAnchor: [17,46]                        
+                    }),
+                    draggable: true
+                });
+
+                featureFrom.on("dragend", (e : L.DragEndEvent) => {
+                    $scope.fromAddress = new AddressItem("Punkt i kartet", 
+                    featureFrom.getLatLng());
                     $scope.updateMarkers();
-                };
-                $scope.markerLayer.addFeatures([featureFrom]);
+                });
+
+                featureFrom.addTo($scope.markerLayer);
                 $location.search('from', JSON.stringify($scope.fromAddress));
             }
             if ($scope.toAddress != null) {
-                var featureTo = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point($scope.toAddress.location.lon, $scope.toAddress.location.lat), null,
-                { externalGraphic: '/images/tomarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
-                (<any>featureTo).draggable = true;
-                 (<any>featureTo).onfeaturedragged = () => {  $scope.toAddress = new SVV.RoutePlanning.AddressItem("Punkt i kartet", 
-                    new OpenLayers.LonLat((<OpenLayers.Geometry.Point>featureTo.geometry).x,(<OpenLayers.Geometry.Point>featureTo.geometry).y));
-                    $scope.updateMarkers();
-                };
-                $scope.markerLayer.addFeatures([featureTo]);
+                var featureTo = new L.Marker($scope.toAddress.location, {
+                    icon: new L.Icon({
+                        iconUrl:  '/images/tomarker.png',
+                        iconSize: [35,46],
+                        iconAnchor: [17,46]                        
+                    }),
+                    draggable: true
+                });
 
+                featureTo.on("dragend", (e : L.DragEndEvent) => {
+                    $scope.toAddress = new AddressItem("Punkt i kartet", 
+                    featureTo.getLatLng());
+                    $scope.updateMarkers();
+                });
+
+                featureTo.addTo($scope.markerLayer);
                 $location.search('to', JSON.stringify($scope.toAddress));
             }
 
             if ($scope.intermediateAddresses != undefined) {
+
                 angular.forEach($scope.intermediateAddresses, (addr,index) => {
-                    var featurevia = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(addr.location.lon, addr.location.lat), null,
-                    { externalGraphic: '/images/viamarker.png', graphicHeight: 46, graphicWidth: 35, graphicXOffset: -17, graphicYOffset: -46 });
-                    (<any>featurevia).draggable = true;
-                     (<any>featurevia).onfeaturedragged = () => {  $scope.intermediateAddresses[index] = new SVV.RoutePlanning.AddressItem("Punkt i kartet", 
-                    new OpenLayers.LonLat((<OpenLayers.Geometry.Point>featurevia.geometry).x,(<OpenLayers.Geometry.Point>featurevia.geometry).y));
-                    $scope.updateMarkers();
-                };
-                    $scope.markerLayer.addFeatures([featurevia]);
+                    var featureVia = new L.Marker(addr.location, {
+                        icon: new L.Icon({
+                            iconUrl:  '/images/viamarker.png',
+                            iconSize: [35,46],
+                            iconAnchor: [17,46]                        
+                        }),
+                        draggable: true
+                    });
+
+                    var viaIndex = index;
+    
+                    featureVia.on("dragend", (e : L.DragEndEvent) => {
+                        $scope.intermediateAddresses[viaIndex] = new AddressItem("Punkt i kartet", 
+                        featureVia.getLatLng());
+                        $scope.updateMarkers();
+                    });
+    
+                    featureVia.addTo($scope.markerLayer);
                 });
+
                 $location.search('intermediate', JSON.stringify($scope.intermediateAddresses));
             }
 
             if ($scope.blockedPoints != undefined) {
-                angular.forEach($scope.blockedPoints, (point) => {
-                    var featureBlockedPoint = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Point(point.lon, point.lat), null,
-                        { externalGraphic: '/images/block-icon.png', graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
-                    $scope.barrierLayer.addFeatures([featureBlockedPoint]);
+                angular.forEach($scope.blockedPoints, (point,index) => {
+                    var featureBlockedPoint = new L.Marker(point, {
+                        icon: new L.Icon({
+                            iconUrl:  '/images/block-icon.png',
+                            iconSize: [25,25],
+                            iconAnchor: [12,12]                        
+                        }),
+                        draggable: true
+                    });
+    
+                    featureBlockedPoint.on("dragend", (e : L.DragEndEvent) => {
+                        $scope.blockedPoints[index] = featureBlockedPoint.getLatLng();
+                        $scope.updateMarkers();
+                    });
+    
+                    featureBlockedPoint.addTo($scope.barrierLayer);
                 });
                 $location.search('blockedPoints', JSON.stringify($scope.blockedPoints));
             }
 
+            //TODO: Fixa till i LeafLet
+            /*
             if ($scope.blockedAreas != undefined) {
-                angular.forEach($scope.blockedAreas, (area : SVV.RoutePlanning.Polygon) => {
+                angular.forEach($scope.blockedAreas, (area : Polygon) => {
                     var pts = area.points.map(x => new OpenLayers.Geometry.Point(x.lon, x.lat));
                     var featureBlockedArea = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(pts)),null, { fillColor: "red",fillOpacity: 0.7, strokeColor: "black" });
                     $scope.barrierLayer.addFeatures([featureBlockedArea]);
                 });
                 $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
-            }
+            }*/
 
             if ($scope.height != undefined) {
                 if (typeof $scope.height == "string")
@@ -182,18 +253,17 @@ class MapController {
 
         };
 
-        $scope.contextMenuAddIntermediate = (loc:any) => {
+        $scope.contextMenuAddIntermediate = (e : { latlng : L.LatLng}) => {
             if ($scope.intermediateAddresses === undefined) {
                 $scope.intermediateAddresses = [];
             }
 
-            var latlon = $scope.map.getLonLatFromPixel(loc);
             var idx = $scope.intermediateAddresses.length;
-            $scope.intermediateAddresses[idx] = new SVV.RoutePlanning.AddressItem("Via: Punkt i kartet", latlon);
+            $scope.intermediateAddresses[idx] = new AddressItem("Via: Punkt i kartet", e.latlng);
             $scope.updateMarkers();
         };
 
-        $scope.removeIntermediate = (item:SVV.RoutePlanning.AddressItem) => {
+        $scope.removeIntermediate = (item:AddressItem) => {
             var idx = $scope.intermediateAddresses.indexOf(item);
 
             $scope.intermediateAddresses.splice(idx, 1);
@@ -201,42 +271,22 @@ class MapController {
             $scope.updateMarkers();
         };
 
-        $scope.contextMenuSetFrom = (loc:any) => {
-            var latlon = $scope.map.getLonLatFromPixel(loc);
-            $scope.fromAddress = new SVV.RoutePlanning.AddressItem("Punkt i kartet", latlon);
+        $scope.contextMenuSetFrom = (e : { latlng : L.LatLng}) => {
+            $scope.fromAddress = new AddressItem("Punkt i kartet", e.latlng);
             $scope.updateMarkers();
         };
 
-        $scope.contextMenuSetTo = (loc: any) => {
-            var latlon = $scope.map.getLonLatFromPixel(loc);
-            $scope.toAddress = new SVV.RoutePlanning.AddressItem("Punkt i kartet", latlon);
+        $scope.contextMenuSetTo = (e : { latlng : L.LatLng}) => {
+            $scope.toAddress = new AddressItem("Punkt i kartet", e.latlng);
             $scope.updateMarkers();
         };
 
-        $scope.contextMenuBlockPoint = (loc: any) => {
+        $scope.contextMenuBlockPoint = (e : { latlng : L.LatLng}) => {
             if ($scope.blockedPoints === undefined) {
                 $scope.blockedPoints = [];
             }
-
-            var latlon = $scope.map.getLonLatFromPixel(loc);
-            var pt = new OpenLayers.Geometry.Point(latlon.lon, latlon.lat);
-            //Check if there is a route-feature in the map "close" and snap to that one..
-            angular.forEach($scope.routeLayer.features, (feature: OpenLayers.Feature.Vector) => {
-                var details = <any>feature.geometry.distanceTo(pt, { details: true });
-                var px1 = $scope.map.getPixelFromLonLat(new OpenLayers.LonLat(details.x0, details.y0));
-                var px2 = $scope.map.getPixelFromLonLat(new OpenLayers.LonLat(details.x1, details.y1));
-                var pxDist = Math.sqrt(Math.pow(px1.x - px2.x, 2) + Math.pow(px1.y - px2.y, 2));
-                if (pxDist < 20) {
-                    pt.x = details.x0;
-                    pt.y = details.y0;
-                }
-            });
-
-            latlon.lon = pt.x;
-            latlon.lat = pt.y;
-
-            $scope.blockedPoints.push(latlon);
-
+            var snapped : {latlng : L.LatLng, distance: number} =  (<any>L).GeometryUtil.closestLayerSnap($scope.map,$scope.routeLayer.getLayers(), e.latlng,20,true);
+            $scope.blockedPoints.push(snapped != null ? snapped.latlng : e.latlng);
             $scope.updateMarkers();
         };
 
@@ -252,28 +302,28 @@ class MapController {
 
         $scope.selectedRouteId = null;
 
-        $scope.selectRoute = routeId => {
+        $scope.selectRoute = (routeId: string) => {
             $scope.selectedRouteId = routeId;
 
             // Draw routes
-            angular.forEach($scope.routeLayer.features, feature => {
-                if (feature.routeId === routeId) {
-                    feature.style = routeStyle;
+                $scope.routeLayer.eachLayer((feature : L.Path) => {
+                if ((<any>feature).options.routeId === routeId) {
+                    feature.setStyle(routeStyle);
+                    feature.bringToFront();
                 } else {
-                    feature.style = alternativeRouteStyle;
+                    feature.setStyle(alternativeRouteStyle);
                 }
-                $scope.routeLayer.drawFeature(feature);
             });
 
             // Create road features for selected route
-            $scope.routeFeatureLayer.destroyFeatures();
+            $scope.routeFeatureLayer.clearLayers();
 
             var features = $scope.directions[routeId].features;
-            angular.forEach(features, (feature:SVV.RoutePlanning.ViewDirectionFeature) => {
+            angular.forEach(features, (feature:ViewDirectionFeature) => {
                 if (feature.attributes != undefined) {
 
                     if (feature.attributes.roadFeatures != undefined && feature.attributes.roadFeatures.length > 0) {
-                        angular.forEach(feature.attributes.roadFeatures, (feat : SVV.RoutePlanning.RoadFeature) => {
+                        angular.forEach(feature.attributes.roadFeatures, (feat : RoadFeature) => {
                             var type = feat.attributeType;
                             var subType = type.substr(type.indexOf(':')+1);
                             var imageName = null;
@@ -301,27 +351,40 @@ class MapController {
                                     html = "<b>Trafikkmelding</b>";
                                 }
 
-                                angular.forEach(values, (val: SVV.RoutePlanning.Value) => {
+                                angular.forEach(values, (val: Value) => {
                                     html += "<b>" + val.key + "</b>: " + val.value + "<br/>";
                                 });
 
                                 if (hasLocation) {
                                     var loc = feat.location[0];
-                                    geometry = new OpenLayers.Geometry.Point(loc.easting, loc.northing);
+                                    geometry = (<any>this.$scope.map.options.crs).projection.unproject(new L.Point(loc.easting, loc.northing));
                                 } else {
                                     //console.log(feat);
                                 }
                             }
 
                             if (isRelevant && hasLocation) {
-                                var graphic = "/images/"+imageName+".png";
 
-                                var f = new OpenLayers.Feature.Vector(geometry, null,
-                                    { externalGraphic: graphic, graphicHeight: 25, graphicWidth: 25, graphicXOffset: -12, graphicYOffset: -12 });
-                                f["html"] = html;
+                                var f = new L.Marker(geometry, {
+                                    riseOnHover: true,
+                                    icon: new L.Icon({
+                                        iconUrl:   "/images/"+imageName+".png",
+                                        iconSize: [25,25],
+                                        iconAnchor: [12,12]                        
+                                    }),
+                                    draggable: true
+                                });
 
+                                f.on("mouseover", (e : MouseEvent) => {
+                                    this.$scope.mouseoverinfo = html;
+                                    this.$scope.$apply();
+                                });
+                                f.on("mouseout", (e : MouseEvent) => {
+                                    this.$scope.mouseoverinfo =null;
+                                    this.$scope.$apply();
+                                });
 
-                                $scope.routeFeatureLayer.addFeatures([f]);
+                                f.addTo($scope.routeFeatureLayer);
                             }
                         });
                     }
@@ -329,9 +392,9 @@ class MapController {
             });
         };
 
-        $scope.getValue = (values : SVV.RoutePlanning.Value[], key : string) : string => {
+        $scope.getValue = (values : Value[], key : string) : string => {
             var ret = null;
-            angular.forEach(values, (val : SVV.RoutePlanning.Value) => {
+            angular.forEach(values, (val : Value) => {
                 if (val.key === key) {
                     ret = val.value;
                 }
@@ -340,25 +403,53 @@ class MapController {
             return ret;
         };
 
-        $scope.showRoute = id => id === $scope.selectedRouteId;
+        $scope.showRoute = (id : string) => id === $scope.selectedRouteId;
 
         $scope.zoomToDirection = (routeId: number) => {
-            $scope.map.zoomToExtent($scope.directions[routeId].Bounds);
+            $scope.map.fitBounds($scope.directions[routeId].Bounds);
         };
 
         if ($location.search().from != null) {
             $scope.fromAddress = JSON.parse($location.search().from);
+            if ((<any>$scope.fromAddress.location).lon !== undefined) {
+                //Old version, convert..
+                $scope.fromAddress.location = this.projectionUTM33.unproject(new L.Point((<any>$scope.fromAddress.location).lon, $scope.fromAddress.location.lat));
+            }
         }
         if ($location.search().to != null) {
             $scope.toAddress = JSON.parse($location.search().to);
+            if ((<any>$scope.toAddress.location).lon !== undefined) {
+                //Old version, convert..
+                $scope.toAddress.location =  this.projectionUTM33.unproject(new L.Point((<any>$scope.toAddress.location).lon, $scope.toAddress.location.lat));
+            }
         }
 
         if ($location.search().intermediate != null) {
             $scope.intermediateAddresses = JSON.parse($location.search().intermediate);
+            if ($scope.intermediateAddresses != null)
+            {
+                for (var i = 0; i < $scope.intermediateAddresses.length; i++)
+                {
+                    if ((<any>$scope.intermediateAddresses[i].location).lon !== undefined) {
+                        //Old version, convert..
+                        $scope.intermediateAddresses[i].location =  this.projectionUTM33.unproject(new L.Point((<any>$scope.intermediateAddresses[i].location).lon, $scope.intermediateAddresses[i].location.lat));
+                    }
+                }
+            }
         }
 
         if ($location.search().blockedPoints != null) {
             $scope.blockedPoints = JSON.parse($location.search().blockedPoints);
+            if ($scope.blockedPoints != null)
+            {
+                for (var i = 0; i < $scope.blockedPoints.length; i++)
+                {
+                    if ((<any>$scope.blockedPoints[i]).lon !== undefined) {
+                        //Old version, convert..
+                        $scope.blockedPoints[i] =  this.projectionUTM33.unproject(new L.Point((<any>$scope.blockedPoints[i]).lon, $scope.blockedPoints[i].lat));
+                    }
+                }
+            }
         }
 
         if ($location.search().blockedAreas != null) {
@@ -389,11 +480,12 @@ class MapController {
 
         $scope.downloadRouteAsKML = (routeId : number,$event) => {
             var elem = $event.target;
-            var format = new OpenLayers.Format.KML();
-            format.foldersName = "SVV Ruteplan Export";
-            var feat = $scope.routeLayer.features[routeId];
-            feat = new OpenLayers.Feature.Vector(feat.geometry.clone().transform(new OpenLayers.Projection('EPSG:25833'), new OpenLayers.Projection('EPSG:4326')));
-            var kml = format.write([feat]);
+            var feat = $scope.routeLayer.getLayers()[routeId];
+            var kml = tokml((<L.Polyline>feat).toGeoJSON(),{
+                documentName: 'SVV Ruteplan Export',
+                documentDescription: 'Exported route from SVV Ruteplan Demo Client', 
+                simplestyle: true
+             });
             var data = 'data:application/csv;charset=utf-8,' + encodeURIComponent(kml);
             elem.setAttribute("target", "_blank");
             elem.setAttribute("href", data);
@@ -403,8 +495,13 @@ class MapController {
             console.log("wms settings updated");
             // find all user added layers
             var map = $scope.map;
-            var userAddedLayers = map.getLayersBy("userAddedLayer", true);
-
+            var userAddedLayers = [];
+            map.eachLayer((layer) => {
+                if (layer["userAddedLayer"] != undefined)
+                {
+                    userAddedLayers.push(layer);
+                }
+            });
             // remove layers that have been deleted
             angular.forEach(userAddedLayers, function(layer) {
                 if (wmsSettings.layers.indexOf(layer) === -1) {
@@ -419,13 +516,15 @@ class MapController {
             });
 
             // reorder route layers on top of wms layers
-            var numlayers = map.getNumLayers();
-            map.setLayerIndex($scope.routeLayer, numlayers);
-            map.setLayerIndex($scope.routeFeatureLayer, numlayers);
-            map.setLayerIndex($scope.markerLayer, numlayers);
-            map.setLayerIndex($scope.barrierLayer, numlayers);
+            $scope.routeLayer.setZIndex(100);
+            $scope.routeFeatureLayer.setZIndex(200);
+            $scope.markerLayer.setZIndex(300);
+            $scope.barrierLayer.setZIndex(400);
 
-            $scope.map.addLayers(wmsSettings.layers);
+            for (var layer in wmsSettings.layers)
+            {
+                (<L.Layer><any>layer).addTo($scope.map);
+            };
         });
 
     }
