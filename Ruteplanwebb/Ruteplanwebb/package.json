@@ -18,7 +18,8 @@
     "leaflet.awesome-markers": "^2.0.4",
     "proj4leaflet": "^1.0.2",
     "requirejs": "^2.3.6",
-    "tokml": "^0.4.0"
+    "tokml": "^0.4.0",
+    "typescript": "^3.0.3"
   },
   "devDependencies": {
     "@types/angular": "1.6.51",
@@ -35,6 +36,6 @@
     "grunt-package-modules": "1.0.0",
     "grunt-serve": "^0.1.6",
     "grunt-ts": "^6.0.0-beta.21",
-    "typescript": "^3.0.3"
+
   }
 }
