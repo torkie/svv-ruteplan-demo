@@ -1,3 +1,2 @@
 [config]
-project = Ruteplanwebb/Ruteplanwebb
 command = deploy.cmd

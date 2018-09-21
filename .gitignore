@@ -1,23 +1,23 @@
 ﻿# ignore js files in these folders, we're using typescript (*.ts)
-/Ruteplanwebb/Ruteplanwebb/js/**/*.js
-/Ruteplanwebb/Ruteplanwebb/js/**/*.js.map
-/Ruteplanwebb/Ruteplanwebb/tests/**/*.js
-/Ruteplanwebb/Ruteplanwebb/tests/**/*.js.map
+/js/**/*.js
+/js/**/*.js.map
+/tests/**/*.js
+/tests/**/*.js.map
 
-/Ruteplanwebb/Ruteplanwebb/node_modules/*
+/node_modules/*
 
-!/Ruteplanwebb/Ruteplanwebb/node_modules/angular
-!/Ruteplanwebb/Ruteplanwebb/node_modules/angular-ui-bootstrap
-!/Ruteplanwebb/Ruteplanwebb/node_modules/angular-ui-router
-!/Ruteplanwebb/Ruteplanwebb/node_modules/angular-cookies
-!/Ruteplanwebb/Ruteplanwebb/node_modules/leaflet
-!/Ruteplanwebb/Ruteplanwebb/node_modules/angular-sanitize
-!/Ruteplanwebb/Ruteplanwebb/node_modules/typescript
-!/Ruteplanwebb/Ruteplanwebb/node_modules/angular-resource
-!/Ruteplanwebb/Ruteplanwebb/node_modules/proj4leaflet
-!/Ruteplanwebb/Ruteplanwebb/node_modules/leaflet-contextmenu
-!/Ruteplanwebb/Ruteplanwebb/node_modules/leaflet-geometryutil
-!/Ruteplanwebb/Ruteplanwebb/node_modules/tokml
+!/node_modules/angular
+!/node_modules/angular-ui-bootstrap
+!/node_modules/angular-ui-router
+!/node_modules/angular-cookies
+!/node_modules/leaflet
+!/node_modules/angular-sanitize
+!/node_modules/typescript
+!/node_modules/angular-resource
+!/node_modules/proj4leaflet
+!/node_modules/leaflet-contextmenu
+!/node_modules/leaflet-geometryutil
+!/node_modules/tokml
 
 
 
