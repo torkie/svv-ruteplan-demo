@@ -35,7 +35,6 @@
     "grunt-cli": "1.3.1",
     "grunt-package-modules": "1.0.0",
     "grunt-serve": "^0.1.6",
-    "grunt-ts": "^6.0.0-beta.21",
-
+    "grunt-ts": "^6.0.0-beta.21"
   }
 }
