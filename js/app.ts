@@ -12,7 +12,7 @@ export class App {
     /**
      * init
      */
-    public init() {    
+    public init() {   
         rpwApp = ng.module("rpwApp", [
             'ui.router',
             "ui.bootstrap",

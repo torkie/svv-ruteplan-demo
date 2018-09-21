@@ -2,9 +2,11 @@
   "name": "SVVRutePlanDemo",
   "version": "1.0.0",
   "description": "Ruteplan Demo",
-  "license" : "BSD-3-Clause",
+  "license": "GNU GPL V2",
   "author": "Statens Vegvesen",
-  "engines":{ "node": "8.11.1" },
+  "engines": {
+    "node": "8.11.1"
+  },
   "dependencies": {
     "angular": "1.7.4",
     "angular-cookies": "^1.7.4",

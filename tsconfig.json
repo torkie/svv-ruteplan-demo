@@ -6,7 +6,7 @@
         "preserveConstEnums": true,
         "allowJs": true,
         "sourceMap": true,
-        "skipLibCheck" : true
+        "skipLibCheck" : true,
     },
     "include": [
         "js/**/*"
