@@ -35,7 +35,6 @@
     "@types/requirejs": "^2.1.31"
   },
   "scripts": {
-    "deploy:prod": "node --version",
-    "postinstall": "tsc -p .\\"
+    "deploy:prod": "node --version"
   }
 }
