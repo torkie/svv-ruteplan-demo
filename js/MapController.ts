@@ -403,8 +403,7 @@ export class MapController implements angular.IController {
                                         iconUrl:   "/images/"+imageName+".png",
                                         iconSize: [25,25],
                                         iconAnchor: [12,12]                        
-                                    }),
-                                    draggable: true
+                                    })
                                 });
 
                                 f.on("mouseover", (e : MouseEvent) => {

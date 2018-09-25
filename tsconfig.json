@@ -9,7 +9,7 @@
         "skipLibCheck" : true,
     },
     "include": [
-        "js/**/*"
+        "js/**/*.ts"
     ]
   
 }

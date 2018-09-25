@@ -2,7 +2,7 @@
   "name": "SVVRutePlanDemo",
   "version": "1.0.0",
   "description": "Ruteplan Demo",
-  "license": "GNU GPL V2",
+  "license": "GPL-2.0-or-later",
   "author": "Statens Vegvesen",
   "dependencies": {
     "angular": "1.7.4",
@@ -13,7 +13,6 @@
     "angular-ui-router": "1.0.20",
     "bootstrap": "^4.1.3",
     "font-awesome": "^4.7.0",
-    "http-server": "^0.11.1",
     "leaflet": "^1.3.4",
     "leaflet-contextmenu": "^1.4.0",
     "leaflet-geometryutil": "^0.9.0",
@@ -33,10 +32,6 @@
     "@types/openlayers": "4.6.12",
     "@types/proj4leaflet": "^1.0.5",
     "@types/requirejs": "^2.1.31",
-    "grunt": "1.0.3",
-    "grunt-cli": "1.3.1",
-    "grunt-package-modules": "1.0.0",
-    "grunt-serve": "^0.1.6",
-    "grunt-ts": "^6.0.0-beta.21"
+    "http-server": "^0.11.1"
   }
 }
