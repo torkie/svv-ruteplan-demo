@@ -36,6 +36,6 @@
   },
   "scripts": {
     "deploy:prod": "node --version",
-    "postinstall": "node_modules/typescript/bin/tsc -p"
+    "postinstall": "tsc -p .\\"
   }
 }
