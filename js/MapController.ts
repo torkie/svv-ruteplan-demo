@@ -3,17 +3,20 @@ import {IMapControllerScope} from './scopes';
 import {IGeoCodeService,IRoutingService, ViewDirectionFeature, Value, RoadFeature, AddressItem,ViewDirection} from './domain';
 
 import * as L from 'leaflet';
+import * as Helper from "./helpers/CompressedGeometryHelper";
 
 var tokml = require('tokml');
+var geomutil = require('leaflet-geometryutil');
+
 
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 export class MapController implements angular.IController {
 
     private projectionUTM33 : L.Projection;
 
-    static $inject = ["$scope", "routingService", "geoCodeService", "$location", "wmsSettings"];
+    static $inject = ["$scope", "routingService", "geoCodeService", "$location", "wmsSettings", "$uibModal","$sce", "$uibModalStack"];
     constructor(private $scope: IMapControllerScope, routingService: IRoutingService,  
-        geoCodeService: IGeoCodeService, $location : ng.ILocationService, wmsSettings: { layers : L.Layer[]}) {
+        geoCodeService: IGeoCodeService, $location : ng.ILocationService, wmsSettings: { layers : L.Layer[]}, $uibModal,$sce,$uibModalStack) {
             
         this.projectionUTM33 =  new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
         var routeStyle = {
@@ -66,9 +69,7 @@ export class MapController implements angular.IController {
                 $scope.directions = directions;
 
                 // zoom map if current bounds does not contain route
-                //if (!$scope.map.getExtent().containsBounds(bounds)) {
                 $scope.map.fitBounds(bounds);
-                //}
 
                 // add features to map
                 var first = true;
@@ -211,17 +212,6 @@ export class MapController implements angular.IController {
                 $location.search('blockedPoints', JSON.stringify($scope.blockedPoints));
             }
 
-            //TODO: Fixa till i LeafLet
-            /*
-            if ($scope.blockedAreas != undefined) {
-                angular.forEach($scope.blockedAreas, (area : Polygon) => {
-                    var pts = area.points.map(x => new OpenLayers.Geometry.Point(x.lon, x.lat));
-                    var featureBlockedArea = new OpenLayers.Feature.Vector(new OpenLayers.Geometry.Polygon(new OpenLayers.Geometry.LinearRing(pts)),null, { fillColor: "red",fillOpacity: 0.7, strokeColor: "black" });
-                    $scope.barrierLayer.addFeatures([featureBlockedArea]);
-                });
-                $location.search('blockedAreas', JSON.stringify($scope.blockedAreas));
-            }*/
-
             if ($scope.height != undefined) {
                 if (typeof $scope.height == "string")
                     $scope.height = +(<any>$scope.height).replace(",", ".");
@@ -242,9 +232,7 @@ export class MapController implements angular.IController {
                 $location.search('length', JSON.stringify($scope.length));
             }
 
-            //if ($scope.allowTravelInZeroEmissionZone !== undefined) {
-                $location.search('allowTravelInZeroEmissionZone', JSON.stringify($scope.allowTravelInZeroEmissionZone));
-            //}
+            $location.search('allowTravelInZeroEmissionZone', JSON.stringify($scope.allowTravelInZeroEmissionZone));
 
             //If both from and to are set, do route calculation automatically
             if ($scope.fromAddress != null && $scope.toAddress != null) {
@@ -330,8 +318,9 @@ export class MapController implements angular.IController {
                             var geometry = null;
                             var hasLocation = feat.location != undefined && feat.location.length > 0;
                             var values = feat.values;
+                            var clickFunc = null;
                             var html = "<span class='mo_featureType'>" + type + "</span><br/>";
-                            var isRelevant = (type.match("^nvdb") && ["Bomstasjon", "Rasteplass"].indexOf(subType)+1) || type.match("^vegloggen");
+                            var isRelevant = (type.match("^nvdb") && ["Bomstasjon", "Rasteplass","Ferge","ferge"].indexOf(subType)+1) || type.match("^vegloggen");
 
                             if (type.match("^nvdb") || type.match("^vegloggen")) {
 
@@ -342,7 +331,50 @@ export class MapController implements angular.IController {
                                 html += "<h3>"+name+"</h3>";
                                 if (type.match("^nvdb")) {
                                     imageName = subType;
-                                    if (subType === "Rasteplass" || subType === "Bomstasjon") {
+
+                                    if (subType == "Ferge" || subType == "ferge")
+                                    {
+                                        imageName = "ferry-icon";
+                                        var geom = Helper.CompressedGeometryHelper.extractPointsFromCompressedGeometry(feature.compressedGeometry);
+                                        var latLngs : L.LatLng[] = [];
+                                        geom.forEach(point => {
+                                            latLngs.push(this.projectionUTM33.unproject(new L.Point(point.x, point.y)));
+                                        });
+
+                                        var res = geomutil.interpolateOnLine($scope.map,latLngs,0.5);
+                                        geometry = res.latLng;
+                                        hasLocation = true;
+                                        var url = $sce.trustAsResourceUrl(values.filter(x=>x.key == "Url")[0].value);
+                                        
+                                        clickFunc = (e : MouseEvent) => {
+                                            var modalInstance = $uibModal.open({
+                                                templateUrl: "ferryUrl.html",
+                                                controller: ($scope) =>  {
+                                                    $scope.name = name.replace("_",":");  
+                                                    $scope.url = url;
+                                                    $scope.close = () => {
+                                                        var top = $uibModalStack.getTop();
+                                                        if (top != null)
+                                                        {
+                                                            $uibModalStack.close(top.key);
+                                                        }
+                                                    }
+                                                },
+                                                backdropClass: "show",
+                                                windowClass: "show",
+                                                backdrop: true, 
+                                                size: "lg",
+                                                
+                                                resolve: {
+                                                    data: function() {
+                                                        return null;
+                                                    }
+                                                }
+                                            }).result.then(function(){}, function(res){});
+                                        };
+
+                                    }
+                                    else if (subType === "Rasteplass" || subType === "Bomstasjon") {
 
 
                                     }
@@ -355,7 +387,7 @@ export class MapController implements angular.IController {
                                     html += "<b>" + val.key + "</b>: " + val.value + "<br/>";
                                 });
 
-                                if (hasLocation) {
+                                if (hasLocation && geometry == null) {
                                     var loc = feat.location[0];
                                     geometry = (<any>this.$scope.map.options.crs).projection.unproject(new L.Point(loc.easting, loc.northing));
                                 } else {
@@ -383,6 +415,11 @@ export class MapController implements angular.IController {
                                     this.$scope.mouseoverinfo =null;
                                     this.$scope.$apply();
                                 });
+
+                                if (clickFunc != null)
+                                {
+                                    f.on("click", clickFunc);
+                                }
 
                                 f.addTo($scope.routeFeatureLayer);
                             }

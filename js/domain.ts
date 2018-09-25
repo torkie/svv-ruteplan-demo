@@ -72,6 +72,7 @@ import { LatLngBounds, LatLng, Point } from 'leaflet';
         roadCat: string;
         roadNumber: number;
         turnIconClass: string;
+        compressedGeometry: string;
     }
 
     export class RouteResponseRoute {
