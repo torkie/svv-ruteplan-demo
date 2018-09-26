@@ -77,7 +77,7 @@ angular.module("rpwSettings", ["ngCookies","ui.bootstrap"])
         return settings;
     });
 
-    class Settings {
+    export class Settings {
         constructor(str : string,$cookies : angular.cookies.ICookiesService)
         {
             if (str != undefined && str != null && str != "" && str.length > 0)

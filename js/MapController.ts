@@ -8,7 +8,6 @@ import * as Helper from "./helpers/CompressedGeometryHelper";
 var tokml = require('tokml');
 var geomutil = require('leaflet-geometryutil');
 
-
 /* The MapController, holds functionality for the map implementation (autocomplete, searching, routing,...)*/
 export class MapController implements angular.IController {
 
@@ -35,6 +34,34 @@ export class MapController implements angular.IController {
 
         $scope.getLocations = (val) => {
             return geoCodeService.getLocations(val);
+        };
+
+        $scope.openFerryPopup = (name: string, rawurl: string) => {
+            var url = $sce.trustAsResourceUrl(rawurl);
+            var modalInstance = $uibModal.open({
+                templateUrl: "ferryUrl.html",
+                controller: ($scope) =>  {
+                    $scope.name = name.replace("_",":");  
+                    $scope.url = url;
+                    $scope.close = () => {
+                        var top = $uibModalStack.getTop();
+                        if (top != null)
+                        {
+                            $uibModalStack.close(top.key);
+                        }
+                    }
+                },
+                backdropClass: "show",
+                windowClass: "show",
+                backdrop: true, 
+                size: "custom-lg",
+                
+                resolve: {
+                    data: function() {
+                        return null;
+                    }
+                }
+            }).result.then(function(){}, function(res){});
         };
 
         $scope.doRouteCalculation = () => {
@@ -344,33 +371,10 @@ export class MapController implements angular.IController {
                                         var res = geomutil.interpolateOnLine($scope.map,latLngs,0.5);
                                         geometry = res.latLng;
                                         hasLocation = true;
-                                        var url = $sce.trustAsResourceUrl(values.filter(x=>x.key == "Url")[0].value);
+                                        var url =values.filter(x=>x.key == "Url")[0].value;
                                         
                                         clickFunc = (e : MouseEvent) => {
-                                            var modalInstance = $uibModal.open({
-                                                templateUrl: "ferryUrl.html",
-                                                controller: ($scope) =>  {
-                                                    $scope.name = name.replace("_",":");  
-                                                    $scope.url = url;
-                                                    $scope.close = () => {
-                                                        var top = $uibModalStack.getTop();
-                                                        if (top != null)
-                                                        {
-                                                            $uibModalStack.close(top.key);
-                                                        }
-                                                    }
-                                                },
-                                                backdropClass: "show",
-                                                windowClass: "show",
-                                                backdrop: true, 
-                                                size: "lg",
-                                                
-                                                resolve: {
-                                                    data: function() {
-                                                        return null;
-                                                    }
-                                                }
-                                            }).result.then(function(){}, function(res){});
+                                           $scope.openFerryPopup(name,url);
                                         };
 
                                     }
@@ -562,7 +566,6 @@ export class MapController implements angular.IController {
                 (<L.Layer><any>layer).addTo($scope.map);
             };
         });
-
     }
 
 }

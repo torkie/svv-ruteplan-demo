@@ -13,7 +13,8 @@ requirejs.config({
         'mouseposition': '../lib/leaflet-control-mousepostion',
         'leaflet-contextmenu': '../node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.min',
         'leaflet-geometryutil': '../node_modules/leaflet-geometryutil/src/leaflet.geometryutil',
-        'tokml': '../node_modules/tokml/tokml'
+        'tokml': '../node_modules/tokml/tokml',
+        'leaflet-ajax' : '../node_modules/leaflet-ajax/dist/leaflet.ajax.min'
     },
     shim: {
         'angular': {
@@ -40,9 +41,12 @@ requirejs.config({
         'leaflet-geometryutil': {
             deps: ['leaflet']
         },
+        'leaflet-ajax': {
+            deps: ['leaflet']
+        },
         'App' : {
             deps: ['angular','angular-ui-router','angular-ui-bootstrap', "settings", "filters", "domain",'wms', 'angular-sanitize'
-            , 'angular-resource', 'routing','searching','LeafLetDirective','mouseposition','leaflet-contextmenu', 'leaflet-geometryutil','tokml']
+            , 'angular-resource', 'routing','searching','LeafLetDirective','mouseposition','leaflet-contextmenu', 'leaflet-geometryutil','tokml', 'leaflet-ajax']
         }
       }
 });

@@ -69,6 +69,23 @@ class LeafLetDirective {
             }).addTo(this.map);
 
 
+            var ferryLayer = new (<any>L.GeoJSON).AJAX("http://multirit.triona.se/tables/ferrypoints.json", {
+                pointToLayer: (feature, latlng) => {
+                    let myIcon = L.icon({
+                        iconUrl: 'images/ferry-icon.png',
+                        iconSize:     [10,10], // width and height of the image in pixels
+                        iconAnchor:   [5, 5], // point of the icon which will correspond to marker's location
+                      });
+                      var f = L.marker(latlng, { icon: myIcon, opacity: 0.5 });
+                      f.on("click", (e : MouseEvent) => {
+                            scope.openFerryPopup("Ferry", feature.properties.route1);
+                        });
+                      return f;
+                    }
+            });
+            ferryLayer.addTo(this.map);
+
+
 
             (<any>L.Control).mouseposition({position: "bottomleft"}).addTo(this.map);
 

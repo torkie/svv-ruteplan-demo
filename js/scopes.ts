@@ -39,4 +39,5 @@ export interface IMapControllerScope extends ng.IScope {
     height: number;
     length: number;
     allowTravelInZeroEmissionZone : boolean;
+    openFerryPopup(name: string, url: string);
 }
