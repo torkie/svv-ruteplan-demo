@@ -67,6 +67,12 @@ class RoutingService implements IRoutingService {
             var data = resp.data;
             // create geometry features from routes
             var features = [];
+            if (data.routes == null)
+            {
+                alert("Could not calculate a route! Try move start/end point");
+                callback(null, [], []);
+                return;
+            }
             forEach(data.routes.features, route => {
                 var components = [];
                 forEach(route.geometry.paths, path => {
