@@ -34,7 +34,7 @@ class KartVerketGeoCodeService implements IGeoCodeService {
         
         return defer.promise;
     }
-    getLocationsNorgesKart = (val : string) => this.$http.get("https://www.norgeskart.no/ws/adr.py?" + val).then(res => {
+    getLocationsNorgesKart = (val : string) => this.$http.get("https://www.norgeskart.no/ws/adr.py?" + encodeURIComponent(val)).then(res => {
         var addresses = new Array<AddressItem>();
 
         var add = (item: any) => {
@@ -61,14 +61,7 @@ class KartVerketGeoCodeService implements IGeoCodeService {
     });
 
     //Get from SKWS
-    getLocationsSKWS = (val : string) => this.$http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok", {
-        params: {
-            navn: val + "*",
-            maxAnt: 20,
-            antPerSide: 20,
-            eksakteForst: true
-        }
-    }).then(jsonRes => {
+    getLocationsSKWS = (val : string) => this.$http.get("https://ws.geonorge.no/SKWS3Index/ssr/sok?navn=" + encodeURIComponent(val) + "*&maxAnt=20&antPerSide=20&eksakteForst=true").then(jsonRes => {
         var res = <{stedsnavn: any}>jsonRes.data;
         var addresses = new Array<AddressItem>();
 
