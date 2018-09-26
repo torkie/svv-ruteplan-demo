@@ -1,5 +1,6 @@
 
 requirejs.config({
+    urlArgs: 'v=1',
     paths: {
         'angular': '../node_modules/angular/angular',
         'angular-ui-bootstrap': '../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls',
