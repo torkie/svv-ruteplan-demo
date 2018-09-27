@@ -36,6 +36,8 @@ export class MapController implements angular.IController {
             return geoCodeService.getLocations(val);
         };
 
+        $scope.avoidRoadsClosedForWinter = true;
+
         $scope.openFerryPopup = (name: string, rawurl: string) => {
             var url = $sce.trustAsResourceUrl(rawurl);
             var modalInstance = $uibModal.open({
@@ -96,24 +98,26 @@ export class MapController implements angular.IController {
                 $scope.directions = directions;
 
                 // zoom map if current bounds does not contain route
-                $scope.map.fitBounds(bounds);
+                if (bounds != null)
+                {
+                    $scope.map.fitBounds(bounds);
+                }
 
-                // add features to map
-                var first = true;
-                angular.forEach(features, (feature) => {
-                    feature.geometry.setStyle(first ? routeStyle : alternativeRouteStyle).addTo($scope.routeLayer);
-                    first = false;
-                });
-
-                
-                
-                
+                if (features != null)
+                {
+                    // add features to map
+                    var first = true;
+                    angular.forEach(features, (feature) => {
+                        feature.geometry.setStyle(first ? routeStyle : alternativeRouteStyle).addTo($scope.routeLayer);
+                        first = false;
+                    });
+                }
                 
                 if (directions != null && directions.length > 0) {
                     $scope.selectRoute(directions[0].routeId);
                 }
 
-                }, blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length, $scope.allowTravelInZeroEmissionZone);
+                }, blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length, $scope.allowTravelInZeroEmissionZone,$scope.avoidRoadsClosedForWinter);
         };
 
         $scope.reverseRoute = () => {

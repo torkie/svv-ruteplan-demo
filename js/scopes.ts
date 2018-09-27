@@ -40,4 +40,6 @@ export interface IMapControllerScope extends ng.IScope {
     length: number;
     allowTravelInZeroEmissionZone : boolean;
     openFerryPopup(name: string, url: string);
+    avoidRoadsClosedForWinter : boolean;
+
 }

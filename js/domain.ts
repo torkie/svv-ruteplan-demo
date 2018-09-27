@@ -110,7 +110,8 @@ import { LatLngBounds, LatLng, Point } from 'leaflet';
         width? : number,
         height?: number,
         length?: number,
-        allowTravelInZeroEmissionZone? : boolean
+        allowTravelInZeroEmissionZone? : boolean,
+        avoidRoadsClosedForWinter?: boolean
             );
     }
 

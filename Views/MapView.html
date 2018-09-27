@@ -9,13 +9,18 @@
         Til: <input type="text" id="searchTo" ng-model="toAddress"
                     data-uib-typeahead="address as address.name for address in getLocations($viewValue)"
                     data-typeahead-editable="false"
-                    data-typeahead-on-select="updateMarkers()" /><br/>
+                    data-typeahead-on-select="updateMarkers()" />
+                    <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()" />
+                    <br/>
+        <button data-ng-click="settingsvisible=!settingsvisible">{{settingsvisible ? "Skjul innstillinger" : "Vis innstillinger"}}</button><br/>
+        <div style="float:left; background: #444f55;padding:20px; border:3px solid #ff9600" ng-show="settingsvisible">
         Vekt: <input type="text" style="width: 60px" ng-model="weight" data-ng-blur="updateMarkers()" /> tonn,
         Høyde: <input type="text" style="width: 60px" ng-model="height" data-ng-blur="updateMarkers()" /> meter,
-        Lengde: <input type="text" style="width: 60px" ng-model="length" data-ng-blur="updateMarkers()" /> meter,
-        Tillat kjøring i nullutslippsone: <input type="checkbox" style="width: 20px; cursor: pointer; margin: 0; vertical-align: middle; padding: 0;min-height: 0" ng-model="allowTravelInZeroEmissionZone" data-ng-blur="updateMarkers()" />
-
-        <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()" />
+        Lengde: <input type="text" style="width: 60px" ng-model="length" data-ng-blur="updateMarkers()" /> meter<br/>
+        Tillat kjøring i nullutslippsone: <input type="checkbox" style="width: 20px; cursor: pointer; margin: 0; vertical-align: middle; padding: 0;min-height: 0" ng-model="allowTravelInZeroEmissionZone" data-ng-blur="updateMarkers()" /><br/>
+        Unngå vinterstengte veier: <input type="checkbox" style="width: 20px; cursor: pointer; margin: 0; vertical-align: middle; padding: 0;min-height: 0" ng-model="avoidRoadsClosedForWinter" data-ng-blur="updateMarkers()" />
+        </div>
+        
     </div>
 </div>
 
