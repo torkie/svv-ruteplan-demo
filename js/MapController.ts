@@ -37,6 +37,8 @@ export class MapController implements angular.IController {
         };
 
         $scope.avoidRoadsClosedForWinter = true;
+        $scope.avoidRoadClosed = false;
+        $scope.avoidMaintenanceWork = false;
 
         $scope.openFerryPopup = (name: string, rawurl: string) => {
             var url = $sce.trustAsResourceUrl(rawurl);
@@ -71,6 +73,21 @@ export class MapController implements angular.IController {
             $scope.directions = null;
 
             var locations = [];
+
+            var avoid = [];
+            if ($scope.avoidRoadsClosedForWinter)
+            {
+                avoid.push("closedPermanentlyForTheWinter");
+            }
+            if ($scope.avoidMaintenanceWork)
+            {
+                avoid.push("maintenanceWork");
+            }
+            if ($scope.avoidRoadClosed)
+            {
+                avoid.push("roadClosed");
+            }
+            
             
 
             var idx = 0;
@@ -117,7 +134,7 @@ export class MapController implements angular.IController {
                     $scope.selectRoute(directions[0].routeId);
                 }
 
-                }, blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length, $scope.allowTravelInZeroEmissionZone,$scope.avoidRoadsClosedForWinter);
+                }, blockedPoints, $scope.blockedAreas, $scope.weight, $scope.height, $scope.length, $scope.allowTravelInZeroEmissionZone,avoid);
         };
 
         $scope.reverseRoute = () => {
@@ -351,19 +368,19 @@ export class MapController implements angular.IController {
                             var values = feat.values;
                             var clickFunc = null;
                             var html = "<span class='mo_featureType'>" + type + "</span><br/>";
-                            var isRelevant = (type.match("^nvdb") && ["Bomstasjon", "Rasteplass","Ferge","ferge"].indexOf(subType)+1) || type.match("^vegloggen");
+                            var isRelevant = (type.match(/^nvdb/i) && ["Bomstasjon", "Rasteplass","Ferge","ferge"].indexOf(subType)+1) || type.match(/^vegloggen/i);
 
-                            if (type.match("^nvdb") || type.match("^vegloggen")) {
+                            if (type.match(/^nvdb/i) || type.match(/^vegloggen/i)) {
 
                                 var name = $scope.getValue(values, "Navn");
                                 if (name == null) {
                                     name = "Ukjent navn";
                                 }
                                 html += "<h3>"+name+"</h3>";
-                                if (type.match("^nvdb")) {
+                                if (type.match(/^nvdb/i)) {
                                     imageName = subType;
 
-                                    if (subType == "Ferge" || subType == "ferge")
+                                    if (subType.match(/ferge/i))
                                     {
                                         imageName = "ferry-icon";
                                         var geom = Helper.CompressedGeometryHelper.extractPointsFromCompressedGeometry(feature.compressedGeometry);
@@ -382,11 +399,12 @@ export class MapController implements angular.IController {
                                         };
 
                                     }
-                                    else if (subType === "Rasteplass" || subType === "Bomstasjon") {
+                                    else if (subType.match(/Rasteplass/i) || subType.match(/Bomstasjon/i)) {
 
 
                                     }
-                                } else if (type.match("^vegloggen")) {
+                                } else if (type.match(/^vegloggen/i)) {
+
                                     imageName = "trafikkmelding";
                                     html = "<b>Trafikkmelding</b>";
                                 }

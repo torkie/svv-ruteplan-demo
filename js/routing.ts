@@ -17,7 +17,7 @@ class RoutingService implements IRoutingService {
 
     }
 
-    calculateRoute = (stops: L.Point[], callback: IRouteCalculationCallback, blockedPoints?: L.Point[], blockedAreas?: Polygon[], weight? : number, height? : number, length? : number, allowTravelInZeroEmissionZone? : boolean, avoidRoadsClosedForWinter? : boolean) => {
+    calculateRoute = (stops: L.Point[], callback: IRouteCalculationCallback, blockedPoints?: L.Point[], blockedAreas?: Polygon[], weight? : number, height? : number, length? : number, allowTravelInZeroEmissionZone? : boolean, avoidMessagesOfType?: string[]) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
             strings.push(stop.x + "," + stop.y);
@@ -59,9 +59,18 @@ class RoutingService implements IRoutingService {
             params.length = length;
 
         params.allowTravelInZeroEmissionZone = allowTravelInZeroEmissionZone;
-        if (!avoidRoadsClosedForWinter)
+        if (avoidMessagesOfType.indexOf("closedPermanentlyForTheWinter") < 0)
         {
             params.avoidRoadsClosedForWinter = "false"
+        }
+        else 
+        {
+            params.avoidRoadsClosedForWinter = "true"
+        }
+
+        if (avoidMessagesOfType.length > 0)
+        {
+            params.avoidTrafficMessageTypes = avoidMessagesOfType.join();
         }
 
     this.$http.get(url, {
