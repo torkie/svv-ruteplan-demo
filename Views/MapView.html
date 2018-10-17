@@ -12,7 +12,14 @@
                     data-typeahead-on-select="updateMarkers()" />
                     <input id="searchbutton" type="button" value="Søk" ng-click="doRouteCalculation()" />
                     <br/>
-        <button data-ng-click="settingsvisible=!settingsvisible">{{settingsvisible ? "Skjul innstillinger" : "Vis innstillinger"}}</button><br/>
+
+                    <input style="width: initial; min-height: initial" type="radio" ng-model="route_type" value="car" ng-change="updateRouteType()"> <i style="font-size: 20px;" class="fa fa-car"></i>
+                    <input style="width: initial; min-height: initial" type="radio" ng-model="route_type" value="bike" ng-change="updateRouteType()"> <i style="font-size: 20px;" class="fa fa-bicycle"></i>
+
+                    
+                    
+
+        <button style="float: right; margin-right: 10px" data-ng-click="settingsvisible=!settingsvisible">{{settingsvisible ? "Skjul innstillinger" : "Vis fler innstillinger"}}</button><br/>
         <div style="float:left; background: #444f55;padding:20px; border:3px solid #ff9600" ng-show="settingsvisible">
         Vekt: <input type="text" style="width: 60px" ng-model="weight" data-ng-blur="updateMarkers()" /> tonn,
         Høyde: <input type="text" style="width: 60px" ng-model="height" data-ng-blur="updateMarkers()" /> meter,

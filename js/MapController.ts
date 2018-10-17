@@ -4,6 +4,7 @@ import {IGeoCodeService,IRoutingService, ViewDirectionFeature, Value, RoadFeatur
 
 import * as L from 'leaflet';
 import * as Helper from "./helpers/CompressedGeometryHelper";
+import { Settings } from './settings';
 
 var tokml = require('tokml');
 var geomutil = require('leaflet-geometryutil');
@@ -13,9 +14,9 @@ export class MapController implements angular.IController {
 
     private projectionUTM33 : L.Projection;
 
-    static $inject = ["$scope", "routingService", "geoCodeService", "$location", "wmsSettings", "$uibModal","$sce", "$uibModalStack"];
+    static $inject = ["$scope", "routingService", "geoCodeService", "$location", "wmsSettings", "$uibModal","$sce", "$uibModalStack", "settings"];
     constructor(private $scope: IMapControllerScope, routingService: IRoutingService,  
-        geoCodeService: IGeoCodeService, $location : ng.ILocationService, wmsSettings: { layers : L.Layer[]}, $uibModal,$sce,$uibModalStack) {
+        geoCodeService: IGeoCodeService, $location : ng.ILocationService, wmsSettings: { layers : L.Layer[]}, $uibModal,$sce,$uibModalStack, settings : Settings) {
             
         this.projectionUTM33 =  new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
         var routeStyle = {
@@ -39,6 +40,11 @@ export class MapController implements angular.IController {
         $scope.avoidRoadsClosedForWinter = true;
         $scope.avoidRoadClosed = false;
         $scope.avoidMaintenanceWork = false;
+        $scope.route_type = 'car';
+        $scope.updateRouteType = () => {
+            settings.routetype = $scope.route_type;
+            settings.save();
+        };
 
         $scope.openFerryPopup = (name: string, rawurl: string) => {
             var url = $sce.trustAsResourceUrl(rawurl);

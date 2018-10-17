@@ -43,5 +43,7 @@ export interface IMapControllerScope extends ng.IScope {
     avoidRoadsClosedForWinter : boolean;
     avoidMaintenanceWork : boolean;
     avoidRoadClosed: boolean;
+    route_type: string;
+    updateRouteType();
 
 }
