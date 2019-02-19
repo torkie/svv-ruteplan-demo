@@ -1,15 +1,14 @@
 {
     "compilerOptions": {
-        "module": "AMD",
-        "noImplicitAny": false,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "allowJs": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "outDir": "./dist/",
+        "noImplicitAny": true,
         "sourceMap": true,
-        "skipLibCheck" : true,
     },
     "include": [
-        "js/**/*.ts"
+        "./src/**/*"
     ]
   
 }

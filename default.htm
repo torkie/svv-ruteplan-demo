@@ -1,19 +1,26 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8" />
         <title>SVV Ruteplan Demo</title>
-        <link rel="stylesheet" href="css/app.css"/>
-        <link rel="stylesheet" href="css/directions-font.css" />
-        <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">        
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
-        <link rel="stylesheet" href="node_modules/leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
-        <link rel="stylesheet" href="css/leaflet-control-mouseposition.css" />
-        <link rel="stylesheet" href="node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.min.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" integrity="sha384-PmY9l28YgO4JwMKbTvgaS7XNZJ30MK9FAZjjzXtlqyZCqBY6X6bXIkM++IkyinN+" crossorigin="anonymous">
+        <link rel="stylesheet" href="node_modules/react-bootstrap-typeahead/css/Typeahead.min.css">
+        <link rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.css">
     </head>
     <body>
-        <div data-ui-view=""></div>
-        <script data-main="js/bootstrapper" src="node_modules/requirejs/require.js?v=1"></script>
+        <div id="main"></div>
+
+        <!-- Dependencies -->
+        <script src="./node_modules/react/umd/react.development.js"></script>
+        <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+        <script src="./node_modules/leaflet/dist/leaflet.js"></script>
+        <script src="./node_modules/proj4/dist/proj4.js"></script>
+        <script src="./node_modules/proj4leaflet/src/proj4leaflet.js"></script>
+
+        <!-- Main -->
+        <script src="./dist/bundle.js"></script>
     </body>
 </html>

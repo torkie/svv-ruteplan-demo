@@ -17,7 +17,8 @@ class RoutingService implements IRoutingService {
 
     }
 
-    calculateRoute = (stops: L.Point[], callback: IRouteCalculationCallback, blockedPoints?: L.Point[], blockedAreas?: Polygon[], weight? : number, height? : number, length? : number, allowTravelInZeroEmissionZone? : boolean, avoidMessagesOfType?: string[]) => {
+    calculateRoute = (stops: L.Point[], callback: IRouteCalculationCallback, blockedPoints?: L.Point[], blockedAreas?: Polygon[], weight? : number, height? 
+        : number, length? : number, allowTravelInZeroEmissionZone? : boolean, avoidMessagesOfType?: string[]) => {
         var strings = [];
         angular.forEach(stops, (stop) => {
             strings.push(stop.x + "," + stop.y);

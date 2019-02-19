@@ -2,13 +2,109 @@
 {
     font-family: 'Segoe UI', sans-serif;
     padding: 0;
-    overflow: hidden;
-       
+    overflow: hidden;       
 }
 
-span {
-    font-style: italic
+.topbar {
+    background: #444f55;
+    border-bottom: 3px solid #ff9600;
+    width: 100%;
+    height: 155px;
+    display: block;
+    z-index: 200;
+    position: absolute;
 }
+
+.routeResponseDisplay {
+    top: 155px;
+    position: absolute;
+}
+
+.routeResponseDisplay DIV.selected {
+    background: #ff9600;
+    color: black;
+}
+.routeResponseDisplay DIV {
+    float: left;
+    cursor: pointer;
+    background: #444f55;
+    padding: 5px 10px;
+    font-family: arial;
+    font-weight: bold;
+    opacity: 0.9;;
+    color: white;
+}
+.routeResponseDisplay DIV:last-child {
+    border-radius: 0 0 10px 0;
+}
+
+.selectedRouteDisplay {
+    position: absolute;
+    top: 205px;
+    background: white;
+    border-radius: 0 0 10px 0;
+    opacity: 0.9;
+    font-size: 11px;
+    max-height: 400px;
+    overflow: scroll;
+}
+.selectedRouteDisplay DIV
+{
+    padding: 4px;
+}
+
+.selectedRouteDisplay DIV DIV {
+    float: left;
+    margin: 0 10px;
+}
+
+.routestats {
+    padding-left: 15px;
+}
+.routestats IMG {
+    margin-left: 10px;
+}
+
+.routestats .nullutslippszone{
+    background-color: lightpink; margin-top: 10px; padding: 3px; border-radius: 5px;font-weight: bold;float: initial;
+}
+.routestats .bomstasjonnorebate {
+    background-color: lightpink; margin-top: 10px; padding: 3px; border-radius: 5px;font-weight: bold;float:initial;
+}
+
+.signpost {
+    font-weight: bold;
+    padding: 1px 3px !important;
+    border-radius: 5px;
+    border: 1px solid gray;
+}
+
+.signpost.signpost-E {
+    background: green;
+    color: white;
+}
+.signpost.signpost-R {
+    background: #ff9600;
+    color: black;
+}
+.signpost.signpost-F {
+    background: #ff9600;
+    color: black;
+}
+
+.signpost.signpost-K {
+    background: white;
+    color: black;
+}
+.signpost.signpost-P {
+    background: white;
+    color: black;
+}
+.signpost.signpost-S {
+    background: white;
+    color: black;
+}
+
 
 .modal-custom-lg.modal-dialog {
     width: 90%;
@@ -31,311 +127,89 @@ span {
 
 #map {
     position: absolute;
-    top: 155px;
+    top: 0;
     bottom: 0;
     left: 0;
-    right: 400px;
+    right: 0px;
     z-index: 0;
 }
 
-.mo_featureType {
-    font-size: 14px; 
-    font-weight:bold;
-    font-style: normal;
-    text-transform: uppercase;
-}
-
-#mouseoverinfo {
-    position: absolute;
-    left: 0;
-    right: 400px;
-    -ms-opacity: 0.9;
-    opacity: 0.9;    
-    background-color: white;
-    padding: 3px 10px;
-    border-top: 1px solid gray;
-}
-
-.mouseoverinfonotvisible {
-    bottom: -200px; 
-    transition: bottom 0.1s;
-    height: 0;
-}
-.mouseoverinfovisible {
-    transition: bottom 0.1s;
-    bottom: 0;
-    height: 200px;
-}
-
-#route-header-list {
-    list-style: none;
-    padding: 0;
-    font-size: 12px;
-}
-
-#route-header-list > li::before  {
-    color: grey;
-    font-family: FontAwesome;
-    box-sizing: border-box;
-    padding-right: 3px;
-    display: inline-block;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-#route-header-list > li:first-child::before {
-    content: "\f144";
-    color: green;
-}
-
-#route-header-list > li.intermediate::before {
-    content: "\f04c";
-    color: rgb(238,146,46);
-}
-
-#route-header-list > li:last-child::before {
-    content: "\f192";
-    color: red;
-}
-
-#reverse-order-button {
-}
-
-#reverse-order-button:hover {
-    text-shadow: 0.1em 0.1em 0.05em #333;
-    transition: text-shadow 1s;
-    cursor: pointer;
-}
-
-#remove-intermediate-button {
-    color: darkblue;
-    cursor: pointer;
-}
-#remove-intermediate-button:hover {
-    text-shadow: 0.1em 0.1em 0.05em #333;
-    transition: text-shadow 1s;
-    cursor: pointer;
-}
-
-#remove-blocks-button {
-
-}
-#remove-blocks-button:hover {
-    text-shadow: 0.1em 0.1em 0.05em #333;
-    transition: text-shadow 1s;
-    cursor: pointer;
-}
-
-#routedesc {
-    position: absolute;
-    top: 155px;
-    bottom: 0;
-    right: 0;
-    width: 400px;
-    z-index: 1;
-    background: #ffffff;
-    padding: 10px;
-    overflow: scroll;
-}
-
-#searchbar DIV {
-    padding: 10px;
-
-}
 #searchbar h1 {
     font-size: 18px;
 }
 #searchbar {
-    height: 155px;
-    position: absolute;
     color: #fff;
     padding-left: 10px;
-    z-index: 200;
-    background: #444f55;
-    right: 0;
-    left: 0;
-    top: 0;
-    min-height: 100px;
-    width: 100%;
-    border-bottom: 3px solid #ff9600;
+    width: 50%;
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.settingspane {
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    padding-left: 20px;
+    vertical-align: top;
     font-size: 12px;
 }
 
-.coordinatedisplayer {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    z-index: 300;
+.react-tabs__tab-panel {
+    background: white;
+    height: 115px;
+    padding: 10px;
+    overflow: auto;
 }
 
-#searchbar input {
-     background-color: #f5f5f5;
-     cursor: text;
-     min-height: 25px;
-     overflow: auto;
-     padding: 2px 26px 2px 2px;
-     border: 0;
-     margin: 10px;
-     width: 300px;
-     font-size: 12px;
-     font-weight: bold;
-     color: #444f55;
-     border-radius: 4px;
-     -moz-border-radius: 4px;
+.react-tabs__tab-list {
+    margin: 0 !important;
+}
+.react-tabs__tab {
+    background: gray !important;
+    border: 1px solid black !important;
+}
+.react-tabs__tab--selected {
+    background: #ff9600 !important;
 }
 
-.dropdown-menu {
-    position: absolute;
-    background: #f5f5f5;
-    border-bottom: 3px solid #ff9600;
-    color: #444f55;
-    cursor: pointer;
-}
-
-#searchbutton {
-    width: 75px !important;
-    cursor: pointer !important;
-    text-align: center !important;
-    padding: 2px !important;
-}
-
-#route-list {
-    list-style: none;
-    padding: 0;
-}
-
-#route-desc-list {
-    list-style: none;
-    padding: 0;
-    list-style-type: none;
-}
-
-
-
-.routeheader {
-    padding: 0.5em;
-    background-color: lightgray;
-    border: 1px darkgray solid;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.active .routeheader{
-    background-color: black !important;
+.settingspane input {
+    background-color: #f5f5f5;
+    cursor: text;
+    min-height: 15px;
+    overflow: auto;
+    padding: 0px 0px 0px 5px;
     border: 0;
-    border-bottom-color: transparent;
-    color: white;
+    font-size: 12px;
     font-weight: bold;
+    color: #444f55;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    width: 30px;
+}
+
+.settingrow span {
+    display: inline-block;
     
 }
 
-.active {
-    background-color: #f5f5f5;
-    border: 1px solid lightgray;
-    color:black;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-}
-.routestats {
-    padding: 5px;
-    border-bottom: 1px solid darkgray;
-}
-.routedesc {
-    margin-bottom: 5px;
+.settingrow {
+    margin: 2px 0;
 }
 
-#route-desc-list li {
-    border: 1px transparent dotted;
-    border-bottom-color: darkgray;
-    padding-left: 5px;
-    font-size: 12px;
+.settingrow.longrow {
+    display: table;
+    width: 100%;
 }
 
-#route-desc-list li:hover {
-    background-color: lightgray;
-    cursor: pointer;
+.settingrow.longrow input {
+    display: table-cell;
+    width: 100%;
 }
 
-.route-item-name {
-    font-size: 1.1em;
-    font-weight: bold;
+.settingrow.longrow label {
+    display: table-cell;
+    width: 70px;
 }
 
-.routeheader .tool {
-    padding: 4px;
-    color: white;
-    text-decoration: none;
-}
 
-.routeheader .tool:hover {
-    color: black;
-}
-
-.active .routeheader .tool:hover {
-    color: #f0e68c; 
-}
-
-.routeheader .tool.zoom:hover:after {
-    content: "Zoom til";
-    font-family: 'Segoe UI', sans-serif;
-    margin-left: 3px;
-}
-.routeheader .tool.download:hover:after {
-    font-family: 'Segoe UI', sans-serif;
-    content: "Last ned";
-    margin-left: 3px;
-}
-
-.signpost {
-    min-width: 30px;
-    text-align: center;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    padding: 3px;
-    display: inline-block;
-    margin: 3px;
-    margin-left: 0;
-    border: 1px solid gray;
-    font-size:10px;
-}
-.signpost-E {
-    background-color: #228b22;
-    color: white;
-}
-.signpost-R {
-    background-color: white;
-    color: black;
-}
-
-.signpost-F {
-    background-color: white;
-    color: black;
-}
-
-.signpost-K {
-    visibility: hidden;
-    display: none;
-}
-
-.signpost-P {
-    visibility: hidden;
-    display: none;
-}
-
-.signpost-S {
-    visibility: hidden;
-    display: none;
-}
-
-#settings-button:hover {
-    cursor: pointer;
-}
-
-#map-settings-button:hover {
-    cursor: pointer;
-}
