@@ -5,7 +5,8 @@ import { SearchBar } from "./SearchBar";
 export class TopBar extends React.Component {
 
     render() {
-        return <div className={"TopBar"}>
+        return <div className={"header"}>
+            <a title="Til forsiden" href="/default.htm">Til forsiden</a>
         </div>
     }
 }

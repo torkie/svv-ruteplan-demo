@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Map, Marker, Popup, TileLayer, ZoomControl, GeoJSON, LayerGroup, Polyline} from 'react-leaflet';
+import { Map, Marker, TileLayer, ZoomControl, GeoJSON, LayerGroup, Polyline} from 'react-leaflet';
 import * as L from "leaflet";
 import "proj4leaflet";
 import Axios from "axios";
 import { Feature } from "geojson";
-import * as Modal from 'react-modal';
+import Modal from 'react-modal';
 import { AddressItem } from "../Model/AddressItem";
 import "leaflet-contextmenu";
 import { IRouteResponse } from "../providers/RoutingService";
@@ -173,7 +173,7 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
           callback: this.contextMenuBlockPoint
       }];
 
-        return <div><Map center={position} zoom={4} id="map" crs={crs} contextmenu={true} contextmenuItems={contextMenuItems}>
+        return <div><Map zoomControl={false} center={position} zoom={4} id="map" crs={crs} contextmenu={true} contextmenuItems={contextMenuItems}>
         <TileLayer
           attribution='&copy; NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)'
           url='https://m{s}-nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}'

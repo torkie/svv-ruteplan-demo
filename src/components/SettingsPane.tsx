@@ -3,17 +3,22 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import "react-tabs/style/react-tabs.css";
 //import SettingsProvider from "../providers/SettingsProvider";
 import {SettingsContext, ISettingsProviderState} from "../providers/SettingsProvider";
-
+import TextField from "@material-ui/core/TextField";
+import { FormControlLabel, Checkbox } from "@material-ui/core";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 export interface ISettingsPaneProps {
 }
 export interface ISettingsPaneState {
+  expanded : boolean;
 }
 export default class SettingsPane extends React.Component<ISettingsPaneProps, ISettingsPaneState> {
 
     static contextType = SettingsContext;
+    state = { expanded: false};
       constructor(props : ISettingsPaneProps) {
         super(props);
+        
       }  
     
     urlChanged = (e : React.ChangeEvent<HTMLInputElement>) => 
@@ -36,9 +41,17 @@ export default class SettingsPane extends React.Component<ISettingsPaneProps, IS
         }
     };
 
+    toggleExpand = () => 
+    {
+      this.setState({ expanded: !this.state.expanded});
+    }
+
     render() {
         let ctx = this.context as ISettingsProviderState;
-        return <Tabs className={"settingspane"}>
+        return <div>
+          <div><SettingsIcon style={{zIndex: 400, position: 'absolute',right:315,top:15,color:'#ff9600',background:'rgba(255,255,255,0.9)',borderRadius:5, cursor:'pointer'}} onClick={this.toggleExpand} />
+            </div>
+          <Tabs style={{visibility: this.state.expanded ? 'visible':'collapse'}}>
             <TabList>
             <Tab>Route settings</Tab>
             <Tab>Backend settings</Tab>
@@ -46,15 +59,51 @@ export default class SettingsPane extends React.Component<ISettingsPaneProps, IS
         
             <TabPanel>
             <div className={"settingrow"}>
-                <span>Vekt: <input type="text"/>tonn,&nbsp;</span>
-                <span>Høyde: <input type="text"/>m,&nbsp;</span>
-                <span>Lengde: <input type="text"/>m</span>
+                <TextField label="Vekt (tonn)"
+                id="inputWeight"
+                />
+                <TextField label="Høyde (m)"
+                id="inputHeight"
+                />
+                <TextField label="Lengde (m)"
+                id="inputLength"
+                />
             </div>
             <div className={"settingrow"}>
-            <span>Tillat kjøring i nullutslippsone: <input type="checkbox"/></span>
-            <span>Unngå vinterstengte veier: <input type="checkbox"/></span>
-            <span>Unngå "maintenanceWork": <input type="checkbox"/></span>
-            <span>Unngå "roadClosed": <input type="checkbox"/></span>
+
+            <FormControlLabel
+          control={
+            <Checkbox
+              value="checkedF"
+              color="primary"
+            />
+          }
+          label="Tillat kjøring i nullutslippsone"
+        />
+            <FormControlLabel
+          control={
+            <Checkbox
+              value="checkedF"
+              color="primary"
+            />
+          }
+          label="Unngå vinterstengte veier"
+        />  <FormControlLabel
+        control={
+          <Checkbox
+            value="checkedF"
+            color="primary"
+          />
+        }
+        label="Unngå 'maintenanceWork'"/>
+        <FormControlLabel
+        control={
+          <Checkbox
+            value="checkedF"
+            color="primary"
+          />
+        }
+        label="Unngå 'roadClosed'"/>
             </div>
             </TabPanel>
             <SettingsContext.Consumer>
@@ -73,7 +122,7 @@ export default class SettingsPane extends React.Component<ISettingsPaneProps, IS
             </TabPanel>
             }}</SettingsContext.Consumer>
             
-        </Tabs>;
+        </Tabs></div>;
     }
 
 }
