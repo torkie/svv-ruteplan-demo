@@ -14,6 +14,7 @@ import { AppBar, Toolbar, IconButton, Typography, Button, withStyles } from "@ma
 interface MainPageState {
     currentStartLocation : AddressItem;
     currentEndLocation : AddressItem;
+    currentIntermediateLocations: AddressItem[];
     currentRouteResponse: IRouteResponse;
     selectedRouteIdx : number;
     weight? : number;
@@ -26,6 +27,7 @@ class MainPage extends React.Component<any,MainPageState>{
     state = {
         currentStartLocation: null as AddressItem,
         currentEndLocation: null as AddressItem,
+        currentIntermediateLocations : null as AddressItem[],
         currentRouteResponse: null as IRouteResponse,
         selectedRouteIdx : -1,
         weight : null as number,
@@ -74,7 +76,7 @@ class MainPage extends React.Component<any,MainPageState>{
             length = +parsed.length;
         }
 
-        this.state = {currentStartLocation: from, currentEndLocation : to, currentRouteResponse: null, selectedRouteIdx: -1,  weight: weight, length:length, height: height};    
+        this.state = {currentStartLocation: from, currentEndLocation : to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,  weight: weight, length:length, height: height};    
     }
 
     componentDidMount()
@@ -96,6 +98,8 @@ class MainPage extends React.Component<any,MainPageState>{
             <div style={{position:'absolute', right: 10, top:15, zIndex:400}}>
                 <SearchBar onFromPositionSelected={this.handleFromLocationSet} onToPositionSelected={this.handleToLocationSet} 
                 fromLocation={this.state.currentStartLocation} toLocation={this.state.currentEndLocation}
+                intermediateLocations={this.state.currentIntermediateLocations}                
+                onIntermediateLocationChanged={this.handleIntermediateLocationUpdated}
                 weight={this.state.weight}
                 length={this.state.length}
                 height={this.state.height}
@@ -106,6 +110,8 @@ class MainPage extends React.Component<any,MainPageState>{
         routeSelected={this.handleRouteSelected}/>;
             </div>
             <RuteplanMap fromLocation={this.state.currentStartLocation} toLocation={this.state.currentEndLocation} 
+            intermediateLocations={this.state.currentIntermediateLocations}
+            intermediateLocationChanged={this.handleIntermediateLocationUpdated}
                 fromLocationChanged={this.handleFromLocationChangedInMap} 
                 toLocationChanged={this.handleToLocationChangedInMap}
                 routeResponse={this.state.currentRouteResponse}
@@ -122,11 +128,31 @@ class MainPage extends React.Component<any,MainPageState>{
         if (this.state.currentEndLocation != null && this.state.currentStartLocation != null)
         {
             var routingService = new RoutingService(setts.url, setts.routetype);
-            routingService.calculateRoute(this.state.currentStartLocation, this.state.currentEndLocation,null,null,this.state.weight,this.state.length,this.state.height).then((results) => {
+            routingService.calculateRoute(this.state.currentStartLocation, this.state.currentEndLocation, this.state.currentIntermediateLocations,null,null,this.state.weight,this.state.length,this.state.height).then((results) => {
                 this.setState({currentRouteResponse: results, selectedRouteIdx: 0});
             });
             
         }
+    }
+
+    handleIntermediateLocationUpdated = (index : number, value : AddressItem) => {
+        let locs = [...this.state.currentIntermediateLocations];
+        if (value == null)
+        {
+            locs.splice(index,1);
+        }
+        else if (index == -1)
+        {
+            locs.push(value);
+        }
+        else
+        {
+            locs[index] = value;
+        }
+        this.setState({currentIntermediateLocations: locs}, () => {
+            this.checkPerformRoute();
+        });
+        this.updateSearch("via",locs);
     }
 
     handleWeightChanged = (val : number) => {

@@ -5,13 +5,16 @@ import { AddressItem } from "../Model/AddressItem";
 import { Paper, TextField, Divider, Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { ISettingsProviderState, SettingsContext } from "../providers/SettingsProvider";
 
 interface SearchBarProps{
     fromLocation: AddressItem;
     toLocation : AddressItem;
+    intermediateLocations: AddressItem[];
     onFromPositionSelected? : (item : AddressItem) => void;
     onToPositionSelected?: (item: AddressItem) => void;
+    onIntermediateLocationChanged? : (index: number, newLocation: AddressItem) => void;
     weight?: number;
     height?: number;
     length?: number;
@@ -72,11 +75,39 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
         }
     }
 
+    handleViaLocationChanged = (index: number) => (item : AddressItem) => {
+        if (this.props.onIntermediateLocationChanged)
+        {
+            this.props.onIntermediateLocationChanged(index,item);
+        }
+    }
+    handleViaLocationDeleted = (index: number) => () => {
+        if (this.props.onIntermediateLocationChanged)
+        {
+            this.props.onIntermediateLocationChanged(index,null);
+        }
+    }
+
     render() {
         let ctx = this.context as ISettingsProviderState;
 
         return  <Paper className={"searchbar"} style={{textAlign:'center'}} elevation={1}>
         <SearchTextBox title="Fra" key={this.props.fromLocation.name} value={this.props.fromLocation} onResult={this.props.onFromPositionSelected}/>
+        {this.props.intermediateLocations &&
+            <div style={{maxHeight: 200, overflowY: this.props.intermediateLocations.length >3 ? 'scroll' : 'hidden'}}>
+                {this.props.intermediateLocations.map((loc,i) => {
+                    if (loc != null)
+                    {
+                        return <div key={this.props.intermediateLocations[i].name} style={{width:'100%',lineHeight:'65px',position:'relative',textAlign:'left'}}>
+                                <DeleteIcon style={{cursor:'pointer',verticalAlign:'middle', display: 'inline-block'}} onClick={this.handleViaLocationDeleted(i)}/>
+                                <div style={{position:'absolute', left:25,right:0,display:'inline-block'}}>
+                                <SearchTextBox key={"via_"+i+"_"+this.props.intermediateLocations[i].name} title={"Via " + (i+1)} value={loc} onResult={this.handleViaLocationChanged(i)}/>
+                                </div>
+                            </div>
+                    }
+                })}
+            </div>
+        }
         <SearchTextBox title="Til" key={this.props.toLocation.name} value={this.props.toLocation} onResult={this.props.onToPositionSelected}/>
         {!this.state.expanded &&
             <ExpandMoreIcon style={{cursor:'pointer'}} onClick={this.toggleExpand}/>

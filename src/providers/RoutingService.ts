@@ -3,9 +3,10 @@ import {AxiosResponse} from "axios";
 import Axios from "axios";
 import {RouteResponse, ViewDirection, ViewDirectionFeature} from "../Model/RouteResponse";
 import * as L from "leaflet";
+import { string } from "prop-types";
 
 export interface IRoutingService {
-    calculateRoute(from: AddressItem, to : AddressItem, blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
+    calculateRoute(from: AddressItem, to : AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
         weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean,
         avoidMessagesOfType?: string[]) : Promise<IRouteResponse>;
 }
@@ -30,7 +31,7 @@ export default class RoutingService implements IRoutingService  {
         this.projection =  new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
     }
 
-    calculateRoute(from: AddressItem, to: AddressItem, blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
+    calculateRoute(from: AddressItem, to: AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
         weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean,
         avoidMessagesOfType?: string[]) : Promise<IRouteResponse> {
         let strings = [] as string[];
@@ -39,6 +40,16 @@ export default class RoutingService implements IRoutingService  {
         strings.push(fromPt.x + "," + fromPt.y);
 
         //Intermediate locatiosn
+        if (via != null)
+        {
+            via.forEach((via) => {
+                if (via != null)
+                {
+                    var viaPt = this.projection.project(via.location);
+                    strings.push(viaPt.x + "," + viaPt.y);
+                }
+            });
+        }
 
         var toPt = this.projection.project(to.location);
         strings.push(toPt.x + "," + toPt.y);

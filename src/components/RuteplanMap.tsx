@@ -48,6 +48,7 @@ interface IRuteplanMapProps{
   intermediateLocations?: AddressItem[];
   fromLocationChanged? : (item : AddressItem) => void;
   toLocationChanged? : (item : AddressItem) => void;
+  intermediateLocationChanged? : (index: number, location : AddressItem) => void;
   routeResponse : IRouteResponse;
   selectedRouteIdx : number;
   routeSelected: (selectedRouteIdx: number) => void;
@@ -135,6 +136,15 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
       this.setToLocation({latlng: pos});
     }
 
+    viaLocationDragged = (i: number) => (e : L.DragEndEvent) => 
+    {
+      let pos = (e.target as L.Marker).getLatLng();
+      if (this.props.intermediateLocationChanged)
+      {
+        this.props.intermediateLocationChanged(i,{name: "Punkt i kartet (" + pos.lat + ", " +pos.lng + ")", location: pos});
+      }
+    }
+
     setFromLocation = (pos : { latlng : L.LatLng}) => {
       if (this.props.fromLocationChanged)
       {
@@ -148,9 +158,12 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
       }
     }
 
-    contextMenuAddIntermediate = (e :{ latlng : L.LatLng}) => {
-
-    }
+    contextMenuAddIntermediate = (pos : { latlng : L.LatLng}) => {
+        if (this.props.intermediateLocationChanged)
+        {
+          this.props.intermediateLocationChanged(-1,{name: "Punkt i kartet (" + pos.latlng.lat + ", " +pos.latlng.lng + ")", location: pos.latlng});
+        }
+      }
 
     contextMenuBlockPoint = (e:{ latlng : L.LatLng}) => {
 
@@ -195,8 +208,11 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
           <Marker position={this.props.toLocation.location} draggable={true} icon={this.toMakerIcon} onDragend={this.toLocationDragged}></Marker>
           }
           
-          {this.props.intermediateLocations != null && this.props.intermediateLocations.forEach(location => {
-            <Marker position={location.location} draggable={true} icon={this.viaMarkerIcon}></Marker>  
+          {this.props.intermediateLocations != null && this.props.intermediateLocations.map((location,i) => {
+            if (location != null)
+            {
+              return <Marker key={"via"+i} position={location.location} draggable={true} icon={this.viaMarkerIcon} onDragEnd={this.viaLocationDragged(i)}></Marker>  
+            }
           })          
           }
         </LayerGroup>
