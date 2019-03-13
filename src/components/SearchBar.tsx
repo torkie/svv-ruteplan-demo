@@ -2,7 +2,7 @@ import * as React from "react";
 
 import SearchTextBox from "./SearchTextBox";
 import { AddressItem } from "../Model/AddressItem";
-import { Paper, TextField, Divider, Typography } from "@material-ui/core";
+import { Paper, TextField, Divider, Typography, Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -18,11 +18,16 @@ interface SearchBarProps{
     weight?: number;
     height?: number;
     length?: number;
+    allowTravelInZeroEmissionZone:boolean;
     onWeightChanged? : (newValue : number) => void;
     onHeightChanged? : (newValue : number) => void;
     onLengthChanged? : (newValue : number) => void;
     blockedPoints : L.LatLng[];
     onBlockedPointDeleted: (index: number) => void;
+    onClearRoute : () => void;
+    onTurnRoute : () => void;
+    onConfigChanged : () => void;
+    allowTravelInZeroEmissionZoneChanged : (allowTravel : boolean) => void;
 }
 
 interface SearchBarState {
@@ -46,6 +51,34 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
         {
             ctx.setUrl(val);
         }
+    }
+
+    setBackendConfig = (config : string)  => async () => {
+        let ctx = this.context as ISettingsProviderState;
+        switch (config)
+        {
+            case "SVVPROD":
+            {
+                await Promise.all([ctx.setUrl("https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?"), ctx.setRouteType("alternative")]);
+                break;
+            }
+            case "SVVTP":
+            {
+                await Promise.all([ctx.setUrl("https://www.test.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?"),ctx.setRouteType("alternative")]);
+                break;
+            }
+            case "SVVUTV":
+            {
+                await Promise.all([ctx.setUrl("https://www.utv.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?"), ctx.setRouteType("alternative")]);
+                break;
+            }
+            case "Triona":
+            {
+                await Promise.all([ctx.setUrl("http://multirit.triona.se/routingService_v1_0/routingService?"), ctx.setRouteType("")]);
+                break;
+            }
+        }
+        this.props.onConfigChanged();
     }
 
     weightChanged = (e : React.ChangeEvent<HTMLInputElement>) => {
@@ -96,11 +129,16 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
         }
     }
 
+    handleAllowTravelInZeroEmissionZoneChanged = (e : React.ChangeEvent<HTMLInputElement>) =>
+    {
+        this.props.allowTravelInZeroEmissionZoneChanged(e.target.checked);
+    }
+
     render() {
         let ctx = this.context as ISettingsProviderState;
 
         return  <Paper className={"searchbar"} style={{textAlign:'center'}} elevation={1}>
-        <SearchTextBox title="Fra" key={this.props.fromLocation.name} value={this.props.fromLocation} onResult={this.props.onFromPositionSelected}/>
+        <SearchTextBox title="Fra" key={this.props.fromLocation != null ? this.props.fromLocation.name : 'from'} value={this.props.fromLocation} onResult={this.props.onFromPositionSelected}/>
         {this.props.intermediateLocations &&
             <div style={{maxHeight: 200, overflowY: this.props.intermediateLocations.length >3 ? 'scroll' : 'hidden'}}>
                 {this.props.intermediateLocations.map((loc,i) => {
@@ -116,7 +154,7 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
                 })}
             </div>
         }
-        <SearchTextBox title="Til" key={this.props.toLocation.name} value={this.props.toLocation} onResult={this.props.onToPositionSelected}/>
+        <SearchTextBox title="Til" key={this.props.toLocation != null ? this.props.toLocation.name : 'to'} value={this.props.toLocation} onResult={this.props.onToPositionSelected}/>
        
         {this.props.blockedPoints &&  this.props.blockedPoints.length > 0 &&
         <div style={{textAlign: 'left', paddingLeft: '10px'}}>
@@ -130,6 +168,16 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
         </div>
         })}
         </div>}
+        
+        <div style={{width:'100%',lineHeight:'20px',position:'relative',textAlign:'left'}}>
+        <Button color="primary" onClick={this.props.onClearRoute}>
+        Slett
+        </Button>
+        <Button color="primary" onClick={this.props.onTurnRoute}>
+        Snu ruten
+        </Button>
+        </div>
+
 
          {!this.state.expanded &&
             <ExpandMoreIcon style={{cursor:'pointer'}} onClick={this.toggleExpand}/>
@@ -155,6 +203,17 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
             value={this.props.length}
             onChange={this.lengthChanged}
             />
+             <FormControlLabel
+                control={
+                    <Checkbox
+                    checked={this.props.allowTravelInZeroEmissionZone}
+                    onChange={this.handleAllowTravelInZeroEmissionZoneChanged}
+                    value="allowTravelInZeroEmissionZone"
+                    />
+             }
+                 label="Tillat kjøring i nullutslippsone"
+            />
+            
             </div>
             <Divider variant="fullWidth" style={{marginTop: 10}}/>
             <SettingsContext.Consumer>
@@ -165,6 +224,20 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
                 </div>
             }}
             </SettingsContext.Consumer>
+            <div style={{width:'100%',lineHeight:'20px',position:'relative',textAlign:'left'}}>
+        <Button color="secondary" onClick={this.setBackendConfig("SVVPROD")}>
+            SVV Prod
+        </Button>
+        <Button color="secondary" onClick={this.setBackendConfig("SVVTP")}>
+            SVV Testprod
+        </Button>
+        <Button color="secondary" onClick={this.setBackendConfig("SVVUTV")}>
+            SVV UTV
+        </Button>
+        <Button color="secondary" onClick={this.setBackendConfig("Triona")}>
+            Triona UTV
+        </Button>
+        </div>
         </div>
         }
         {this.state.expanded &&

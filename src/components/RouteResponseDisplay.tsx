@@ -18,7 +18,7 @@ export class RouteResponseDisplay extends React.Component<RouteResponseDisplayPr
 
     render() {
 
-        return <div style={{position:'relative'}}><div className="routeResponseDisplay">{
+        return <div style={{position:'relative', marginTop: 15}}><div className="routeResponseDisplay" style={{height: 50}}>{
             this.props.routeResponse != null && this.props.routeResponse.directions != null && this.props.routeResponse.directions.map((direction, i) => {
                 console.log(direction);
                 return <div key={i} className={this.props.selectedRouteIdx==i ? "selected" : ""} onClick={() => { if (this.props.routeSelected != null) {

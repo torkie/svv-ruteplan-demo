@@ -3,8 +3,8 @@ import {Cookies } from 'react-cookie';
 
 const DEAFULT_STATE = {  url : "https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?",
         routetype : "alternative",
-        setUrl: (url: string) : void => {} ,
-        setRouteType: (routetype: string) : void => {},
+        setUrl:  async (url: string) : Promise<void> => {} ,
+        setRouteType: async (routetype: string) : Promise<void> => {},
         settingsChanged: () => {}
          };
 
@@ -41,13 +41,26 @@ export default class SettingsProvider extends React.Component<ISettingsProviderP
         this.state.setRouteType =this.setRouteType;
     }
 
-    setUrl = (url:string) => {
-        this.setState({url:url});
-        this.cookies.set("settingsv2", JSON.stringify({url:url, routetype: this.state.routetype}));
+    setUrl =  async (url:string) : Promise<void> => {
+        let promise = await new Promise<void>((resolve, reject) => {
+            this.setState({url:url}, () => {
+                resolve();
+            });
+            this.cookies.set("settingsv2", JSON.stringify({url:url, routetype: this.state.routetype}));
+        }).catch(err => {throw err});
+
+        return promise;
+        
+        
     };
-    setRouteType = (routeType: string) => {
-        this.setState({routetype: routeType});
+    setRouteType = async (routeType: string) : Promise<void> => {
+        let promise = await new Promise<void>((resolve,reject) => {
+            this.setState({routetype: routeType}, () => {
+                resolve();
+            });
         this.cookies.set("settingsv2", JSON.stringify({url:this.state.url, routetype: routeType}));
+        }).catch(err => { throw err;});
+        return promise;
     };
 
     render() {

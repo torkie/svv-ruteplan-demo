@@ -20,6 +20,7 @@ interface MainPageState {
     weight? : number;
     length? : number;
     height? : number;
+    allowTravelInZeroEmissionZone : boolean;
     blockedPoints : L.LatLng[];
 }
 
@@ -34,7 +35,8 @@ class MainPage extends React.Component<any,MainPageState>{
         weight : null as number,
         height: null as number,
         length: null as number,
-        blockedPoints : null as L.LatLng[]
+        blockedPoints : null as L.LatLng[], 
+        allowTravelInZeroEmissionZone : true
     };
 
     static contextType = SettingsContext;
@@ -84,8 +86,16 @@ class MainPage extends React.Component<any,MainPageState>{
             blockedPoints = JSON.parse(parsed.blockedPoints);
         }
 
+        let allowZeroEmissionZoneTravel = true;
+        if (parsed.allowTravelInZeroEmissionZone)
+        {
+            allowZeroEmissionZoneTravel = parsed.allowTravelInZeroEmissionZone;
+        }
+
         this.state = {currentStartLocation: from, currentEndLocation : to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,  
-            weight: weight, length:length, height: height, blockedPoints: blockedPoints};    
+            weight: weight, length:length, height: height, blockedPoints: blockedPoints,
+            allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel
+        };    
     }
 
     componentDidMount()
@@ -117,6 +127,11 @@ class MainPage extends React.Component<any,MainPageState>{
                 onLengthChanged={this.handleLengthChanged}
                 onHeightChanged={this.handleHeightChanged}
                 onBlockedPointDeleted={this.handleBlockedPointDeleted}
+                onClearRoute={this.clearRoute}
+                onTurnRoute={this.turnRoute}
+                onConfigChanged={this.checkPerformRoute}
+                allowTravelInZeroEmissionZone={this.state.allowTravelInZeroEmissionZone}
+                allowTravelInZeroEmissionZoneChanged={this.handleAllowTravelInZeroEmissionZoneChanged}
                 />
                  <RouteResponseDisplay routeResponse={this.state.currentRouteResponse} selectedRouteIdx={this.state.selectedRouteIdx} 
         routeSelected={this.handleRouteSelected}/>;
@@ -136,19 +151,61 @@ class MainPage extends React.Component<any,MainPageState>{
        </div>
     }
 
-    checkPerformRoute()
+    checkPerformRoute = () => 
     {
         let setts  = this.context as ISettingsProviderState;
 
         if (this.state.currentEndLocation != null && this.state.currentStartLocation != null)
         {
             var routingService = new RoutingService(setts.url, setts.routetype);
-            routingService.calculateRoute(this.state.currentStartLocation, this.state.currentEndLocation, this.state.currentIntermediateLocations,null,null,this.state.weight,this.state.length,this.state.height).then((results) => {
+            routingService.calculateRoute(this.state.currentStartLocation, this.state.currentEndLocation, this.state.currentIntermediateLocations,this.state.blockedPoints,null,this.state.weight,this.state.length,this.state.height,this.state.allowTravelInZeroEmissionZone).then((results) => {
                 this.setState({currentRouteResponse: results, selectedRouteIdx: 0});
             });
             
         }
     }
+
+    handleAllowTravelInZeroEmissionZoneChanged = (allowTravel : boolean) => {
+        this.setState({allowTravelInZeroEmissionZone: allowTravel}, () => {
+            this.checkPerformRoute();
+        });
+        this.updateSearch("allowTravelInZeroEmissionZone", allowTravel);
+    }
+
+    clearRoute = () => {
+        this.setState({
+            currentStartLocation: null,
+            currentEndLocation: null,
+            currentRouteResponse: null,
+            currentIntermediateLocations: null,
+            blockedPoints: null
+        })
+        this.updateSearch("from",null);
+        this.updateSearch("to",null);
+        this.updateSearch("via",null);
+        this.updateSearch("blockedPoints",null);
+    }
+    turnRoute = () => {
+        let pts = null;
+        if (this.state.currentIntermediateLocations != null)
+        {
+            pts = [...this.state.currentIntermediateLocations];
+            pts = pts.reverse();
+        }
+        let newStart = this.state.currentEndLocation;
+        let newEnd = this.state.currentStartLocation;
+        this.setState({
+            currentStartLocation: newStart,
+            currentEndLocation : newEnd,
+            currentIntermediateLocations: pts
+        }, () => {
+            this.checkPerformRoute()
+        });
+        this.updateSearch("from",newStart);
+        this.updateSearch("to",newEnd);
+        this.updateSearch("via",pts);
+    }
+
     handleBlockedPointDeleted = (i:number) => {
         let pts = [...this.state.blockedPoints];
         pts.splice(i,1);
@@ -185,7 +242,12 @@ class MainPage extends React.Component<any,MainPageState>{
     }
 
     handleIntermediateLocationUpdated = (index : number, value : AddressItem) => {
-        let locs = [...this.state.currentIntermediateLocations];
+        let locs = [] as AddressItem[];
+        if (this.state.currentIntermediateLocations != null)
+        {
+            locs = [...this.state.currentIntermediateLocations];
+        }
+
         if (value == null)
         {
             locs.splice(index,1);
@@ -261,7 +323,15 @@ class MainPage extends React.Component<any,MainPageState>{
 
     updateSearch(param : string, value : any) {
         const parsed : any = qs.parse(location.search);
-        parsed[param] = JSON.stringify(value);
+        if (value == null)
+        {
+            delete parsed[param];
+        }
+        else 
+        {
+            parsed[param] = JSON.stringify(value);
+        }
+
         history.pushState({}, document.title,"?"+qs.stringify(parsed));
     }
 }

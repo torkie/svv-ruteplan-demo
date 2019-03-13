@@ -84,6 +84,11 @@ export default class RoutingService implements IRoutingService  {
         if (length)
             params.length = length;
 
+        if (!allowTravelInZeroEmissionZone)
+        {
+            params.allowTravelInZeroEmissionZone=false;
+        }
+
         return Axios.get(this.url, {
             params: params
         }).then((resp: AxiosResponse<RouteResponse>) => {
