@@ -69,7 +69,7 @@ const customStyles = {
     width: '95%'
   },
   overlay: {
-    zIndex: 300
+    zIndex: 10000
   }
 };
 
