@@ -76,7 +76,7 @@
     opacity: 0.9;
     font-size: 11px;
     max-height: 400px;
-    overflow: scroll;
+    overflow-y: scroll;
     display: inline-block;
     max-width: 450px;
     width: 100%;
