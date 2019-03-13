@@ -52,6 +52,9 @@ interface IRuteplanMapProps{
   routeResponse : IRouteResponse;
   selectedRouteIdx : number;
   routeSelected: (selectedRouteIdx: number) => void;
+  pointBlocked: (pnt: L.LatLng) => void;
+  blockedPointDragged: (i: number, pnt: L.LatLng) => void;
+  blockedPoints: L.LatLng[];
 }
 
 const customStyles = {
@@ -145,6 +148,14 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
       }
     }
 
+    blockedPointDragged = (i: number) => (e : L.DragEndEvent) => {
+      let pos = (e.target as L.Marker).getLatLng();
+      if (this.props.blockedPointDragged)
+      {
+        this.props.blockedPointDragged(i,pos);
+      }
+    }
+
     setFromLocation = (pos : { latlng : L.LatLng}) => {
       if (this.props.fromLocationChanged)
       {
@@ -166,6 +177,10 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
       }
 
     contextMenuBlockPoint = (e:{ latlng : L.LatLng}) => {
+      if (this.props.pointBlocked)
+      {
+        this.props.pointBlocked(e.latlng);
+      }
 
     }
 
@@ -215,6 +230,13 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
             }
           })          
           }
+          {this.props.blockedPoints != null && this.props.blockedPoints.map((location,i) => {
+            if (location != null)
+            {
+              return <Marker key={"blocked"+i} position={location} draggable={true} icon={this.blockedPointIcon} onDragEnd={this.blockedPointDragged(i)}></Marker>  
+            }
+          })          
+          }
         </LayerGroup>
         <LayerGroup>
           {this.props.routeResponse != null && this.props.routeResponse.features != null && this.props.routeResponse.features.map((f, i) => {
@@ -259,6 +281,11 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
       iconUrl:  '/images/viamarker.png',
       iconSize: [35,46],
       iconAnchor: [17,46]                        
+    });
+    private blockedPointIcon = new L.Icon({
+      iconUrl:  '/images/block-icon.png',
+      iconSize: [25,25],
+      iconAnchor: [12,12]                        
     });
 
     private wrapperStyle = {

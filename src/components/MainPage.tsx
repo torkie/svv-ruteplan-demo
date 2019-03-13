@@ -20,6 +20,7 @@ interface MainPageState {
     weight? : number;
     length? : number;
     height? : number;
+    blockedPoints : L.LatLng[];
 }
 
 class MainPage extends React.Component<any,MainPageState>{
@@ -32,7 +33,8 @@ class MainPage extends React.Component<any,MainPageState>{
         selectedRouteIdx : -1,
         weight : null as number,
         height: null as number,
-        length: null as number
+        length: null as number,
+        blockedPoints : null as L.LatLng[]
     };
 
     static contextType = SettingsContext;
@@ -49,6 +51,7 @@ class MainPage extends React.Component<any,MainPageState>{
         let weight : number = null;
         let height: number = null;
         let length : number = null;
+        let blockedPoints : L.LatLng[] = null;
         if (parsed.from != null)
         {
             from = JSON.parse(parsed.from);
@@ -76,7 +79,13 @@ class MainPage extends React.Component<any,MainPageState>{
             length = +parsed.length;
         }
 
-        this.state = {currentStartLocation: from, currentEndLocation : to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,  weight: weight, length:length, height: height};    
+        if (parsed.blockedPoints)
+        {
+            blockedPoints = JSON.parse(parsed.blockedPoints);
+        }
+
+        this.state = {currentStartLocation: from, currentEndLocation : to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,  
+            weight: weight, length:length, height: height, blockedPoints: blockedPoints};    
     }
 
     componentDidMount()
@@ -100,18 +109,24 @@ class MainPage extends React.Component<any,MainPageState>{
                 fromLocation={this.state.currentStartLocation} toLocation={this.state.currentEndLocation}
                 intermediateLocations={this.state.currentIntermediateLocations}                
                 onIntermediateLocationChanged={this.handleIntermediateLocationUpdated}
+                blockedPoints={this.state.blockedPoints}
                 weight={this.state.weight}
                 length={this.state.length}
                 height={this.state.height}
                 onWeightChanged={this.handleWeightChanged}
                 onLengthChanged={this.handleLengthChanged}
-                onHeightChanged={this.handleHeightChanged} />
+                onHeightChanged={this.handleHeightChanged}
+                onBlockedPointDeleted={this.handleBlockedPointDeleted}
+                />
                  <RouteResponseDisplay routeResponse={this.state.currentRouteResponse} selectedRouteIdx={this.state.selectedRouteIdx} 
         routeSelected={this.handleRouteSelected}/>;
             </div>
             <RuteplanMap fromLocation={this.state.currentStartLocation} toLocation={this.state.currentEndLocation} 
             intermediateLocations={this.state.currentIntermediateLocations}
             intermediateLocationChanged={this.handleIntermediateLocationUpdated}
+            pointBlocked={this.handleBlockedPoint}
+            blockedPoints={this.state.blockedPoints}
+            blockedPointDragged={this.handleBlockedPointDragged}
                 fromLocationChanged={this.handleFromLocationChangedInMap} 
                 toLocationChanged={this.handleToLocationChangedInMap}
                 routeResponse={this.state.currentRouteResponse}
@@ -133,6 +148,40 @@ class MainPage extends React.Component<any,MainPageState>{
             });
             
         }
+    }
+    handleBlockedPointDeleted = (i:number) => {
+        let pts = [...this.state.blockedPoints];
+        pts.splice(i,1);
+
+        this.setState({blockedPoints: pts}, () => {
+            this.checkPerformRoute();
+        });
+        this.updateSearch("blockedPoints",pts);
+    }
+
+    handleBlockedPointDragged = (i:number, pnt : L.LatLng) => {
+        let pts = [...this.state.blockedPoints];
+        
+        pts[i] = pnt;
+
+        this.setState({blockedPoints: pts}, () => {
+            this.checkPerformRoute();
+        });
+        this.updateSearch("blockedPoints",pts);
+    }
+
+    handleBlockedPoint = (pnt : L.LatLng) => {
+        let pts = [] as L.LatLng[];
+        if (this.state.blockedPoints != null)
+        {
+            pts = [...this.state.blockedPoints];
+        }
+        pts.push(pnt);
+
+        this.setState({blockedPoints: pts}, () => {
+            this.checkPerformRoute();
+        });
+        this.updateSearch("blockedPoints",pts);
     }
 
     handleIntermediateLocationUpdated = (index : number, value : AddressItem) => {

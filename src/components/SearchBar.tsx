@@ -21,6 +21,8 @@ interface SearchBarProps{
     onWeightChanged? : (newValue : number) => void;
     onHeightChanged? : (newValue : number) => void;
     onLengthChanged? : (newValue : number) => void;
+    blockedPoints : L.LatLng[];
+    onBlockedPointDeleted: (index: number) => void;
 }
 
 interface SearchBarState {
@@ -87,6 +89,12 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
             this.props.onIntermediateLocationChanged(index,null);
         }
     }
+    handleBlockedPointDeleted = (index: number) => () => {
+        if (this.props.onBlockedPointDeleted)
+        {
+            this.props.onBlockedPointDeleted(index);
+        }
+    }
 
     render() {
         let ctx = this.context as ISettingsProviderState;
@@ -109,7 +117,21 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
             </div>
         }
         <SearchTextBox title="Til" key={this.props.toLocation.name} value={this.props.toLocation} onResult={this.props.onToPositionSelected}/>
-        {!this.state.expanded &&
+       
+        {this.props.blockedPoints &&  this.props.blockedPoints.length > 0 &&
+        <div style={{textAlign: 'left', paddingLeft: '10px'}}>
+        <span><b>Blocked Points</b></span>
+        {this.props.blockedPoints.map((pnt,i) => {
+            return <div key={"blockedPnt_" + i} style={{width:'100%',lineHeight:'20px',position:'relative',textAlign:'left'}}>
+            <DeleteIcon style={{cursor:'pointer',verticalAlign:'middle', display: 'inline-block',lineHeight:'20px'}} onClick={this.handleBlockedPointDeleted(i)}/>
+            <div style={{position:'absolute', left:25,right:0,display:'inline-block', lineHeight:'20px'}}>
+                <span>{pnt.lat + "," + pnt.lng}</span>
+            </div>
+        </div>
+        })}
+        </div>}
+
+         {!this.state.expanded &&
             <ExpandMoreIcon style={{cursor:'pointer'}} onClick={this.toggleExpand}/>
         }
         {this.state.expanded &&
