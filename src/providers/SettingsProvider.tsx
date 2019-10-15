@@ -17,8 +17,9 @@ interface ISettingsProviderProps {
 export interface ISettingsProviderState {
     url : string;
     routetype: string;
-    setUrl : (url : string) => void;
-    setRouteType : (routetype : string) => void;
+    setUrl : (url : string) => Promise<void>;
+    setRouteType : (routetype : string) => Promise<void>;
+    settingsChanged: () => void;
 }
 export default class SettingsProvider extends React.Component<ISettingsProviderProps, ISettingsProviderState> {
 

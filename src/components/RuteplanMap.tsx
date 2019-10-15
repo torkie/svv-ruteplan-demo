@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import { AddressItem } from "../Model/AddressItem";
 import "leaflet-contextmenu";
 import { IRouteResponse } from "../providers/RoutingService";
+import { LeafletMouseEventHandlerFn } from "leaflet";
 
 const position : L.LatLngExpression = [60.877003, 8.903530];
 const mapResolutions = [
@@ -107,9 +108,8 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
         iconAnchor:   [5, 5], // point of the icon which will correspond to marker's location
       });
       var f = L.marker(latlng, { icon: myIcon, opacity: 0.5 });
-      f.on("click", (e : MouseEvent) => {
+      f.on("click", (e : L.LeafletMouseEvent) => {
         this.setState({modalIsOpen: true, modalFerryTitle: "Ferry: " + point.properties.route1, modalFerryUrl: point.properties.route1});
-            //scope.openFerryPopup("Ferry", feature.properties.route1);
       });
       return f;
     }
