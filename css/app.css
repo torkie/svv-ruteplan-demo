@@ -43,7 +43,6 @@
 .routeResponseDisplay
 {
     display: block;
-    max-width: 450px;
     position: relative;
     z-index: 400;
     margin-top: 15px;
@@ -200,6 +199,14 @@
     text-align: center;
     z-index: 400;
 
+
+
+}
+
+.shadow {
+    -webkit-box-shadow: 4px 4px 11px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 4px 4px 11px 0px rgba(0,0,0,0.75);
+box-shadow: 4px 4px 11px 0px rgba(0,0,0,0.75);
 }
 
 .settingspane {visibility: collapse;display: none;}

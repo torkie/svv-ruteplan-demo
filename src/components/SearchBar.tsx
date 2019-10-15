@@ -137,7 +137,7 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
     render() {
         let ctx = this.context as ISettingsProviderState;
 
-        return  <Paper className={"searchbar"} style={{textAlign:'center'}} elevation={1}>
+        return  <Paper className={"searchbar"} style={{textAlign:'center'}} elevation={5}>
         <SearchTextBox title="Fra" key={this.props.fromLocation != null ? this.props.fromLocation.name : 'from'} value={this.props.fromLocation} onResult={this.props.onFromPositionSelected}/>
         {this.props.intermediateLocations &&
             <div style={{maxHeight: 200, overflowY: this.props.intermediateLocations.length >3 ? 'scroll' : 'hidden'}}>
@@ -176,6 +176,7 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
         <Button color="primary" onClick={this.props.onTurnRoute}>
         Snu ruten
         </Button>
+        <Checkbox color="primary">Zoom til beregned rute</Checkbox>
         </div>
 
 

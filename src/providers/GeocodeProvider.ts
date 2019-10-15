@@ -34,7 +34,7 @@ export class GeocodeService implements IGeocodeService {
         return ret;
     }
 
-    getLocationsNorgesKart = (val : string) => axios.get("https://www.norgeskart.no/ws/adr.py?" + encodeURIComponent(val)).then(res => {
+    getLocationsNorgesKart = (val : string) => axios.get("https://ws.geonorge.no/norgeskart/v1/matrikkel/veg/" + encodeURIComponent(val)).then(res => {
         var addresses = new Array<AddressItem>();
 
         if (Array.isArray(res.data)) {
@@ -56,6 +56,7 @@ export class GeocodeService implements IGeocodeService {
         item.TITTEL.forEach((part: string) => {parts.push(part)});
         parts.push(item.FYLKESNAVN);
         var name = parts.join(", ");
+        
         return { name: name, location: coordWgs};
     }
 

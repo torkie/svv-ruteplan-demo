@@ -3,6 +3,7 @@ import { IRouteResponse } from "../providers/RoutingService";
 import TimeFormatter from "../providers/TimeFormatter";
 import LengthFormatter from "../providers/LengthFormatter";
 import { ViewDirection, RouteResponseDirectionFeature, ViewDirectionFeature } from "../Model/RouteResponse";
+import { Paper } from "@material-ui/core";
 
 
 export interface RouteResponseDisplayProps{
@@ -20,19 +21,17 @@ export class RouteResponseDisplay extends React.Component<RouteResponseDisplayPr
 
         return <div style={{position:'relative', marginTop: 15}}><div className="routeResponseDisplay" style={{height: 50}}>{
             this.props.routeResponse != null && this.props.routeResponse.directions != null && this.props.routeResponse.directions.map((direction, i) => {
-                console.log(direction);
-                return <div key={i} className={this.props.selectedRouteIdx==i ? "selected" : ""} onClick={() => { if (this.props.routeSelected != null) {
+                return <Paper  elevation={this.props.selectedRouteIdx==i ? 0 : 3} key={i} className={this.props.selectedRouteIdx==i ? "selected" : ""} onClick={() => { if (this.props.routeSelected != null) {
                     this.props.routeSelected(i);
                 }}}>{direction.routeName}
-                <br/>{LengthFormatter.formatLength(direction.summary.totalLength)} / {TimeFormatter.formatTimeFromMintes(direction.summary.totalDriveTime)}</div>
+                <br/>{LengthFormatter.formatLength(direction.summary.totalLength)} / {TimeFormatter.formatTimeFromMintes(direction.summary.totalDriveTime)}</Paper>
             })
         }
         </div>
-        <div className="selectedRouteDisplay">
+        <Paper className={"selectedRouteDisplay"} elevation={5}>
             {this.renderSelectedTurnstructionHeader()}
             {this.renderTurnInstructions()}
-        </div>
-        </div>;
+        </Paper></div>;
     }
     renderSelectedTurnstructionHeader() {
         if (this.props.selectedRouteIdx >= 0 && this.props.routeResponse != null && this.props.routeResponse.directions != null)
