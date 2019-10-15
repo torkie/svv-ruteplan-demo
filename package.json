@@ -28,6 +28,7 @@
     "leaflet": "^1.5.1",
     "leaflet-contextmenu": "^1.4.0",
     "lodash": "^4.17.15",
+    "mixin-deep": "^2.0.1",
     "proj4leaflet": "^1.0.2",
     "query-string": "^6.8.3",
     "react": "^16.10.2",
