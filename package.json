@@ -38,6 +38,7 @@
     "react-leaflet": "^2.4.0",
     "react-modal": "^3.10.1",
     "react-tabs": "^3.0.0",
+    "set-value": "^3.0.1",
     "stringquery": "^1.0.8",
     "webpack": "^4.41.1"
   },
