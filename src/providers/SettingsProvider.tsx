@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Cookies } from 'react-cookie';
 
-const DEAFULT_STATE = {  url : "https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?",
+const DEAFULT_STATE = {  url : "https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingservice_v2_0/open/routingservice?",
         routetype : "alternative",
         setUrl:  async (url: string) : Promise<void> => {} ,
         setRouteType: async (routetype: string) : Promise<void> => {},

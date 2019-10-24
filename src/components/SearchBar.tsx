@@ -59,17 +59,17 @@ export class SearchBar  extends React.Component<SearchBarProps, SearchBarState>{
         {
             case "SVVPROD":
             {
-                await Promise.all([ctx.setUrl("https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?"), ctx.setRouteType("alternative")]);
+                await Promise.all([ctx.setUrl("https://www.vegvesen.no/ws/no/vegvesen/ruteplan/routingservice_v2_0/open/routingservice?"), ctx.setRouteType("alternative")]);
                 break;
             }
             case "SVVTP":
             {
-                await Promise.all([ctx.setUrl("https://www.test.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?"),ctx.setRouteType("alternative")]);
+                await Promise.all([ctx.setUrl("https://www.test.vegvesen.no/ws/no/vegvesen/ruteplan/routingservice_v2_0/open/routingservice?"),ctx.setRouteType("alternative")]);
                 break;
             }
             case "SVVUTV":
             {
-                await Promise.all([ctx.setUrl("https://www.utv.vegvesen.no/ws/no/vegvesen/ruteplan/routingService_v1_0/routingService?"), ctx.setRouteType("alternative")]);
+                await Promise.all([ctx.setUrl("https://www.utv.vegvesen.no/ws/no/vegvesen/ruteplan/routingservice_v2_0/open/routingservice?"), ctx.setRouteType("alternative")]);
                 break;
             }
             case "Triona":
