@@ -5,6 +5,29 @@
     overflow: hidden;       
 }
 
+.test{
+    display: grid;
+}
+
+.parameterRemoveButton{
+    vertical-align: bottom;
+}
+
+.parameters{
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.parameterAddButton{
+    grid-column: 2;
+    grid-row: 1;
+    align-self: flex-end;
+}
+
+.parameterComponent {
+    grid-column: 1;
+}
+
 .topbar {
     background: #444f55;
     border-bottom: 3px solid #ff9600;

@@ -204,7 +204,7 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps,IRuteplanMapS
         return <div><Map zoomControl={false} center={position} zoom={4} id="map" crs={crs} contextmenu={true} contextmenuItems={contextMenuItems}>
         <TileLayer
           attribution='&copy; NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)'
-          url='https://m{s}-nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}'
+          url='https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}'
           subdomains="123456789"
           nowrap="true"
           maxzoom="{(crs as any).options.resolutions.length}"

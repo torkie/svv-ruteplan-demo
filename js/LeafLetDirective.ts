@@ -48,8 +48,8 @@ class LeafLetDirective {
                     text: '<i class="fa fa-play" style="color: green;margin-right: 5px"></i> Sett startpunkt',
                     callback: scope.contextMenuSetFrom
                 }, {
-                    text: '<i class="fa fa-pause" style="color: rgb(238,146,46); margin-right: 5px"></i> Legg til viapunkt',
-                    callback: scope.contextMenuAddIntermediate
+                    text: '<i class="fa fa-pause" style="color: rgb(238,146,46); margin-right: 5px"></i> Legg til viapunkt', callback: scope.contextMenuAddIntermediate
+                    
                 }, {
                     text: '<i class="fa fa-stop" style="color: red;margin-right: 5px"></i> Sett Sluttpunkt',
                     callback: scope.contextMenuSetTo
@@ -59,7 +59,7 @@ class LeafLetDirective {
                     callback: scope.contextMenuBlockPoint
                 }]
             });
-            L.tileLayer('https://m{s}-nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}', {
+            L.tileLayer('https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}', {
                 subdomains: "123456789",
                 attribution: '&copy; NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)',
                 noWrap: true,
