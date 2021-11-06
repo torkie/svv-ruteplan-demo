@@ -55,13 +55,13 @@ export class Parameter extends React.Component<IParameterProps>{
 
     return (
       <div style={{ textAlign: 'left', paddingLeft: 10 }}>
-        <TextField label={"key"}
+        <TextField label={"Parameter type"}
           id="inputUserClass"
           style={{ marginRight: 10 }}
           onChange={this.onKeyChanged}
 
         />
-        <TextField label="Verdi"
+        <TextField label="Parameter verdi"
           id="inputHeight"
           style={{ marginRight: 10 }}
           onChange={this.onValueChanged}

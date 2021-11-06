@@ -39,7 +39,6 @@ export default class RoutingService implements IRoutingService {
         var fromPt = this.projection.project(from.location);
         strings.push(fromPt.x + "," + fromPt.y);
 
-        console.log(parameters);
         //Intermediate locatiosn
         if (via != null) {
             via.forEach((via) => {
@@ -87,7 +86,7 @@ export default class RoutingService implements IRoutingService {
             params.allowTravelInZeroEmissionZone = false;
         }
 
-        this.addParameters(params,parameters);
+        this.addCustomParameters(params,parameters);
 
         return Axios.get(this.url, {
             params: params
@@ -154,7 +153,7 @@ export default class RoutingService implements IRoutingService {
     }
 
 
-    addParameters(params: any, parameters?: IParameter[]) {
+    addCustomParameters(params: any, parameters?: IParameter[]) {
         parameters.forEach((parameter: IParameter) => {
 
             if (parameter.key !== '' && parameter.value != '') {
