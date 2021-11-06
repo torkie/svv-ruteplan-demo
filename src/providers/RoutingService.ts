@@ -1,15 +1,15 @@
 import { AddressItem } from "../Model/AddressItem";
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 import Axios from "axios";
-import {RouteResponse, ViewDirection, ViewDirectionFeature} from "../Model/RouteResponse";
+import { RouteResponse, ViewDirection, ViewDirectionFeature } from "../Model/RouteResponse";
 import * as L from "leaflet";
 import { string } from "prop-types";
 import { IParameter } from "../components/Parameter";
 
 export interface IRoutingService {
-    calculateRoute(from: AddressItem, to : AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
-        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean, parameters?:IParameter[],
-        avoidMessagesOfType?: string[]) : Promise<IRouteResponse>;
+    calculateRoute(from: AddressItem, to: AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
+        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean, parameters?: IParameter[],
+        avoidMessagesOfType?: string[]): Promise<IRouteResponse>;
 }
 
 export interface IRouteResponse {
@@ -18,35 +18,32 @@ export interface IRouteResponse {
     bounds: L.LatLngBounds;
 }
 
-export interface Feature{
+export interface Feature {
     geometry: L.Polyline;
 }
 
 
-export default class RoutingService implements IRoutingService  {
+export default class RoutingService implements IRoutingService {
 
-    private projection : L.Projection;
+    private projection: L.Projection;
 
-    constructor(private url: string, private routeType : string)
-    {
-        this.projection =  new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
+    constructor(private url: string, private routeType: string) {
+        this.projection = new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs").projection;
     }
 
     calculateRoute(from: AddressItem, to: AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
-        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean,parameters?:IParameter[],
-        avoidMessagesOfType?: string[]) : Promise<IRouteResponse> {
+        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean, parameters?: IParameter[],
+        avoidMessagesOfType?: string[]): Promise<IRouteResponse> {
         let strings = [] as string[];
-        
+
         var fromPt = this.projection.project(from.location);
         strings.push(fromPt.x + "," + fromPt.y);
 
         console.log(parameters);
         //Intermediate locatiosn
-        if (via != null)
-        {
+        if (via != null) {
             via.forEach((via) => {
-                if (via != null)
-                {
+                if (via != null) {
                     var viaPt = this.projection.project(via.location);
                     strings.push(viaPt.x + "," + viaPt.y);
                 }
@@ -55,7 +52,7 @@ export default class RoutingService implements IRoutingService  {
 
         var toPt = this.projection.project(to.location);
         strings.push(toPt.x + "," + toPt.y);
-        
+
         var stopsParameter = strings.join(";");
 
         strings = [];
@@ -86,33 +83,20 @@ export default class RoutingService implements IRoutingService  {
         if (length)
             params.length = length;
 
-
-            parameters.forEach((parameter : IParameter)  => {
-
-                if(parameter.key !== '' && parameter.value !=''){
-                    
-                    const value = parameter.value;
-                    params[parameter.key] = value;
-                }
-                
-            });
-        
-
-
-        if (!allowTravelInZeroEmissionZone)
-        {
-            params.allowTravelInZeroEmissionZone=false;
+        if (!allowTravelInZeroEmissionZone) {
+            params.allowTravelInZeroEmissionZone = false;
         }
+
+        this.addParameters(params,parameters);
 
         return Axios.get(this.url, {
             params: params
         }).then((resp: AxiosResponse<RouteResponse>) => {
             var data = resp.data;
-            
+
             // create geometry features from routes
-            var features : { geometry: L.Polyline}[] = [];
-            if (data.routes == null)
-            {
+            var features: { geometry: L.Polyline }[] = [];
+            if (data.routes == null) {
                 alert("Could not calculate a route! Try move start/end point");
                 return null;
             }
@@ -126,7 +110,7 @@ export default class RoutingService implements IRoutingService  {
                     components.push(points);
                 });
                 var geometry = new L.Polyline(components);
-                features.push({geometry: geometry});
+                features.push({ geometry: geometry });
             });
 
             // calculate bounding box for all routes
@@ -139,7 +123,7 @@ export default class RoutingService implements IRoutingService  {
                         feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
                         feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
                     }
-                    
+
                     feature.turnIconClass = this.getTurnIconForEsriManeuvre(feature.attributes.maneuverType);
 
                 });
@@ -149,12 +133,12 @@ export default class RoutingService implements IRoutingService  {
                 directions[i].TotalTollSmallWithoutDiscount = data.routes.features[i].attributes["Total_Toll_Without_Discount small"];
                 //Unpack additional attributes
                 if ((<any>data.routes.features[i].attributes).attributes) {
-                    (<any>data.routes.features[i].attributes).attributes.forEach((kvp : any) => {
-                            (<any>directions[i].summary).statistics[kvp.key] = kvp.value;
-                        });
+                    (<any>data.routes.features[i].attributes).attributes.forEach((kvp: any) => {
+                        (<any>directions[i].summary).statistics[kvp.key] = kvp.value;
+                    });
                 }
                 var bbox = directions[i].summary.envelope;
-                directions[i].Bounds = new L.LatLngBounds(this.projection.unproject(new L.Point(bbox.xmin, bbox.ymin)), this.projection.unproject(new L.Point(bbox.xmax,bbox.ymax)));
+                directions[i].Bounds = new L.LatLngBounds(this.projection.unproject(new L.Point(bbox.xmin, bbox.ymin)), this.projection.unproject(new L.Point(bbox.xmax, bbox.ymax)));
 
                 if (totalBounds == null) {
                     totalBounds = directions[i].Bounds;
@@ -165,35 +149,48 @@ export default class RoutingService implements IRoutingService  {
                 (features[i].geometry.options as any).routeId = directions[i].routeId;
             }
 
-            return {features: features, directions: directions, bounds: totalBounds};
+            return { features: features, directions: directions, bounds: totalBounds };
         });
     }
 
-    getTurnIconForEsriManeuvre = (esriManeuvreType : string) => {
-        switch (esriManeuvreType) {
-        case "esriDMTStraight":
-            return "icon-straight";
-        case "esriDMTBearLeft":
-            return "icon-bearleft";
-        case "esriDMTBearRight":
-            return "icon-bearright";
-        case "esriDMTTurnLeft":
-        case "esriDMTSharpLeft":
-            return "icon-turnleft";
-        case "esriDMTTurnRight":
-        case "esriDMTSharpRight":
-            return "icon-turnright";
-        case "esriDMTUTurn":
-            return "icon-uturn";
-        case "esriDMTRoundabout":
-            return "icon-roundabout";
-        case "esriDMTDepart":
-            return "icon-start";
-        case "esriDMTStop":
-            return "icon-stop";
 
-        default:
-            return "";
+    addParameters(params: any, parameters?: IParameter[]) {
+        parameters.forEach((parameter: IParameter) => {
+
+            if (parameter.key !== '' && parameter.value != '') {
+
+                const key = parameter.key.trim();
+                const value = parameter.value.trim();
+                params[key] = value;
+            }
+        });
+    }
+
+    getTurnIconForEsriManeuvre = (esriManeuvreType: string) => {
+        switch (esriManeuvreType) {
+            case "esriDMTStraight":
+                return "icon-straight";
+            case "esriDMTBearLeft":
+                return "icon-bearleft";
+            case "esriDMTBearRight":
+                return "icon-bearright";
+            case "esriDMTTurnLeft":
+            case "esriDMTSharpLeft":
+                return "icon-turnleft";
+            case "esriDMTTurnRight":
+            case "esriDMTSharpRight":
+                return "icon-turnright";
+            case "esriDMTUTurn":
+                return "icon-uturn";
+            case "esriDMTRoundabout":
+                return "icon-roundabout";
+            case "esriDMTDepart":
+                return "icon-start";
+            case "esriDMTStop":
+                return "icon-stop";
+
+            default:
+                return "";
         }
 
     };
