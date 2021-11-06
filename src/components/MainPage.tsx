@@ -2,6 +2,9 @@ import * as React from "react";
 
 import {RuteplanMap} from "./RuteplanMap";
 import {SearchBar} from "./SearchBar";
+import {IParameter} from "./Parameter";
+import { Guid } from "guid-typescript";
+
 import { AddressItem } from "../Model/AddressItem";
 import RoutingService, { IRouteResponse } from "../providers/RoutingService";
 import { RouteResponseDisplay } from "./RouteResponseDisplay";
@@ -22,6 +25,7 @@ interface MainPageState {
     height? : number;
     allowTravelInZeroEmissionZone : boolean;
     blockedPoints : L.LatLng[];
+    parameters?: Array<IParameter>;
 }
 
 class MainPage extends React.Component<any,MainPageState>{
@@ -36,7 +40,8 @@ class MainPage extends React.Component<any,MainPageState>{
         height: null as number,
         length: null as number,
         blockedPoints : null as L.LatLng[], 
-        allowTravelInZeroEmissionZone : true
+        allowTravelInZeroEmissionZone : true,
+        parameters: new Array<IParameter>()
     };
 
     static contextType = SettingsContext;
@@ -94,8 +99,12 @@ class MainPage extends React.Component<any,MainPageState>{
 
         this.state = {currentStartLocation: from, currentEndLocation : to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,  
             weight: weight, length:length, height: height, blockedPoints: blockedPoints,
-            allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel
+            allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel,
+            parameters: new Array<IParameter>()
         };    
+
+        this.setParameters = this.setParameters.bind(this);
+
     }
 
     componentDidMount()
@@ -132,9 +141,11 @@ class MainPage extends React.Component<any,MainPageState>{
                 onConfigChanged={this.checkPerformRoute}
                 allowTravelInZeroEmissionZone={this.state.allowTravelInZeroEmissionZone}
                 allowTravelInZeroEmissionZoneChanged={this.handleAllowTravelInZeroEmissionZoneChanged}
+                parameters = {this.state.parameters}
+                setParameters = {this.setParameters}
                 />
                  <RouteResponseDisplay routeResponse={this.state.currentRouteResponse} selectedRouteIdx={this.state.selectedRouteIdx} 
-        routeSelected={this.handleRouteSelected}/>;
+                routeSelected={this.handleRouteSelected}/>;
             </div>
             <RuteplanMap fromLocation={this.state.currentStartLocation} toLocation={this.state.currentEndLocation} 
             intermediateLocations={this.state.currentIntermediateLocations}
@@ -158,7 +169,7 @@ class MainPage extends React.Component<any,MainPageState>{
         if (this.state.currentEndLocation != null && this.state.currentStartLocation != null)
         {
             var routingService = new RoutingService(setts.url, setts.routetype);
-            routingService.calculateRoute(this.state.currentStartLocation, this.state.currentEndLocation, this.state.currentIntermediateLocations,this.state.blockedPoints,null,this.state.weight,this.state.length,this.state.height,this.state.allowTravelInZeroEmissionZone).then((results) => {
+            routingService.calculateRoute(this.state.currentStartLocation, this.state.currentEndLocation, this.state.currentIntermediateLocations,this.state.blockedPoints,null,this.state.weight,this.state.length,this.state.height,this.state.allowTravelInZeroEmissionZone,this.state.parameters).then((results) => {
                 this.setState({currentRouteResponse: results, selectedRouteIdx: 0});
             });
             
@@ -334,6 +345,17 @@ class MainPage extends React.Component<any,MainPageState>{
 
         history.pushState({}, document.title,"?"+qs.stringify(parsed));
     }
+
+    
+    setParameters = (updatedParameters: IParameter[]) => {
+
+        this.setState({
+
+            parameters: updatedParameters
+
+        });
+    }
+
 }
 
 const styles = {

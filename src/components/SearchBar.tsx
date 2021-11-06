@@ -28,6 +28,8 @@ interface SearchBarProps {
     onBlockedPointDeleted: (index: number) => void;
     onClearRoute: () => void;
     onTurnRoute: () => void;
+    parameters: IParameter[];
+    setParameters?: (updatedParameters: IParameter[]) => void;
 
     onConfigChanged: () => void;
     allowTravelInZeroEmissionZoneChanged: (allowTravel: boolean) => void;
@@ -35,7 +37,6 @@ interface SearchBarProps {
 
 interface SearchBarState {
     expanded: boolean;
-    parameters: Array<IParameter>;
 
 }
 
@@ -45,19 +46,14 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
     constructor(props: any) {
         super(props);
 
-        let guid = Guid.create().toString();
-
 
         this.state = {
-            expanded: false,
-            parameters: new Array<IParameter>(1).fill({ id: guid, key: "", value: "",firstParameter:true })
+            expanded: false
         }
 
         this.removeParameter = this.removeParameter.bind(this);
         this.onParameterChanged = this.onParameterChanged.bind(this);
-
-
-
+        this.addParameter(true);
 
     }
     static contextType = SettingsContext;
@@ -100,6 +96,12 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
                     await Promise.all([ctx.setUrl("http://multirit.triona.se/routingService_v1_0/routingService?"), ctx.setRouteType("")]);
                     break;
                 }
+
+            case "LocalHost":
+                    {
+                        await Promise.all([ctx.setUrl("http://localhost:2062/routingservice?"), ctx.setRouteType("")]);
+                        break;
+                    }
         }
         this.props.onConfigChanged();
     }
@@ -149,38 +151,19 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
         this.props.allowTravelInZeroEmissionZoneChanged(e.target.checked);
     }
 
-    addParameter = () => {
+    removeParameter(id: string) {
 
-        let guid = Guid.create().toString();
+        let parametersArray = [...this.props.parameters];
 
+        parametersArray = parametersArray.filter((parameter: { id: string; }) => parameter.id != id)
 
-        this.setState({
-            parameters: this.state.parameters.concat(
-                {
-                    id: guid,
-                    key: "",
-                    value: "",
-                    firstParameter:false
-                }),
-        });
-
-
-    }
-
-    removeParameter = (id: string) => {
-
-        this.setState({
-
-            parameters: this.state.parameters.filter((parameter: { id: string; }) => parameter.id != id)
-
-        });
-
+        this.props.setParameters(parametersArray);
 
     }
 
 
     onParameterChanged = (parameter: IParameter) => {
-        const parametersArray = [...this.state.parameters];
+        const parametersArray = [...this.props.parameters];
 
         for (var i = 0; i < parametersArray.length; i++) {
             if (parametersArray[i].id == parameter.id) {
@@ -189,11 +172,23 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
             }
         }
 
-        this.setState({
+        this.props.setParameters(parametersArray);
+    }
 
-            parameters: parametersArray
+    addParameter(firstParameter: boolean) {
 
-        }, () => console.log(this.state.parameters));
+        let parametersArray = [...this.props.parameters];
+
+        parametersArray = parametersArray.concat(
+            {
+                id: Guid.create().toString(),
+                key: '',
+                value: '',
+                firstParameter: firstParameter
+            });
+
+        this.props.setParameters(parametersArray);
+
     }
 
 
@@ -291,10 +286,8 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
 
                             <div className="parameters">
 
-                                <Icon className="parameterAddButton" onClick={() => this.addParameter()}>add_circle</Icon>
-
-
-                                {this.state.parameters.map((parameterData: IParameter) => (<div className="parameterComponent" key={parameterData.id}>
+                                <Icon className="parameterAddButton" onClick={() => this.addParameter(false)}>add_circle</Icon>
+                                {this.props.parameters.map((parameterData: IParameter) => (<div className="parameterComponent" key={parameterData.id}>
                                     <Parameter onParameterChanged={this.onParameterChanged} parameter={parameterData} removeParameter={this.removeParameter} /> </div>))}
 
 
@@ -329,6 +322,9 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
                         </Button>
                         <Button color="secondary" onClick={this.setBackendConfig("Triona")}>
                             Triona UTV
+                        </Button>
+                        <Button color="secondary" onClick={this.setBackendConfig("LocalHost")}>
+                            Lokalt
                         </Button>
                     </div>
                 </div>

@@ -4,10 +4,11 @@ import Axios from "axios";
 import {RouteResponse, ViewDirection, ViewDirectionFeature} from "../Model/RouteResponse";
 import * as L from "leaflet";
 import { string } from "prop-types";
+import { IParameter } from "../components/Parameter";
 
 export interface IRoutingService {
     calculateRoute(from: AddressItem, to : AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
-        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean,
+        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean, parameters?:IParameter[],
         avoidMessagesOfType?: string[]) : Promise<IRouteResponse>;
 }
 
@@ -32,13 +33,14 @@ export default class RoutingService implements IRoutingService  {
     }
 
     calculateRoute(from: AddressItem, to: AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
-        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean,
+        weight?: number, length?: number, height?: number, allowTravelInZeroEmissionZone?: boolean,parameters?:IParameter[],
         avoidMessagesOfType?: string[]) : Promise<IRouteResponse> {
         let strings = [] as string[];
         
         var fromPt = this.projection.project(from.location);
         strings.push(fromPt.x + "," + fromPt.y);
 
+        console.log(parameters);
         //Intermediate locatiosn
         if (via != null)
         {
@@ -83,6 +85,19 @@ export default class RoutingService implements IRoutingService  {
             params.height = height;
         if (length)
             params.length = length;
+
+
+            parameters.forEach((parameter : IParameter)  => {
+
+                if(parameter.key !== '' && parameter.value !=''){
+                    
+                    const value = parameter.value;
+                    params[parameter.key] = value;
+                }
+                
+            });
+        
+
 
         if (!allowTravelInZeroEmissionZone)
         {

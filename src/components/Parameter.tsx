@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { TextField, Divider, Icon } from "@material-ui/core";
+import { TextField, Icon } from "@material-ui/core";
 
 
 
@@ -40,6 +40,8 @@ export class Parameter extends React.Component<IParameterProps>{
     this.props.onParameterChanged(parameter);
 
   }
+
+  
 
   render() {
     const visibleButton = {
