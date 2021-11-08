@@ -98,10 +98,10 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
                 }
 
             case "LocalHost":
-                    {
-                        await Promise.all([ctx.setUrl("http://localhost:2062/routingservice?"), ctx.setRouteType("")]);
-                        break;
-                    }
+                {
+                    await Promise.all([ctx.setUrl("http://localhost:2062/routingservice?"), ctx.setRouteType("")]);
+                    break;
+                }
         }
         this.props.onConfigChanged();
     }
