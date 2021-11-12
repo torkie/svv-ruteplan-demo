@@ -1,10 +1,11 @@
 import { AddressItem } from "../Model/AddressItem";
 import { AxiosResponse } from "axios";
 import Axios from "axios";
-import { RouteResponse, ViewDirection, ViewDirectionFeature } from "../Model/RouteResponse";
+import { RoadFeature, RouteResponse, ViewDirection, ViewDirectionFeature } from "../Model/RouteResponse";
 import * as L from "leaflet";
 import { string } from "prop-types";
 import { IParameter } from "../components/Parameter";
+import { at } from "lodash";
 
 export interface IRoutingService {
     calculateRoute(from: AddressItem, to: AddressItem, via: AddressItem[], blockedPoints: L.LatLng[], blockedAreas?: L.Polygon[],
@@ -86,7 +87,7 @@ export default class RoutingService implements IRoutingService {
             params.allowTravelInZeroEmissionZone = false;
         }
 
-        this.addCustomParameters(params,parameters);
+        this.addCustomParameters(params, parameters);
 
         return Axios.get(this.url, {
             params: params
@@ -115,12 +116,18 @@ export default class RoutingService implements IRoutingService {
             // calculate bounding box for all routes
             var totalBounds = null;
             var directions = <ViewDirection[]>data.directions;
+
             for (var i = 0; i < directions.length; i++) {
                 directions[i].features.forEach((feature: ViewDirectionFeature) => {
                     if (feature.attributes.text.match(/\{([ERFKPS])(\d+)\}.*/i)) {
                         feature.roadCat = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$1");
                         feature.roadNumber = parseInt(feature.attributes.text.replace(/\{([ERFKPS])(\d+)\}.*/i, "$2"));
                         feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
+                    }
+
+                    if (feature.attributes.roadFeatures !== null && feature.attributes.roadFeatures.length > 0) {
+                        let cameraFeature: RoadFeature[] = feature.attributes.roadFeatures.filter(x => x.attributeType == "nvdb:roadcamera");
+                        feature.roadCamera = cameraFeature;
                     }
 
                     feature.turnIconClass = this.getTurnIconForEsriManeuvre(feature.attributes.maneuverType);

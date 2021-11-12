@@ -6,9 +6,16 @@ module.exports = {
         filename: "bundle.js",
         path: __dirname + "/dist"
     },
+    devServer: {
+        static: {
+          directory: __dirname,
+        },
+        compress: true,
+        port: 9000      },
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
+    mode: "development",
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.

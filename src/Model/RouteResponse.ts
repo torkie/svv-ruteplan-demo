@@ -22,6 +22,7 @@ export interface RoadFeature {
     attributeType : string;
     location : Location[];
     values : Value[];
+    distanceAlongSegment : number;
 }
 
 export interface Value {
@@ -32,7 +33,7 @@ export interface Value {
 export interface Location {
     northing : number;
     easting: number;
-    SRS : string;
+    srs : string;
 }
 
 export class RouteResponseRoute {
@@ -78,4 +79,5 @@ export interface ViewDirectionFeature extends RouteResponseDirectionFeature {
     roadNumber: number;
     turnIconClass: string;
     compressedGeometry: string;
+    roadCamera:RoadFeature[];
 }

@@ -5,9 +5,7 @@
     overflow: hidden;       
 }
 
-.test{
-    display: grid;
-}
+
 
 .parameterRemoveButton{
     vertical-align: bottom;
@@ -102,19 +100,11 @@
     display: inline-block;
     max-width: 450px;
     width: 100%;
-}
-.selectedRouteDisplay DIV
-{
-    padding: 4px;
-}
-
-.selectedRouteDisplay DIV DIV {
-    float: left;
-    margin: 0 10px;
+    display: grid;
 }
 
 .routestats {
-    padding-left: 15px;
+    padding: 4px;
 }
 .routestats IMG {
     margin-left: 10px;
@@ -132,6 +122,14 @@
     padding: 1px 3px !important;
     border-radius: 5px;
     border: 1px solid gray;
+    float: left;
+    margin: 0 10px;
+}
+.directions{
+    padding:4px;
+}
+.cameraContent{
+    display: grid;
 }
 
 .signpost.signpost-E {
