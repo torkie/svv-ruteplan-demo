@@ -2,16 +2,18 @@ import { RoadFeature, Location, Value } from "../Model/RouteResponse";
 import * as React from "react";
 import Modal from 'react-modal';
 import { times } from "lodash";
+import { stringifyUrl } from "query-string";
+import { imageOverlay } from "leaflet";
 
 export interface ICameraComponentProps {
   roadCamera: RoadFeature;
-
 }
 
 interface ICameraComponentState {
   modalIsOpen: boolean;
   hyperLinkList: Array<Value>;
   unHyperLinkList: Array<Value>;
+  imageUrl: string;
 
 }
 const customStyles = {
@@ -22,8 +24,8 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    height: '50%',
-    width: '80%'
+    height: 'max-content',
+    width: 'fit-content'
   },
   overlay: {
     zIndex: 10000
@@ -38,10 +40,28 @@ export class CameraComponent extends React.Component<ICameraComponentProps, ICam
     this.closeModal = this.closeModal.bind(this);
     this.state = {
       modalIsOpen: false,
-      hyperLinkList: [...this.props.roadCamera.values.filter(x => x.key == "STILL_IMAGE_URL" || x.key == "VIDEO_URL" || x.key == "STILL_IMAGE_URL_DESCRIPTION")],
-      unHyperLinkList: [...this.props.roadCamera.values.filter(x => x.key != "STILL_IMAGE_URL" && x.key != "VIDEO_URL" && x.key != "STILL_IMAGE_URL_DESCRIPTION")]
+      hyperLinkList: new Array<Value>(),
+      unHyperLinkList:  new Array<Value>(),
+      imageUrl: ""
     };
 
+  }
+
+  componentWillMount() {
+    const cameraImageList = [...this.props.roadCamera.values.filter(x => x.key == "STILL_IMAGE_URL")];
+    let imageUrl = this.state.imageUrl;
+    cameraImageList.forEach((element : Value) => {
+      imageUrl = element.value;
+    });
+
+    const hyperLinkList = [...this.props.roadCamera.values.filter(x =>  x.key == "VIDEO_URL" || x.key == "STILL_IMAGE_URL_DESCRIPTION")];
+    const unHyperLinkList =  [...this.props.roadCamera.values.filter(x => x.key != "STILL_IMAGE_URL" && x.key != "VIDEO_URL" && x.key != "STILL_IMAGE_URL_DESCRIPTION")]
+
+    this.setState({
+      imageUrl: imageUrl,
+      hyperLinkList:hyperLinkList,
+      unHyperLinkList:unHyperLinkList
+    });
   }
 
   showCameraDetails() {
@@ -66,7 +86,7 @@ export class CameraComponent extends React.Component<ICameraComponentProps, ICam
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <div className="cameraContent" >
+          <div className="cameraContent">
             <h2> Vegkamera</h2>
 
             <div> Distanse langs segment : {this.props.roadCamera.distanceAlongSegment}  </div>
@@ -87,6 +107,7 @@ export class CameraComponent extends React.Component<ICameraComponentProps, ICam
                 {attribute.key} : {attribute.value}
               </div>))
             }
+            <img src= {this.state.imageUrl} alt="camera" width="500" height="auto"/>
           </div>
           <div style={this.footerStyle}>
             <button onClick={this.closeModal}>Lukk</button>
@@ -101,5 +122,4 @@ export class CameraComponent extends React.Component<ICameraComponentProps, ICam
     right: 0,
     bottom: 0
   };
-
 }

@@ -125,7 +125,7 @@ export default class RoutingService implements IRoutingService {
                         feature.attributes.text = feature.attributes.text.replace(/\{([ERFKPS])(\d+)\} (.*)/i, "$3");
                     }
 
-                    if (feature.attributes.roadFeatures !== null && feature.attributes.roadFeatures.length > 0) {
+                    if (feature.attributes.roadFeatures !== null && feature.attributes.roadFeatures.length > 0) {  
                         let cameraFeature: RoadFeature[] = feature.attributes.roadFeatures.filter(x => x.attributeType == "nvdb:roadcamera");
                         feature.roadCamera = cameraFeature;
                     }

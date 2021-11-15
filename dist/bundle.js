@@ -58721,8 +58721,8 @@ var customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        height: '50%',
-        width: '80%'
+        height: 'max-content',
+        width: 'fit-content'
     },
     overlay: {
         zIndex: 10000
@@ -58740,11 +58740,26 @@ var CameraComponent = /** @class */ (function (_super) {
         _this.closeModal = _this.closeModal.bind(_this);
         _this.state = {
             modalIsOpen: false,
-            hyperLinkList: __spreadArrays(_this.props.roadCamera.values.filter(function (x) { return x.key == "STILL_IMAGE_URL" || x.key == "VIDEO_URL" || x.key == "STILL_IMAGE_URL_DESCRIPTION"; })),
-            unHyperLinkList: __spreadArrays(_this.props.roadCamera.values.filter(function (x) { return x.key != "STILL_IMAGE_URL" && x.key != "VIDEO_URL" && x.key != "STILL_IMAGE_URL_DESCRIPTION"; }))
+            hyperLinkList: new Array(),
+            unHyperLinkList: new Array(),
+            imageUrl: ""
         };
         return _this;
     }
+    CameraComponent.prototype.componentWillMount = function () {
+        var cameraImageList = __spreadArrays(this.props.roadCamera.values.filter(function (x) { return x.key == "STILL_IMAGE_URL"; }));
+        var imageUrl = this.state.imageUrl;
+        cameraImageList.forEach(function (element) {
+            imageUrl = element.value;
+        });
+        var hyperLinkList = __spreadArrays(this.props.roadCamera.values.filter(function (x) { return x.key == "VIDEO_URL" || x.key == "STILL_IMAGE_URL_DESCRIPTION"; }));
+        var unHyperLinkList = __spreadArrays(this.props.roadCamera.values.filter(function (x) { return x.key != "STILL_IMAGE_URL" && x.key != "VIDEO_URL" && x.key != "STILL_IMAGE_URL_DESCRIPTION"; }));
+        this.setState({
+            imageUrl: imageUrl,
+            hyperLinkList: hyperLinkList,
+            unHyperLinkList: unHyperLinkList
+        });
+    };
     CameraComponent.prototype.showCameraDetails = function () {
         this.setState({ modalIsOpen: true });
     };
@@ -58776,7 +58791,8 @@ var CameraComponent = /** @class */ (function (_super) {
                     this.state.unHyperLinkList.map(function (attribute) { return (React.createElement("div", null,
                         attribute.key,
                         " : ",
-                        attribute.value)); })),
+                        attribute.value)); }),
+                    React.createElement("img", { src: this.state.imageUrl, alt: "camera", width: "500", height: "auto" })),
                 React.createElement("div", { style: this.footerStyle },
                     React.createElement("button", { onClick: this.closeModal }, "Lukk")))));
     };
@@ -59349,7 +59365,8 @@ var mapResolutions = [
     1.32291931250529,
     0.661459656252646
 ];
-var crs = new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs", { resolutions: mapResolutions,
+var crs = new L.Proj.CRS("EPSG:25833", "+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs", {
+    resolutions: mapResolutions,
     //origin: [-3708422.0277, 10155660.624000002]
     origin: [-2500000.0, 9045984.0]
 });
@@ -59384,6 +59401,18 @@ var RuteplanMap = /** @class */ (function (_super) {
                 _this.setState({ modalIsOpen: true, modalFerryTitle: "Ferry: " + point.properties.route1, modalFerryUrl: point.properties.route1 });
             });
             return f;
+        };
+        _this.cameraPointToLayer = function (point, latlng) {
+            var myIcon = L.icon({
+                iconUrl: 'images/icon-camera.png',
+                iconSize: [20, 20],
+                iconAnchor: [5, 5],
+            });
+            var c = L.marker(latlng, { icon: myIcon, opacity: 0.5 });
+            c.on("click", function (e) {
+                _this.setState({ openedCamera: point, modalCameraIsOpen: true });
+            });
+            return c;
         };
         _this.fromLocationDragged = function (e) {
             var pos = e.target.getLatLng();
@@ -59468,17 +59497,25 @@ var RuteplanMap = /** @class */ (function (_super) {
             ferries: null,
             modalFerryTitle: null,
             modalIsOpen: false,
-            modalFerryUrl: null
+            modalFerryUrl: null,
+            features: new Array(),
+            openedCamera: null,
+            modalCameraIsOpen: false
         };
         _this.openModal = _this.openModal.bind(_this);
         _this.afterOpenModal = _this.afterOpenModal.bind(_this);
         _this.closeModal = _this.closeModal.bind(_this);
+        _this.closeCameraModal = _this.closeCameraModal.bind(_this);
         return _this;
     }
     RuteplanMap.prototype.componentWillMount = function () {
         var _this = this;
         axios_1.default.get("http://multirit.triona.se/tables/ferrypoints.json").then(function (data) {
             _this.setState({ ferries: data.data });
+        });
+        axios_1.default.get("https://www.vegvesen.no/kart/ogc/datex_2_0/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=datex_2_0:CCTV_view&maxFeatures=10000&outputFormat=application/json&propertyName=GEOMETRY_OBJECT,CAMERA_ID,STILL_IMAGE_URL,ROAD_NUMBER,DESCRIPTION,ORIENTATION_DESCRIPTION,STILL_IMAGE_URL_DESCRIPTION,VIDEO_URL&srsName=EPSG:4326")
+            .then(function (data) {
+            _this.setState({ features: data.data.features });
         });
     };
     RuteplanMap.prototype.openModal = function () {
@@ -59490,6 +59527,9 @@ var RuteplanMap = /** @class */ (function (_super) {
     };
     RuteplanMap.prototype.closeModal = function () {
         this.setState({ modalIsOpen: false });
+    };
+    RuteplanMap.prototype.closeCameraModal = function () {
+        this.setState({ modalCameraIsOpen: false });
     };
     RuteplanMap.prototype.render = function () {
         var _this = this;
@@ -59511,6 +59551,8 @@ var RuteplanMap = /** @class */ (function (_super) {
                 React.createElement(react_leaflet_1.TileLayer, { attribution: '\u00A9 NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)', url: 'https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}', subdomains: "123456789", nowrap: "true", maxzoom: "{(crs as any).options.resolutions.length}", minzoom: "0" }),
                 this.state != null && this.state.ferries != null &&
                     React.createElement(react_leaflet_1.GeoJSON, { key: this.state.ferries, data: this.state.ferries, pointToLayer: this.ferryPointToLayer }),
+                this.state != null && this.state.features != null &&
+                    React.createElement(react_leaflet_1.GeoJSON, { key: this.state.features, data: this.state.features, pointToLayer: this.cameraPointToLayer }),
                 React.createElement(react_leaflet_1.LayerGroup, null,
                     this.props.fromLocation != null &&
                         React.createElement(react_leaflet_1.Marker, { position: this.props.fromLocation.location, draggable: true, icon: this.fromMarkerIcon, onDragend: this.fromLocationDragged }),
@@ -59537,11 +59579,58 @@ var RuteplanMap = /** @class */ (function (_super) {
                     React.createElement("div", { style: this.wrapperStyle },
                         React.createElement("iframe", { src: this.state.modalFerryUrl, style: this.iframeStyle, scrolling: "yes" })),
                     React.createElement("div", { style: this.footerStyle },
-                        React.createElement("button", { onClick: this.closeModal }, "Steng")))));
+                        React.createElement("button", { onClick: this.closeModal }, "Steng")))),
+            React.createElement(react_modal_1.default, { isOpen: this.state.modalCameraIsOpen, onRequestClose: this.closeCameraModal, style: customCameraStyles, contentLabel: "Example Modal" },
+                React.createElement("div", { className: "cameraContent" },
+                    React.createElement("h2", null, " Vegkamera"),
+                    React.createElement("div", null,
+                        " Kamera Id: ",
+                        this.state.openedCamera != null && this.state.openedCamera.properties.CAMERA_ID,
+                        "  "),
+                    React.createElement("div", null,
+                        " Sted: ",
+                        this.state.openedCamera != null && this.state.openedCamera.properties.ORIENTATION_DESCRIPTION,
+                        "  "),
+                    React.createElement("div", null,
+                        " Vegnummer : ",
+                        this.state.openedCamera != null && this.state.openedCamera.properties.ROAD_NUMBER,
+                        "  "),
+                    React.createElement("div", null,
+                        " Beskrivelse: ",
+                        this.state.openedCamera != null && this.state.openedCamera.properties.DESCRIPTION,
+                        "  "),
+                    React.createElement("div", null,
+                        " V\u00E6r : ",
+                        this.state.openedCamera != null && React.createElement("a", { href: this.state.openedCamera.properties.STILL_IMAGE_URL_DESCRIPTION, target: "_blank" },
+                            " ",
+                            this.state.openedCamera.properties.STILL_IMAGE_URL_DESCRIPTION),
+                        "  "),
+                    React.createElement("div", null,
+                        " Koordinater : ",
+                        this.state.openedCamera != null && this.state.openedCamera.geometry.coordinates[0] + " , " + this.state.openedCamera.geometry.coordinates[1],
+                        "  "),
+                    React.createElement("img", { src: this.state.openedCamera != null && this.state.openedCamera.properties.STILL_IMAGE_URL, alt: "camera", width: "500", height: "auto" })),
+                React.createElement("div", { style: this.footerStyle },
+                    React.createElement("button", { onClick: this.closeCameraModal }, "Lukk"))));
     };
     return RuteplanMap;
 }(React.Component));
 exports.RuteplanMap = RuteplanMap;
+var customCameraStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        height: 'max-content',
+        width: 'fit-content'
+    },
+    overlay: {
+        zIndex: 10000
+    }
+};
 
 
 /***/ }),
