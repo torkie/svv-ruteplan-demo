@@ -58737,24 +58737,18 @@ var CameraComponent = /** @class */ (function (_super) {
         _this.closeModal = _this.closeModal.bind(_this);
         _this.state = {
             modalIsOpen: false,
-            hyperLinkList: new Array(),
-            unHyperLinkList: new Array(),
+            roadCameraValues: new Array(),
             imageUrl: ""
         };
         return _this;
     }
     CameraComponent.prototype.componentWillMount = function () {
         var cameraImageList = __spreadArrays(this.props.roadCamera.values.filter(function (x) { return x.key == "STILL_IMAGE_URL"; }));
-        var imageUrl = this.state.imageUrl;
-        cameraImageList.forEach(function (element) {
-            imageUrl = element.value;
-        });
-        var hyperLinkList = __spreadArrays(this.props.roadCamera.values.filter(function (x) { return x.key == "VIDEO_URL" || x.key == "STILL_IMAGE_URL_DESCRIPTION"; }));
-        var unHyperLinkList = __spreadArrays(this.props.roadCamera.values.filter(function (x) { return x.key != "STILL_IMAGE_URL" && x.key != "VIDEO_URL" && x.key != "STILL_IMAGE_URL_DESCRIPTION"; }));
+        var imageUrl = cameraImageList[0].value;
+        var roadCameraValues = __spreadArrays(this.props.roadCamera.values.filter(function (x) { return x.key != "STILL_IMAGE_URL"; }));
         this.setState({
             imageUrl: imageUrl,
-            hyperLinkList: hyperLinkList,
-            unHyperLinkList: unHyperLinkList
+            roadCameraValues: roadCameraValues
         });
     };
     CameraComponent.prototype.showCameraDetails = function () {
@@ -58781,14 +58775,10 @@ var CameraComponent = /** @class */ (function (_super) {
                         location.easting,
                         ",SRS : ",
                         location.srs)); }),
-                    this.state.hyperLinkList.map(function (attribute) { return (React.createElement("div", null,
+                    this.state.roadCameraValues.map(function (attribute) { return (React.createElement("div", null,
                         attribute.key,
-                        " : ",
-                        React.createElement("a", { href: attribute.value, target: "_blank" }, attribute.value))); }),
-                    this.state.unHyperLinkList.map(function (attribute) { return (React.createElement("div", null,
-                        attribute.key,
-                        " : ",
-                        attribute.value)); }),
+                        " :  ",
+                        attribute.key == "VIDEO_URL" || attribute.key == "STILL_IMAGE_URL_DESCRIPTION" ? React.createElement("a", { href: attribute.value, target: "_blank" }, attribute.value) : attribute.value)); }),
                     React.createElement("img", { src: this.state.imageUrl, alt: "camera", width: "500", height: "auto" })),
                 React.createElement(core_1.Icon, { className: "cancelIcon", onClick: this.closeModal }, "cancel"))));
     };
