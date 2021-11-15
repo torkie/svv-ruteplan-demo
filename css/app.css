@@ -9,6 +9,7 @@
 
 .parameterRemoveButton{
     vertical-align: bottom;
+    cursor: pointer;
 }
 
 .parameters{
@@ -20,6 +21,7 @@
     grid-column: 2;
     grid-row: 1;
     align-self: flex-end;
+    cursor: pointer;
 }
 
 .parameterComponent {
