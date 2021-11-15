@@ -10,7 +10,7 @@ import { IFeature } from "../Model/CameraResponse";
 
 import "leaflet-contextmenu";
 import { IRouteResponse } from "../providers/RoutingService";
-
+import {Icon}  from "@material-ui/core";
 
 const position: L.LatLngExpression = [60.877003, 8.903530];
 const mapResolutions = [
@@ -138,7 +138,7 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps, IRuteplanMap
       iconSize: [20, 20], // width and height of the image in pixels
       iconAnchor: [5, 5], // point of the icon which will correspond to marker's location
     });
-    var c = L.marker(latlng, { icon: myIcon, opacity: 0.5 });
+    var c = L.marker(latlng, { icon: myIcon, opacity: 0.8 });
     c.on("click", (e: L.LeafletMouseEvent) => {
       this.setState({ openedCamera:point ,modalCameraIsOpen:true});
     });
@@ -305,9 +305,8 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps, IRuteplanMap
             <div> Koordinater : { this.state.openedCamera!=null && this.state.openedCamera.geometry.coordinates[0] +" , "+  this.state.openedCamera.geometry.coordinates[1]}  </div>
             <img src= {this.state.openedCamera!=null && this.state.openedCamera.properties.STILL_IMAGE_URL} alt="camera" width="500" height="auto"/>
           </div>
-          <div style={this.footerStyle}>
-            <button onClick={this.closeCameraModal}>Lukk</button>
-          </div>
+            <Icon className="cancelIcon" onClick={this.closeCameraModal}>cancel</Icon>
+        
       </Modal>
     </div>;
   }
@@ -346,6 +345,7 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps, IRuteplanMap
     right: 0,
     bottom: 0
   };
+
   private iframeStyle = {
     width: '100%',
     height: '100%',
@@ -364,7 +364,8 @@ const customCameraStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     height: 'max-content',
-    width: 'fit-content'
+    width: 'fit-content',
+    overflow : "none"
   },
   overlay: {
     zIndex: 10000

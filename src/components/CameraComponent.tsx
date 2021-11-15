@@ -1,9 +1,8 @@
 import { RoadFeature, Location, Value } from "../Model/RouteResponse";
 import * as React from "react";
 import Modal from 'react-modal';
-import { times } from "lodash";
-import { stringifyUrl } from "query-string";
-import { imageOverlay } from "leaflet";
+import {Icon}  from "@material-ui/core";
+
 
 export interface ICameraComponentProps {
   roadCamera: RoadFeature;
@@ -25,7 +24,8 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     height: 'max-content',
-    width: 'fit-content'
+    width: 'fit-content',
+    overflow : 'none'
   },
   overlay: {
     zIndex: 10000
@@ -109,17 +109,10 @@ export class CameraComponent extends React.Component<ICameraComponentProps, ICam
             }
             <img src= {this.state.imageUrl} alt="camera" width="500" height="auto"/>
           </div>
-          <div style={this.footerStyle}>
-            <button onClick={this.closeModal}>Lukk</button>
-          </div>
+          <Icon className="cancelIcon" onClick={this.closeModal}>cancel</Icon>
         </Modal>
       </div>
 
     );
   }
-  private footerStyle = {
-    position: 'absolute' as 'absolute',
-    right: 0,
-    bottom: 0
-  };
 }

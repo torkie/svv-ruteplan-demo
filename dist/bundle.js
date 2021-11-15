@@ -58713,6 +58713,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(__webpack_require__(/*! react */ "react"));
 var react_modal_1 = __importDefault(__webpack_require__(/*! react-modal */ "./node_modules/react-modal/lib/index.js"));
+var core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
 var customStyles = {
     content: {
         top: '50%',
@@ -58722,7 +58723,8 @@ var customStyles = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         height: 'max-content',
-        width: 'fit-content'
+        width: 'fit-content',
+        overflow: 'none'
     },
     overlay: {
         zIndex: 10000
@@ -58732,11 +58734,6 @@ var CameraComponent = /** @class */ (function (_super) {
     __extends(CameraComponent, _super);
     function CameraComponent(props) {
         var _this = _super.call(this, props) || this;
-        _this.footerStyle = {
-            position: 'absolute',
-            right: 0,
-            bottom: 0
-        };
         _this.closeModal = _this.closeModal.bind(_this);
         _this.state = {
             modalIsOpen: false,
@@ -58793,8 +58790,7 @@ var CameraComponent = /** @class */ (function (_super) {
                         " : ",
                         attribute.value)); }),
                     React.createElement("img", { src: this.state.imageUrl, alt: "camera", width: "500", height: "auto" })),
-                React.createElement("div", { style: this.footerStyle },
-                    React.createElement("button", { onClick: this.closeModal }, "Lukk")))));
+                React.createElement(core_1.Icon, { className: "cancelIcon", onClick: this.closeModal }, "cancel"))));
     };
     return CameraComponent;
 }(React.Component));
@@ -59346,6 +59342,7 @@ __webpack_require__(/*! proj4leaflet */ "proj4leaflet");
 var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 var react_modal_1 = __importDefault(__webpack_require__(/*! react-modal */ "./node_modules/react-modal/lib/index.js"));
 __webpack_require__(/*! leaflet-contextmenu */ "./node_modules/leaflet-contextmenu/dist/leaflet.contextmenu.js");
+var core_1 = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
 var position = [60.877003, 8.903530];
 var mapResolutions = [
     21674.7100160867,
@@ -59408,7 +59405,7 @@ var RuteplanMap = /** @class */ (function (_super) {
                 iconSize: [20, 20],
                 iconAnchor: [5, 5],
             });
-            var c = L.marker(latlng, { icon: myIcon, opacity: 0.5 });
+            var c = L.marker(latlng, { icon: myIcon, opacity: 0.8 });
             c.on("click", function (e) {
                 _this.setState({ openedCamera: point, modalCameraIsOpen: true });
             });
@@ -59610,8 +59607,7 @@ var RuteplanMap = /** @class */ (function (_super) {
                         this.state.openedCamera != null && this.state.openedCamera.geometry.coordinates[0] + " , " + this.state.openedCamera.geometry.coordinates[1],
                         "  "),
                     React.createElement("img", { src: this.state.openedCamera != null && this.state.openedCamera.properties.STILL_IMAGE_URL, alt: "camera", width: "500", height: "auto" })),
-                React.createElement("div", { style: this.footerStyle },
-                    React.createElement("button", { onClick: this.closeCameraModal }, "Lukk"))));
+                React.createElement(core_1.Icon, { className: "cancelIcon", onClick: this.closeCameraModal }, "cancel")));
     };
     return RuteplanMap;
 }(React.Component));
@@ -59625,7 +59621,8 @@ var customCameraStyles = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         height: 'max-content',
-        width: 'fit-content'
+        width: 'fit-content',
+        overflow: "none"
     },
     overlay: {
         zIndex: 10000

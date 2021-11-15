@@ -187,6 +187,13 @@
     z-index: 0;
 }
 
+.cancelIcon{
+    position: absolute ;
+    right: -10px;
+    top: -10px ;
+    font-size: 30px !important ;
+    cursor: pointer;
+}
 
 .settingspane {
     position: relative;
