@@ -26,6 +26,7 @@ interface MainPageState {
     allowTravelInZeroEmissionZone : boolean;
     blockedPoints : L.LatLng[];
     parameters?: Array<IParameter>;
+    showRoadCameras: boolean;
 }
 
 class MainPage extends React.Component<any,MainPageState>{
@@ -41,7 +42,8 @@ class MainPage extends React.Component<any,MainPageState>{
         length: null as number,
         blockedPoints : null as L.LatLng[], 
         allowTravelInZeroEmissionZone : true,
-        parameters: new Array<IParameter>()
+        parameters: new Array<IParameter>(),
+        showRoadCameras: true
     };
 
     static contextType = SettingsContext;
@@ -100,7 +102,7 @@ class MainPage extends React.Component<any,MainPageState>{
         this.state = {currentStartLocation: from, currentEndLocation : to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,  
             weight: weight, length:length, height: height, blockedPoints: blockedPoints,
             allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel,
-            parameters: new Array<IParameter>()
+            parameters: new Array<IParameter>(), showRoadCameras : true
         };    
 
         this.setParameters = this.setParameters.bind(this);
@@ -143,6 +145,8 @@ class MainPage extends React.Component<any,MainPageState>{
                 allowTravelInZeroEmissionZoneChanged={this.handleAllowTravelInZeroEmissionZoneChanged}
                 parameters = {this.state.parameters}
                 setParameters = {this.setParameters}
+                displayRoadCamera = {this.displayRoadCamera}
+                 showRoadCameras = {this.state.showRoadCameras}
                 />
                  <RouteResponseDisplay routeResponse={this.state.currentRouteResponse} selectedRouteIdx={this.state.selectedRouteIdx} 
                 routeSelected={this.handleRouteSelected}/>;
@@ -157,7 +161,9 @@ class MainPage extends React.Component<any,MainPageState>{
                 toLocationChanged={this.handleToLocationChangedInMap}
                 routeResponse={this.state.currentRouteResponse}
                 selectedRouteIdx={this.state.selectedRouteIdx}
-                routeSelected={this.handleRouteSelected}>
+                routeSelected={this.handleRouteSelected}
+                
+                showRoadCameras = {this.state.showRoadCameras}>
             </RuteplanMap>
        </div>
     }
@@ -181,6 +187,10 @@ class MainPage extends React.Component<any,MainPageState>{
             this.checkPerformRoute();
         });
         this.updateSearch("allowTravelInZeroEmissionZone", allowTravel);
+    }
+
+    displayRoadCamera = (show : boolean) => {
+      this.setState({showRoadCameras:show});
     }
 
     clearRoute = () => {

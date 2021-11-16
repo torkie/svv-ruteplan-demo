@@ -7,7 +7,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "buildDev": "npx webpack --mode development",
+    "startDev" : "npx webpack serve",
+    "buildProd": "npx webpack"
   },
   "repository": {
     "type": "git",

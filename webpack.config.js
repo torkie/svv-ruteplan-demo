@@ -1,22 +1,21 @@
 const webpack = require('webpack')
-
+const path = require('path');
 module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
-        path: __dirname + "/dist"
+        path: __dirname + "/dist",
     },
     devServer: {
         static: {
           directory: __dirname,
         },
         compress: true,
-        port: 9000      },
+        port: 9000
+      },
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
-    mode: "development",
-
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
         extensions: [".ts", ".tsx", ".js", ".json"]

@@ -58852,7 +58852,8 @@ var MainPage = /** @class */ (function (_super) {
             length: null,
             blockedPoints: null,
             allowTravelInZeroEmissionZone: true,
-            parameters: new Array()
+            parameters: new Array(),
+            showRoadCameras: true
         };
         _this.checkPerformRoute = function () {
             var setts = _this.context;
@@ -58868,6 +58869,9 @@ var MainPage = /** @class */ (function (_super) {
                 _this.checkPerformRoute();
             });
             _this.updateSearch("allowTravelInZeroEmissionZone", allowTravel);
+        };
+        _this.displayRoadCamera = function (show) {
+            _this.setState({ showRoadCameras: show });
         };
         _this.clearRoute = function () {
             _this.setState({
@@ -59033,7 +59037,7 @@ var MainPage = /** @class */ (function (_super) {
         _this.state = { currentStartLocation: from, currentEndLocation: to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,
             weight: weight, length: length, height: height, blockedPoints: blockedPoints,
             allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel,
-            parameters: new Array()
+            parameters: new Array(), showRoadCameras: true
         };
         _this.setParameters = _this.setParameters.bind(_this);
         return _this;
@@ -59048,10 +59052,10 @@ var MainPage = /** @class */ (function (_super) {
                 React.createElement("a", { href: "/default.htm" }, "Til forsiden"),
                 React.createElement(core_1.Typography, { variant: "h6", color: "inherit", className: classes.grow }, "SVV testklient f\u00F8r Ruteplantjenesten")),
             React.createElement("div", { style: { position: 'absolute', right: 10, top: 15, zIndex: 400 } },
-                React.createElement(SearchBar_1.SearchBar, { onFromPositionSelected: this.handleFromLocationSet, onToPositionSelected: this.handleToLocationSet, fromLocation: this.state.currentStartLocation, toLocation: this.state.currentEndLocation, intermediateLocations: this.state.currentIntermediateLocations, onIntermediateLocationChanged: this.handleIntermediateLocationUpdated, blockedPoints: this.state.blockedPoints, weight: this.state.weight, length: this.state.length, height: this.state.height, onWeightChanged: this.handleWeightChanged, onLengthChanged: this.handleLengthChanged, onHeightChanged: this.handleHeightChanged, onBlockedPointDeleted: this.handleBlockedPointDeleted, onClearRoute: this.clearRoute, onTurnRoute: this.turnRoute, onConfigChanged: this.checkPerformRoute, allowTravelInZeroEmissionZone: this.state.allowTravelInZeroEmissionZone, allowTravelInZeroEmissionZoneChanged: this.handleAllowTravelInZeroEmissionZoneChanged, parameters: this.state.parameters, setParameters: this.setParameters }),
+                React.createElement(SearchBar_1.SearchBar, { onFromPositionSelected: this.handleFromLocationSet, onToPositionSelected: this.handleToLocationSet, fromLocation: this.state.currentStartLocation, toLocation: this.state.currentEndLocation, intermediateLocations: this.state.currentIntermediateLocations, onIntermediateLocationChanged: this.handleIntermediateLocationUpdated, blockedPoints: this.state.blockedPoints, weight: this.state.weight, length: this.state.length, height: this.state.height, onWeightChanged: this.handleWeightChanged, onLengthChanged: this.handleLengthChanged, onHeightChanged: this.handleHeightChanged, onBlockedPointDeleted: this.handleBlockedPointDeleted, onClearRoute: this.clearRoute, onTurnRoute: this.turnRoute, onConfigChanged: this.checkPerformRoute, allowTravelInZeroEmissionZone: this.state.allowTravelInZeroEmissionZone, allowTravelInZeroEmissionZoneChanged: this.handleAllowTravelInZeroEmissionZoneChanged, parameters: this.state.parameters, setParameters: this.setParameters, displayRoadCamera: this.displayRoadCamera, showRoadCameras: this.state.showRoadCameras }),
                 React.createElement(RouteResponseDisplay_1.RouteResponseDisplay, { routeResponse: this.state.currentRouteResponse, selectedRouteIdx: this.state.selectedRouteIdx, routeSelected: this.handleRouteSelected }),
                 ";"),
-            React.createElement(RuteplanMap_1.RuteplanMap, { fromLocation: this.state.currentStartLocation, toLocation: this.state.currentEndLocation, intermediateLocations: this.state.currentIntermediateLocations, intermediateLocationChanged: this.handleIntermediateLocationUpdated, pointBlocked: this.handleBlockedPoint, blockedPoints: this.state.blockedPoints, blockedPointDragged: this.handleBlockedPointDragged, fromLocationChanged: this.handleFromLocationChangedInMap, toLocationChanged: this.handleToLocationChangedInMap, routeResponse: this.state.currentRouteResponse, selectedRouteIdx: this.state.selectedRouteIdx, routeSelected: this.handleRouteSelected }));
+            React.createElement(RuteplanMap_1.RuteplanMap, { fromLocation: this.state.currentStartLocation, toLocation: this.state.currentEndLocation, intermediateLocations: this.state.currentIntermediateLocations, intermediateLocationChanged: this.handleIntermediateLocationUpdated, pointBlocked: this.handleBlockedPoint, blockedPoints: this.state.blockedPoints, blockedPointDragged: this.handleBlockedPointDragged, fromLocationChanged: this.handleFromLocationChangedInMap, toLocationChanged: this.handleToLocationChangedInMap, routeResponse: this.state.currentRouteResponse, selectedRouteIdx: this.state.selectedRouteIdx, routeSelected: this.handleRouteSelected, showRoadCameras: this.state.showRoadCameras }));
     };
     MainPage.prototype.updateSearch = function (param, value) {
         var parsed = qs.parse(location.search);
@@ -59487,7 +59491,7 @@ var RuteplanMap = /** @class */ (function (_super) {
             modalFerryUrl: null,
             features: new Array(),
             openedCamera: null,
-            modalCameraIsOpen: false
+            modalCameraIsOpen: false,
         };
         _this.openModal = _this.openModal.bind(_this);
         _this.afterOpenModal = _this.afterOpenModal.bind(_this);
@@ -59538,7 +59542,7 @@ var RuteplanMap = /** @class */ (function (_super) {
                 React.createElement(react_leaflet_1.TileLayer, { attribution: '\u00A9 NVDB, Geovekst, kommunene og Open Street Map contributors (utenfor Norge)', url: 'https://nvdbcache.geodataonline.no/arcgis/rest/services/Trafikkportalen/GeocacheTrafikkJPG/MapServer/tile/{z}/{y}/{x}', subdomains: "123456789", nowrap: "true", maxzoom: "{(crs as any).options.resolutions.length}", minzoom: "0" }),
                 this.state != null && this.state.ferries != null &&
                     React.createElement(react_leaflet_1.GeoJSON, { key: this.state.ferries, data: this.state.ferries, pointToLayer: this.ferryPointToLayer }),
-                this.state != null && this.state.features != null &&
+                this.state != null && this.state.features != null && this.props.showRoadCameras &&
                     React.createElement(react_leaflet_1.GeoJSON, { key: this.state.features, data: this.state.features, pointToLayer: this.cameraPointToLayer }),
                 React.createElement(react_leaflet_1.LayerGroup, null,
                     this.props.fromLocation != null &&
@@ -59802,6 +59806,9 @@ var SearchBar = /** @class */ (function (_super) {
         _this.handleAllowTravelInZeroEmissionZoneChanged = function (e) {
             _this.props.allowTravelInZeroEmissionZoneChanged(e.target.checked);
         };
+        _this.displayRoadCamera = function (e) {
+            _this.props.displayRoadCamera(e.target.checked);
+        };
         _this.onParameterChanged = function (parameter) {
             var parametersArray = __spreadArrays(_this.props.parameters);
             for (var i = 0; i < parametersArray.length; i++) {
@@ -59868,14 +59875,15 @@ var SearchBar = /** @class */ (function (_super) {
                 React.createElement(ExpandMore_1.default, { style: { cursor: 'pointer' }, onClick: this.toggleExpand }),
             this.state.expanded &&
                 React.createElement("div", null,
-                    React.createElement("div", { className: "test" },
+                    React.createElement("div", null,
                         React.createElement("div", null,
                             React.createElement(core_1.Divider, null),
                             React.createElement("div", { style: { textAlign: 'left', paddingLeft: 10 } },
                                 React.createElement(core_1.TextField, { label: "Vekt (tonn)", id: "inputWeight", style: { marginRight: 10 }, value: this.props.weight, onChange: this.weightChanged }),
                                 React.createElement(core_1.TextField, { label: "H\u00F8yde (m)", id: "inputHeight", style: { marginRight: 10 }, value: this.props.height, onChange: this.heighChanged }),
                                 React.createElement(core_1.TextField, { label: "Lengde (m)", id: "inputLength", value: this.props.length, onChange: this.lengthChanged }),
-                                React.createElement(core_1.FormControlLabel, { control: React.createElement(core_1.Checkbox, { checked: this.props.allowTravelInZeroEmissionZone, onChange: this.handleAllowTravelInZeroEmissionZoneChanged, value: "allowTravelInZeroEmissionZone" }), label: "Tillat kj\u00F8ring i nullutslippsone" })),
+                                React.createElement(core_1.FormControlLabel, { control: React.createElement(core_1.Checkbox, { checked: this.props.allowTravelInZeroEmissionZone, onChange: this.handleAllowTravelInZeroEmissionZoneChanged, value: "allowTravelInZeroEmissionZone" }), label: "Tillat kj\u00F8ring i nullutslippsone" }),
+                                React.createElement(core_1.FormControlLabel, { control: React.createElement(core_1.Checkbox, { checked: this.props.showRoadCameras, onChange: this.displayRoadCamera, value: "roadCamera" }), label: "Vegkamera" })),
                             React.createElement("div", { className: "parameters" },
                                 React.createElement(core_1.Icon, { className: "parameterAddButton", onClick: function () { return _this.addParameter(false); } }, "add_circle"),
                                 this.props.parameters.map(function (parameterData) { return (React.createElement("div", { className: "parameterComponent", key: parameterData.id },

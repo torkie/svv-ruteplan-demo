@@ -33,6 +33,8 @@ interface SearchBarProps {
 
     onConfigChanged: () => void;
     allowTravelInZeroEmissionZoneChanged: (allowTravel: boolean) => void;
+    displayRoadCamera : (show: boolean) => void;
+    showRoadCameras :  boolean;
 }
 
 interface SearchBarState {
@@ -151,6 +153,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
         this.props.allowTravelInZeroEmissionZoneChanged(e.target.checked);
     }
 
+
+    displayRoadCamera = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.displayRoadCamera(e.target.checked);
+    }
+
+
+
     removeParameter(id: string) {
 
         let parametersArray = [...this.props.parameters];
@@ -246,9 +255,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
             {this.state.expanded &&
                 <div>
 
-                    <div className="test">
-
-
+                    <div>
                         <div>
                             <Divider />
                             <div style={{ textAlign: 'left', paddingLeft: 10 }}>
@@ -278,6 +285,16 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
                                         />
                                     }
                                     label="Tillat kjøring i nullutslippsone"
+                                />
+                                 <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={this.props.showRoadCameras}
+                                            onChange={this.displayRoadCamera}
+                                            value="roadCamera"
+                                        />
+                                    }
+                                    label="Vegkamera"
                                 />
 
                             </div>

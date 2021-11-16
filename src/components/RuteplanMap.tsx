@@ -62,6 +62,8 @@ interface IRuteplanMapProps {
   pointBlocked: (pnt: L.LatLng) => void;
   blockedPointDragged: (i: number, pnt: L.LatLng) => void;
   blockedPoints: L.LatLng[];
+  showRoadCameras : boolean;
+
 }
 
 const customStyles = {
@@ -94,8 +96,7 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps, IRuteplanMap
       modalFerryUrl: null,
       features: new Array<IFeature>(),
       openedCamera : null,
-      modalCameraIsOpen : false
-
+      modalCameraIsOpen : false,
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -235,11 +236,11 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps, IRuteplanMap
         maxzoom="{(crs as any).options.resolutions.length}"
         minzoom="0"
       />
-      {this.state != null && this.state.ferries != null &&
+      {this.state != null && this.state.ferries != null  &&
         <GeoJSON key={this.state.ferries} data={this.state.ferries} pointToLayer={this.ferryPointToLayer} />
       }
 
-      {this.state != null && this.state.features != null &&
+      {this.state != null && this.state.features != null && this.props.showRoadCameras &&
         <GeoJSON key={this.state.features} data={this.state.features} pointToLayer={this.cameraPointToLayer} />
       }
       <LayerGroup>
