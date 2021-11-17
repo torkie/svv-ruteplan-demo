@@ -59279,9 +59279,9 @@ var RouteResponseDisplay = /** @class */ (function (_super) {
                     " ",
                     _this.renderMeterOnInstruction(direction),
                     React.createElement("br", null),
-                    direction.roadCamera && direction.roadCamera.map(function (roadCamera) { return (React.createElement("div", null,
+                    React.createElement("div", { className: "roadCamera" }, direction.roadCamera && direction.roadCamera.map(function (roadCamera) { return (React.createElement("div", null,
                         React.createElement(CameraComponent_1.CameraComponent, { roadCamera: roadCamera }),
-                        " ")); }));
+                        " ")); })));
             });
         }
         return null;
@@ -59892,7 +59892,7 @@ var SearchBar = /** @class */ (function (_super) {
                                 React.createElement(core_1.TextField, { label: "Lengde (m)", id: "inputLength", value: this.props.length, onChange: this.lengthChanged }),
                                 React.createElement(core_1.FormControlLabel, { control: React.createElement(core_1.Checkbox, { checked: this.props.allowTravelInZeroEmissionZone, onChange: this.handleAllowTravelInZeroEmissionZoneChanged, value: "allowTravelInZeroEmissionZone" }), label: "Tillat kj\u00F8ring i nullutslippsone" }),
                                 React.createElement(core_1.FormControlLabel, { control: React.createElement(core_1.Checkbox, { checked: this.props.showRoadCameras, onChange: this.displayRoadCameraInMap, value: "roadCamera" }), label: "Vegkamera i kart" }),
-                                React.createElement(core_1.FormControlLabel, { control: React.createElement(core_1.Checkbox, { checked: this.props.showFerries, onChange: this.displayFerriesInMap, value: "roadCamera" }), label: "Ferje i kart" })),
+                                React.createElement(core_1.FormControlLabel, { control: React.createElement(core_1.Checkbox, { checked: this.props.showFerries, onChange: this.displayFerriesInMap, value: "ferry" }), label: "Ferje i kart" })),
                             React.createElement("div", { className: "parameters" },
                                 React.createElement(core_1.Icon, { className: "parameterAddButton", onClick: function () { return _this.addParameter(false); } }, "add_circle"),
                                 this.props.parameters.map(function (parameterData) { return (React.createElement("div", { className: "parameterComponent", key: parameterData.id },

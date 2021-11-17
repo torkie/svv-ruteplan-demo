@@ -132,6 +132,12 @@
     display: grid;
 }
 
+.roadCamera{
+    display: grid;
+    grid-auto-flow: column;
+    width: fit-content;
+    grid-column-gap: 5px;
+}
 .signpost.signpost-E {
     background: green;
     color: white;

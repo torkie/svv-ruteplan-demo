@@ -186,7 +186,6 @@ class MainPage extends React.Component<any, MainPageState>{
         this.setState({ showRoadCameras: show });
     }
 
-
     displayFerriesInMap = (show: boolean) => {
         this.setState({ showFerries:show });
     }

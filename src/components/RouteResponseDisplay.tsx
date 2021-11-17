@@ -67,10 +67,14 @@ export class RouteResponseDisplay extends React.Component<RouteResponseDisplayPr
                         <div className={"signpost " + "signpost-" + (direction as ViewDirectionFeature).roadCat}>{(direction as ViewDirectionFeature).roadCat}{(direction as ViewDirectionFeature).roadNumber}</div>
                     }
                     {direction.attributes.text} {this.renderMeterOnInstruction(direction as ViewDirectionFeature)}<br />
+                    <div className = "roadCamera">
                     {
+                       
                         (direction as ViewDirectionFeature).roadCamera && (direction as ViewDirectionFeature).roadCamera.map((roadCamera: RoadFeature) => (<div>
                             <CameraComponent roadCamera={roadCamera} /> </div>))
+                       
                     }
+                    </div>
                 </div>
             });
         }
