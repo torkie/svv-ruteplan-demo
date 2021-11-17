@@ -33,8 +33,10 @@ interface SearchBarProps {
 
     onConfigChanged: () => void;
     allowTravelInZeroEmissionZoneChanged: (allowTravel: boolean) => void;
-    displayRoadCamera : (show: boolean) => void;
-    showRoadCameras :  boolean;
+    displayRoadCameraInMap: (show: boolean) => void;
+    showRoadCameras: boolean;
+    displayFerriesInMap  : (show: boolean) => void;
+    showFerries:boolean;
 }
 
 interface SearchBarState {
@@ -154,8 +156,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
     }
 
 
-    displayRoadCamera = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.displayRoadCamera(e.target.checked);
+    displayRoadCameraInMap = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.displayRoadCameraInMap(e.target.checked);
+    }
+
+    
+    displayFerriesInMap = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.displayFerriesInMap(e.target.checked);
     }
 
 
@@ -286,15 +293,26 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
                                     }
                                     label="Tillat kjøring i nullutslippsone"
                                 />
-                                 <FormControlLabel
+                                <FormControlLabel
                                     control={
                                         <Checkbox
                                             checked={this.props.showRoadCameras}
-                                            onChange={this.displayRoadCamera}
+                                            onChange={this.displayRoadCameraInMap}
                                             value="roadCamera"
                                         />
                                     }
-                                    label="Vegkamera"
+                                    label="Vegkamera i kart"
+                                />
+
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={this.props.showFerries}
+                                            onChange={this.displayFerriesInMap}
+                                            value="ferry"
+                                        />
+                                    }
+                                    label="Ferje i kart"
                                 />
 
                             </div>

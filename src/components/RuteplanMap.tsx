@@ -63,6 +63,7 @@ interface IRuteplanMapProps {
   blockedPointDragged: (i: number, pnt: L.LatLng) => void;
   blockedPoints: L.LatLng[];
   showRoadCameras : boolean;
+  showFerries: boolean;
 
 }
 
@@ -236,7 +237,7 @@ export class RuteplanMap extends React.Component<IRuteplanMapProps, IRuteplanMap
         maxzoom="{(crs as any).options.resolutions.length}"
         minzoom="0"
       />
-      {this.state != null && this.state.ferries != null  &&
+      {this.state != null && this.state.ferries != null  && this.props.showFerries && 
         <GeoJSON key={this.state.ferries} data={this.state.ferries} pointToLayer={this.ferryPointToLayer} />
       }
 
