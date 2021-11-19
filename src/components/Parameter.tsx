@@ -59,12 +59,14 @@ export class Parameter extends React.Component<IParameterProps>{
           id="inputUserClass"
           style={{ marginRight: 10 }}
           onChange={this.onKeyChanged}
+          value = {this.props.parameter.key}
 
         />
         <TextField label="Parameter verdi"
           id="inputHeight"
           style={{ marginRight: 10 }}
           onChange={this.onValueChanged}
+          value = {this.props.parameter.value}
         />
         <Icon className="parameterRemoveButton" onClick={() => this.props.removeParameter(this.props.parameter.id)}   style={this.props.parameter.firstParameter ? HiddenButton : visibleButton}>remove_circle</Icon>
 

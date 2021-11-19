@@ -57,7 +57,10 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState>{
 
         this.removeParameter = this.removeParameter.bind(this);
         this.onParameterChanged = this.onParameterChanged.bind(this);
-        this.addParameter(true);
+
+        if (this.props.parameters.length == 0) {
+            this.addParameter(true);
+        }
 
     }
     static contextType = SettingsContext;

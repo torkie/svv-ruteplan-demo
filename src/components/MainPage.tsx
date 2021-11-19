@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { RuteplanMap } from "./RuteplanMap";
 import { SearchBar } from "./SearchBar";
-import { IParameter } from "./Parameter";
+import { IParameter, Parameter } from "./Parameter";
 import { Guid } from "guid-typescript";
 
 import { AddressItem } from "../Model/AddressItem";
@@ -13,6 +13,8 @@ import SettingsProvider, { ISettingsProviderState } from "../providers/SettingsP
 import * as qs from "query-string";
 import { SettingsContext } from "../providers/SettingsProvider";
 import { AppBar, Toolbar, IconButton, Typography, Button, withStyles } from "@material-ui/core";
+import parse from "autosuggest-highlight/parse";
+import { zip } from "lodash";
 
 interface MainPageState {
     currentStartLocation: AddressItem;
@@ -27,7 +29,8 @@ interface MainPageState {
     blockedPoints: L.LatLng[];
     parameters?: Array<IParameter>;
     showRoadCameras: boolean;
-    showFerries:boolean;
+    showFerries: boolean;
+
 }
 
 class MainPage extends React.Component<any, MainPageState>{
@@ -54,7 +57,7 @@ class MainPage extends React.Component<any, MainPageState>{
 
     constructor(props: any) {
         super(props);
-        const parsed: any = qs.parse(location.search);
+        const parsed: any =  qs.parse(location.search);
         let from: AddressItem = null;
         let to: AddressItem = null;
         let via: AddressItem[] = null;
@@ -62,6 +65,12 @@ class MainPage extends React.Component<any, MainPageState>{
         let height: number = null;
         let length: number = null;
         let blockedPoints: L.LatLng[] = null;
+        let parameters = new Array<IParameter>();
+
+        if (parsed.parameters != null) {
+            let parametersFromUrl: IParameter[] = JSON.parse(parsed.parameters);
+            parameters = parametersFromUrl;
+        }
         if (parsed.from != null) {
             from = JSON.parse(parsed.from);
         }
@@ -83,21 +92,37 @@ class MainPage extends React.Component<any, MainPageState>{
             length = +parsed.length;
         }
 
+
         if (parsed.blockedPoints) {
             blockedPoints = JSON.parse(parsed.blockedPoints);
         }
 
+        debugger;
         let allowZeroEmissionZoneTravel = true;
         if (parsed.allowTravelInZeroEmissionZone) {
             allowZeroEmissionZoneTravel = parsed.allowTravelInZeroEmissionZone;
         }
 
+        let showFerries = true;
+        if (parsed.showFerries) {
+            showFerries =parsed.showFerries
+        }
+
+        let showRoadCameras = true;
+        if (parsed.showRoadCameras) {
+            showRoadCameras = parsed.showRoadCameras
+        }
+
+
         this.state = {
             currentStartLocation: from, currentEndLocation: to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,
             weight: weight, length: length, height: height, blockedPoints: blockedPoints,
             allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel,
-            parameters: new Array<IParameter>(), showRoadCameras: true, showFerries: true
+            parameters: parameters, showRoadCameras: showRoadCameras, showFerries: showFerries
         };
+
+        console.log(this.state.showRoadCameras)
+
 
         this.setParameters = this.setParameters.bind(this);
 
@@ -184,10 +209,26 @@ class MainPage extends React.Component<any, MainPageState>{
 
     displayRoadCameraInMap = (show: boolean) => {
         this.setState({ showRoadCameras: show });
+        
+        if (show) {
+            this.updateSearch("showRoadCameras", show);
+        }
+        else{
+            this.updateSearch("showRoadCameras", null);
+        }
+       
     }
 
     displayFerriesInMap = (show: boolean) => {
-        this.setState({ showFerries:show });
+        this.setState({ showFerries: show });
+
+        if (show) {
+            this.updateSearch("showFerries", show);
+
+        }
+        else{
+            this.updateSearch("showFerries", null);
+        }
     }
     clearRoute = () => {
         this.setState({
@@ -344,12 +385,13 @@ class MainPage extends React.Component<any, MainPageState>{
 
 
     setParameters = (updatedParameters: IParameter[]) => {
-
         this.setState({
 
             parameters: updatedParameters
 
         });
+
+        this.updateSearch("parameters", updatedParameters);
     }
 
 }

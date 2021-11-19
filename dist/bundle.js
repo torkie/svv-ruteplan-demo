@@ -58873,9 +58873,21 @@ var MainPage = /** @class */ (function (_super) {
         };
         _this.displayRoadCameraInMap = function (show) {
             _this.setState({ showRoadCameras: show });
+            if (show) {
+                _this.updateSearch("showRoadCameras", show);
+            }
+            else {
+                _this.updateSearch("showRoadCameras", null);
+            }
         };
         _this.displayFerriesInMap = function (show) {
             _this.setState({ showFerries: show });
+            if (show) {
+                _this.updateSearch("showFerries", show);
+            }
+            else {
+                _this.updateSearch("showFerries", null);
+            }
         };
         _this.clearRoute = function () {
             _this.setState({
@@ -59004,6 +59016,7 @@ var MainPage = /** @class */ (function (_super) {
             _this.setState({
                 parameters: updatedParameters
             });
+            _this.updateSearch("parameters", updatedParameters);
         };
         var parsed = qs.parse(location.search);
         var from = null;
@@ -59013,6 +59026,11 @@ var MainPage = /** @class */ (function (_super) {
         var height = null;
         var length = null;
         var blockedPoints = null;
+        var parameters = new Array();
+        if (parsed.parameters != null) {
+            var parametersFromUrl = JSON.parse(parsed.parameters);
+            parameters = parametersFromUrl;
+        }
         if (parsed.from != null) {
             from = JSON.parse(parsed.from);
         }
@@ -59034,16 +59052,26 @@ var MainPage = /** @class */ (function (_super) {
         if (parsed.blockedPoints) {
             blockedPoints = JSON.parse(parsed.blockedPoints);
         }
+        debugger;
         var allowZeroEmissionZoneTravel = true;
         if (parsed.allowTravelInZeroEmissionZone) {
             allowZeroEmissionZoneTravel = parsed.allowTravelInZeroEmissionZone;
+        }
+        var showFerries = true;
+        if (parsed.showFerries) {
+            showFerries = parsed.showFerries;
+        }
+        var showRoadCameras = true;
+        if (parsed.showRoadCameras) {
+            showRoadCameras = parsed.showRoadCameras;
         }
         _this.state = {
             currentStartLocation: from, currentEndLocation: to, currentIntermediateLocations: via, currentRouteResponse: null, selectedRouteIdx: -1,
             weight: weight, length: length, height: height, blockedPoints: blockedPoints,
             allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel,
-            parameters: new Array(), showRoadCameras: true, showFerries: true
+            parameters: parameters, showRoadCameras: showRoadCameras, showFerries: showFerries
         };
+        console.log(_this.state.showRoadCameras);
         _this.setParameters = _this.setParameters.bind(_this);
         return _this;
     }
@@ -59162,8 +59190,8 @@ var Parameter = /** @class */ (function (_super) {
             display: "none"
         };
         return (React.createElement("div", { style: { textAlign: 'left', paddingLeft: 10 } },
-            React.createElement(core_1.TextField, { label: "Parameter type", id: "inputUserClass", style: { marginRight: 10 }, onChange: this.onKeyChanged }),
-            React.createElement(core_1.TextField, { label: "Parameter verdi", id: "inputHeight", style: { marginRight: 10 }, onChange: this.onValueChanged }),
+            React.createElement(core_1.TextField, { label: "Parameter type", id: "inputUserClass", style: { marginRight: 10 }, onChange: this.onKeyChanged, value: this.props.parameter.key }),
+            React.createElement(core_1.TextField, { label: "Parameter verdi", id: "inputHeight", style: { marginRight: 10 }, onChange: this.onValueChanged, value: this.props.parameter.value }),
             React.createElement(core_1.Icon, { className: "parameterRemoveButton", onClick: function () { return _this.props.removeParameter(_this.props.parameter.id); }, style: this.props.parameter.firstParameter ? HiddenButton : visibleButton }, "remove_circle")));
     };
     return Parameter;
@@ -59832,7 +59860,9 @@ var SearchBar = /** @class */ (function (_super) {
         };
         _this.removeParameter = _this.removeParameter.bind(_this);
         _this.onParameterChanged = _this.onParameterChanged.bind(_this);
-        _this.addParameter(true);
+        if (_this.props.parameters.length == 0) {
+            _this.addParameter(true);
+        }
         return _this;
     }
     SearchBar.prototype.removeParameter = function (id) {
