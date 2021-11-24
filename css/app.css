@@ -5,6 +5,27 @@
     overflow: hidden;       
 }
 
+.parameterRemoveButton{
+    vertical-align: bottom;
+    cursor: pointer;
+}
+
+.parameters{
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.parameterAddButton{
+    grid-column: 2;
+    grid-row: 1;
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+.parameterComponent {
+    grid-column: 1;
+}
+
 .topbar {
     background: #444f55;
     border-bottom: 3px solid #ff9600;
@@ -79,19 +100,11 @@
     display: inline-block;
     max-width: 450px;
     width: 100%;
-}
-.selectedRouteDisplay DIV
-{
-    padding: 4px;
-}
-
-.selectedRouteDisplay DIV DIV {
-    float: left;
-    margin: 0 10px;
+    display: grid;
 }
 
 .routestats {
-    padding-left: 15px;
+    padding: 4px;
 }
 .routestats IMG {
     margin-left: 10px;
@@ -109,8 +122,22 @@
     padding: 1px 3px !important;
     border-radius: 5px;
     border: 1px solid gray;
+    float: left;
+    margin: 0 10px;
+}
+.directions{
+    padding:4px;
+}
+.cameraContent{
+    display: grid;
 }
 
+.roadCamera{
+    display: grid;
+    grid-auto-flow: column;
+    width: fit-content;
+    grid-column-gap: 5px;
+}
 .signpost.signpost-E {
     background: green;
     color: white;
@@ -166,6 +193,13 @@
     z-index: 0;
 }
 
+.cancelIcon{
+    position: absolute ;
+    right: -10px;
+    top: -10px ;
+    font-size: 30px !important ;
+    cursor: pointer;
+}
 
 .settingspane {
     position: relative;

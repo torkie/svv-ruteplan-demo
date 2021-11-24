@@ -7,7 +7,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "buildDev": "npx webpack --mode development",
+    "startDev" : "npx webpack serve",
+    "buildProd": "npx webpack"
   },
   "repository": {
     "type": "git",
@@ -22,9 +25,10 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "autosuggest-highlight": "^3.1.1",
+    "autosuggest-highlight": "3.1.1",
     "axios": "^0.18.1",
     "es6-promise-promise": "^1.0.0",
+    "guid-typescript": "^1.0.9",
     "leaflet": "^1.5.1",
     "leaflet-contextmenu": "^1.4.0",
     "lodash": "^4.17.15",
@@ -32,7 +36,7 @@
     "proj4leaflet": "^1.0.2",
     "query-string": "^6.8.3",
     "react": "^16.10.2",
-    "react-autosuggest": "^9.4.3",
+    "react-autosuggest": "9.4.3",
     "react-bootstrap-typeahead": "^3.4.7",
     "react-cookie": "^3.1.2",
     "react-dom": "^16.10.2",
@@ -44,13 +48,13 @@
     "webpack": "^4.41.1"
   },
   "devDependencies": {
-    "@types/autosuggest-highlight": "^3.1.0",
+    "@types/autosuggest-highlight": "3.1.0",
     "@types/axios": "^0.14.0",
     "@types/leaflet": "^1.5.3",
     "@types/lodash": "^4.14.144",
     "@types/proj4leaflet": "^1.0.5",
     "@types/react": "^16.9.6",
-    "@types/react-autosuggest": "^9.3.11",
+    "@types/react-autosuggest": "9.3.11",
     "@types/react-bootstrap-typeahead": "^3.4.5",
     "@types/react-dom": "^16.9.2",
     "@types/react-leaflet": "^1.9.0",
@@ -59,8 +63,12 @@
     "@types/react-transition-group": "^2.9.2",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^2.1.1",
+    "file-loader": "^6.2.0",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
-    "typescript": "^3.6.4"
+    "typescript": "3.6.4",
+    "url-loader": "^4.1.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0"
   }
 }

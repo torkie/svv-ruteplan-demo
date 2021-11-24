@@ -64,7 +64,7 @@ export var Marker = Layer.extend({
 		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
 
-		// @option pane: String = 'shadowPane'
+		// @option shadowPane: String = 'shadowPane'
 		// `Map pane` where the markers shadow will be added.
 		shadowPane: 'shadowPane',
 
@@ -287,7 +287,10 @@ export var Marker = Layer.extend({
 	},
 
 	_setPos: function (pos) {
-		DomUtil.setPosition(this._icon, pos);
+
+		if (this._icon) {
+			DomUtil.setPosition(this._icon, pos);
+		}
 
 		if (this._shadow) {
 			DomUtil.setPosition(this._shadow, pos);
@@ -299,7 +302,9 @@ export var Marker = Layer.extend({
 	},
 
 	_updateZIndex: function (offset) {
-		this._icon.style.zIndex = this._zIndex + offset;
+		if (this._icon) {
+			this._icon.style.zIndex = this._zIndex + offset;
+		}
 	},
 
 	_animateZoom: function (opt) {
