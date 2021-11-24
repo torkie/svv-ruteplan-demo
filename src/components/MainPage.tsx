@@ -97,7 +97,6 @@ class MainPage extends React.Component<any, MainPageState>{
             blockedPoints = JSON.parse(parsed.blockedPoints);
         }
 
-        debugger;
         let allowZeroEmissionZoneTravel = true;
         if (parsed.allowTravelInZeroEmissionZone) {
             allowZeroEmissionZoneTravel = parsed.allowTravelInZeroEmissionZone;
@@ -120,9 +119,6 @@ class MainPage extends React.Component<any, MainPageState>{
             allowTravelInZeroEmissionZone: allowZeroEmissionZoneTravel,
             parameters: parameters, showRoadCameras: showRoadCameras, showFerries: showFerries
         };
-
-        console.log(this.state.showRoadCameras)
-
 
         this.setParameters = this.setParameters.bind(this);
 
