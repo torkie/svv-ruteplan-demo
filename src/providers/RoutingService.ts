@@ -93,7 +93,6 @@ export default class RoutingService implements IRoutingService {
             params: params
         }).then((resp: AxiosResponse<RouteResponse>) => {
             var data = resp.data;
-
             // create geometry features from routes
             var features: { geometry: L.Polyline }[] = [];
             if (data.routes == null) {
@@ -126,8 +125,11 @@ export default class RoutingService implements IRoutingService {
                     }
 
                     if (feature.attributes.roadFeatures !== null && feature.attributes.roadFeatures.length > 0) {  
-                        let cameraFeature: RoadFeature[] = feature.attributes.roadFeatures.filter(x => x.attributeType == "nvdb:roadcamera");
+                        const cameraFeature: RoadFeature[] = feature.attributes.roadFeatures.filter(x => x.attributeType == "nvdb:roadcamera");
                         feature.roadCamera = cameraFeature;
+
+                        const datex3TrafficMessage : RoadFeature[] =  feature.attributes.roadFeatures.filter(x => x.attributeType == "datex3:trafikkmelding");
+                        feature.datex3TrafficMessage = datex3TrafficMessage;
                     }
 
                     feature.turnIconClass = this.getTurnIconForEsriManeuvre(feature.attributes.maneuverType);
