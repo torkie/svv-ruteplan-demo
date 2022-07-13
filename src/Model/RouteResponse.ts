@@ -80,4 +80,5 @@ export interface ViewDirectionFeature extends RouteResponseDirectionFeature {
     turnIconClass: string;
     compressedGeometry: string;
     roadCamera:RoadFeature[];
+    datex3TrafficMessage : RoadFeature[];
 }

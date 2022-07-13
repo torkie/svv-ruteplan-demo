@@ -6,6 +6,7 @@ import { RoadFeature } from "../model/RouteResponse";
 import { CameraComponent } from "./CameraComponent";
 import {  ViewDirectionFeature } from "../Model/RouteResponse";
 import { Paper } from "@material-ui/core";
+import { TrafficMessage } from "./TrafficMessage";
 
 
 
@@ -74,6 +75,15 @@ export class RouteResponseDisplay extends React.Component<RouteResponseDisplayPr
                             <CameraComponent roadCamera={roadCamera} /> </div>))
                        
                     }
+
+                    {
+                       
+                       (direction as ViewDirectionFeature).datex3TrafficMessage && (direction as ViewDirectionFeature).datex3TrafficMessage.map((datex3TrafficMessage: RoadFeature) => (<div>
+                           <TrafficMessage trafficMessage={datex3TrafficMessage} /> </div>))
+                      
+                    }
+
+
                     </div>
                 </div>
             });
